@@ -1,0 +1,11 @@
+# Sistema operacional e editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Exportações locais (evite versionar planilhas e relatórios gerados)
+*.csv
+relatorio-*.html
+demandas-manutencao-*.csv
+registro-atividades-*.csv

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manutenção Predial | IEMA</title>
+  <meta name="description" content="Gestão das manutenções prediais do IEMA: solicitações, ordens de serviço, cronograma de obras, prazos, setores atendidos e relatórios.">
+  <meta name="theme-color" content="#083B37">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <a class="sr-only" href="#view">Ir para o conteúdo</a>
+  <div class="app">
+    <aside class="side" aria-label="Navegação principal">
+      <div class="brand">
+        <div class="brand-name">Manutenção Predial</div>
+        <div class="brand-org" id="side-org">Instituto Estadual de Meio Ambiente (IEMA)</div>
+        <div class="brand-track" aria-hidden="true">
+          <i style="background:var(--e1)"></i><i style="background:var(--e2)"></i><i style="background:var(--e3)"></i><i style="background:var(--e4)"></i><i style="background:var(--e5)"></i><i style="background:var(--e6)"></i><i style="background:var(--e7)"></i>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>Painel</a>
+        <a href="#demandas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Demandas</a>
+        <a href="#cronograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M8 12h11M6 18h7"/><path d="M3 3v18h18" stroke-linejoin="round"/></svg>Cronograma de obras</a>
+        <a href="#etapas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg>Etapas do fluxo</a>
+        <a href="#setores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 21h16"/></svg>Setores atendidos</a>
+        <div class="sep" role="separator"></div>
+        <a href="#gestor" class="gestor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Área do Gestor<span id="gestor-badge" class="tag atrasada" style="margin-left:auto;padding:0 7px" hidden></span></a>
+        <a href="#config"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Configurações</a>
+      </nav>
+      <div class="side-foot">Dados salvos neste navegador<br>Última alteração: <b id="side-upd">—</b></div>
+    </aside>
+
+    <div class="main">
+      <header class="top">
+        <button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        <div>
+          <h1 id="page-title">Painel</h1>
+          <div class="sub" id="page-sub"></div>
+        </div>
+        <span class="top-spacer"></span>
+        <label class="search"><span class="sr-only">Buscar demandas</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="busca" type="search" placeholder="Buscar demandas ( / )" autocomplete="off">
+        </label>
+        <button class="btn ghost icon-btn" id="theme-btn" aria-label="Alternar tema"></button>
+        <button class="btn primary" id="btn-nova"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>Nova demanda</button>
+      </header>
+      <main id="view" class="view" tabindex="-1"><div class="empty">Carregando dados…</div></main>
+    </div>
+  </div>
+  <div id="toasts" aria-live="polite"></div>
+  <noscript><div class="notice" style="margin:20px">Este sistema precisa de JavaScript habilitado.</div></noscript>
+
+  <script src="assets/js/core.js"></script>
+  <script src="assets/js/seed.js"></script>
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/views.js"></script>
+  <script src="assets/js/gestor.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
