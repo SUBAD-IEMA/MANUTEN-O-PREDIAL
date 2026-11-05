@@ -221,7 +221,7 @@ var DESCR_CONFIG_ = {
   alertaGlobalPct: 'Alerta quando o valor global executado atingir este percentual (padrão fixo: 70). Alterar exige senha no sistema.',
   alertaEmpenhoPct: 'Alerta quando o empenho executado atingir este percentual (padrão fixo: 70). Alterar exige senha no sistema.',
   setores: 'Setores e unidades (um por linha)', locais: 'Não utilizado nesta versão', emailsBackup: 'E-mails que recebem o backup mensal (separados por vírgula)',
-  backupAutomatico: 'TRUE para enviar o backup no 1º dia útil do mês', lookerRelatorio: 'Endereço do relatório salvo no Looker Studio', ultimoBackup: 'Preenchido automaticamente'
+  backupAutomatico: 'TRUE para enviar o backup no 1º dia útil do mês', lookerRelatorio: 'Endereço do relatório salvo no Looker Studio', chavePainel: 'Chave do link do painel somente leitura (gerada pelo sistema; apague para revogar)', ultimoBackup: 'Preenchido automaticamente'
 };
 
 function formatarLinhas_(sh, tabela, linha, qtd) {
@@ -456,6 +456,7 @@ var Logica = (function () {
     emailsBackup: 'cleilson.costa@iema.es.gov.br, subad@iema.es.gov.br',
     backupAutomatico: true,
     lookerRelatorio: '',
+    chavePainel: '',
     ultimoBackup: ''
   };
   L.ALERTA_PADRAO = 70;
@@ -805,6 +806,7 @@ var Servico = (function (L) {
     if (!p.areaGestor) historico = historico.filter(function (h) { return ids[h.demandaId]; });
     if (historico.length > 4000) historico = historico.slice(historico.length - 4000);
     if (!p.configuracoes) delete cfg.emailsBackup;
+    if (!p.areaGestor) delete cfg.chavePainel;
     return {
       versao: repo.versao(), config: cfg, lotes: repo.listar('Lotes'), empenhos: verFin ? repo.listar('Empenhos') : [],
       demandas: demandas, nfs: nfs, perfis: repo.listar('Perfis'), nomes: nomes,
@@ -1169,7 +1171,7 @@ var Servico = (function (L) {
     repo.substituir('Empenhos', (b.empenhos || []).map(function (x) { return L.normalizar('Empenhos', x); }));
     repo.substituir('Demandas', b.demandas.map(function (x) { return L.normalizar('Demandas', x); }));
     repo.substituir('NotasFiscais', (b.nfs || []).map(function (x) { return L.normalizar('NotasFiscais', x); }));
-    if (b.config) { var c = repo.config(); Object.keys(L.CONFIG_PADRAO).forEach(function (k) { if (b.config[k] !== undefined && k !== 'ultimoBackup') c[k] = b.config[k]; }); repo.salvarConfig(c); }
+    if (b.config) { var c = repo.config(); Object.keys(L.CONFIG_PADRAO).forEach(function (k) { if (b.config[k] !== undefined && k !== 'ultimoBackup' && k !== 'chavePainel') c[k] = b.config[k]; }); repo.salvarConfig(c); }
     repo.historico([hist(repo, ses, 'Backup restaurado', '', '', '', b.demandas.length + ' demandas', req.motivo)]);
     return { dados: montarDados(repo, ses) };
   };
@@ -1182,6 +1184,39 @@ var Servico = (function (L) {
     return { mensagem: 'Backup enviado para ' + r.destinatarios + '.', dados: montarDados(repo, ses) };
   };
 
+  /* ---------------- Link do painel (somente leitura) para o Looker Studio ---------------- */
+  var PERFIL_PAINEL = { nome: 'Painel somente leitura', verTodas: true, criar: false, editarOutras: false, campos: [], etapas: false, financeiro: false, areaGestor: true, configuracoes: false, usuarios: false, excluir: false, protegido: true };
+  A.gerarChavePainel = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.areaGestor && (ses.perfil.configuracoes || ses.perfil.usuarios), 'Somente gestores geram o link do painel.');
+    conferirSenha(ses, req.senha);
+    var c = repo.config(), havia = !!c.chavePainel;
+    c.chavePainel = repo.uuid() + repo.uuid().slice(0, 8);
+    repo.salvarConfig(c);
+    repo.historico([hist(repo, ses, havia ? 'Link do painel refeito (o anterior foi revogado)' : 'Link do painel para o Looker Studio gerado', '', '', '', '', req.motivo)]);
+    return { chave: c.chavePainel, dados: montarDados(repo, ses) };
+  };
+  A.revogarChavePainel = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.areaGestor && (ses.perfil.configuracoes || ses.perfil.usuarios), 'Somente gestores revogam o link do painel.');
+    conferirSenha(ses, req.senha);
+    var c = repo.config(); c.chavePainel = ''; repo.salvarConfig(c);
+    repo.historico([hist(repo, ses, 'Link do painel revogado', '', '', '', '', req.motivo)]);
+    return { dados: montarDados(repo, ses) };
+  };
+  A.painelPublico = function (repo, req) {
+    var c = repo.config();
+    if (!c.chavePainel || String(req.chave || '') !== c.chavePainel) falha('PAINEL', 'Link do painel inválido ou revogado. Peça um novo link ao gestor.');
+    var pub = {};
+    ['orgao', 'contratoGestao', 'contratoExecucao', 'numeroContrato', 'ataNumero', 'ataAno', 'contratada', 'vigenciaInicio', 'vigenciaFim', 'valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct', 'setores', 'locais'].forEach(function (k) { pub[k] = c[k]; });
+    return { dados: {
+      versao: repo.versao(), config: pub, lotes: repo.listar('Lotes'), empenhos: repo.listar('Empenhos'),
+      demandas: repo.listar('Demandas').map(function (d) { d.criadoPor = ''; d.atualizadoPor = ''; d.inicialPor = d.aprovacaoPor = d.execucaoPor = d.atestePor = d.pagamentoPor = ''; return d; }),
+      nfs: repo.listar('NotasFiscais').map(function (n) { n.registradoPor = ''; return n; }), perfis: [], nomes: {}, usuarios: [], historico: [],
+      sessao: { login: 'painel', nome: 'Painel somente leitura', perfil: PERFIL_PAINEL, trocarSenha: false }
+    } };
+  };
+
   A.looker = function (repo, req) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.areaGestor, 'Seu perfil não acessa os dashboards.');
@@ -1192,7 +1227,7 @@ var Servico = (function (L) {
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
-  var GRAVAM = { trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
+  var GRAVAM = { gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
   S.executar = function (repo, req) {
     try {
       var fn = A[req && req.acao];

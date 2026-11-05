@@ -152,7 +152,14 @@ Após **10 minutos sem uso** do mouse ou do teclado, o sistema avisa e, um minut
 - No detalhe de cada demanda, o botão **Ficha (PDF)** baixa a ficha completa da demanda.
 - O PDF direto usa uma biblioteca carregada da internet na primeira vez. Sem internet, o sistema abre a impressão para salvar como PDF.
 
-### Google Looker Studio
+### Dashboard do gestor dentro do Google Looker Studio
+- Na Área do Gestor, aba **Dashboard**, o botão **Gerar link para o Looker Studio** cria um endereço que abre **exatamente a tela do Dashboard**, em modo somente leitura e sem login. O sistema pede confirmação e a senha do gestor.
+- No Looker Studio, clique em **Inserir > Incorporar URL**, cole o endereço e estique o quadro para ocupar a página (sugestão: 1.200 x 2.000 px).
+- O painel incorporado lê a planilha e se atualiza sozinho a cada minuto. Os filtros de período, comparação, lote e modalidade funcionam ali só para consulta: nada é gravado e a página do GitHub não é afetada.
+- Quem tiver o link vê o painel. Para cortar o acesso, use **Revogar link** ou **Gerar novo link** (o anterior deixa de funcionar).
+- Gere o link com o site aberto pelo endereço do GitHub Pages, não pelo arquivo no computador.
+
+### Google Looker Studio: relatório com os dados da planilha
 - A planilha mantém três abas só para o Looker Studio: **Looker - Demandas**, **Looker - Notas Fiscais** e **Looker - Saldos**. Elas são refeitas a cada gravação do sistema e têm as mesmas informações usadas nos filtros do gestor (período, mês, ano, lote, modalidade, situação, prazo, unidade, local, sistema, empenho e alertas).
 - Na Área do Gestor, aba **Dashboard**, o botão **Abrir no Google Looker Studio** mostra um link para cada aba: **Demandas**, **Notas Fiscais** e **Saldos**. Cada link cria um relatório já conectado àquela aba.
 - Na primeira vez: use o link de **Demandas**. No Looker, acrescente as outras abas em **Adicionar dados > Google Planilhas**, inclua os controles de filtro e os gráficos e clique em **Editar e compartilhar** para salvar. Cole o endereço do relatório salvo em **Configurações > Google Looker Studio**; depois disso, o botão abre direto esse relatório.

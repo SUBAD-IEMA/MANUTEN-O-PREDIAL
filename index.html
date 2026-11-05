@@ -502,6 +502,16 @@ code { font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border
   .chart, .avoid-break, .kpi, .meter { break-inside: avoid; }
 }
 
+/* ---------------- Painel somente leitura (Looker Studio) ---------------- */
+.pub { min-height: 100vh; background: var(--bg); }
+.pub-h { display: flex; justify-content: space-between; align-items: center; gap: 12px 24px; flex-wrap: wrap; padding: 14px 28px; background: var(--brand-deep); color: #E6F4F1; }
+.pub-t { font-size: 18px; font-weight: 800; color: #fff; }
+.pub-o { font-size: 13px; color: #9CCFC7; margin-top: 2px; }
+.pub-m { display: flex; gap: 16px; align-items: center; font-size: 13px; color: #CFE6E1; flex-wrap: wrap; }
+.pub-m b { color: #fff; }
+.modo-painel .view { max-width: none; }
+ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
+
   </style>
   <script src="config.js"></script>
 </head>
@@ -618,6 +628,7 @@ var Logica = (function () {
     emailsBackup: 'cleilson.costa@iema.es.gov.br, subad@iema.es.gov.br',
     backupAutomatico: true,
     lookerRelatorio: '',
+    chavePainel: '',
     ultimoBackup: ''
   };
   L.ALERTA_PADRAO = 70;
@@ -966,6 +977,7 @@ var Servico = (function (L) {
     if (!p.areaGestor) historico = historico.filter(function (h) { return ids[h.demandaId]; });
     if (historico.length > 4000) historico = historico.slice(historico.length - 4000);
     if (!p.configuracoes) delete cfg.emailsBackup;
+    if (!p.areaGestor) delete cfg.chavePainel;
     return {
       versao: repo.versao(), config: cfg, lotes: repo.listar('Lotes'), empenhos: verFin ? repo.listar('Empenhos') : [],
       demandas: demandas, nfs: nfs, perfis: repo.listar('Perfis'), nomes: nomes,
@@ -1330,7 +1342,7 @@ var Servico = (function (L) {
     repo.substituir('Empenhos', (b.empenhos || []).map(function (x) { return L.normalizar('Empenhos', x); }));
     repo.substituir('Demandas', b.demandas.map(function (x) { return L.normalizar('Demandas', x); }));
     repo.substituir('NotasFiscais', (b.nfs || []).map(function (x) { return L.normalizar('NotasFiscais', x); }));
-    if (b.config) { var c = repo.config(); Object.keys(L.CONFIG_PADRAO).forEach(function (k) { if (b.config[k] !== undefined && k !== 'ultimoBackup') c[k] = b.config[k]; }); repo.salvarConfig(c); }
+    if (b.config) { var c = repo.config(); Object.keys(L.CONFIG_PADRAO).forEach(function (k) { if (b.config[k] !== undefined && k !== 'ultimoBackup' && k !== 'chavePainel') c[k] = b.config[k]; }); repo.salvarConfig(c); }
     repo.historico([hist(repo, ses, 'Backup restaurado', '', '', '', b.demandas.length + ' demandas', req.motivo)]);
     return { dados: montarDados(repo, ses) };
   };
@@ -1343,6 +1355,39 @@ var Servico = (function (L) {
     return { mensagem: 'Backup enviado para ' + r.destinatarios + '.', dados: montarDados(repo, ses) };
   };
 
+  /* ---------------- Link do painel (somente leitura) para o Looker Studio ---------------- */
+  var PERFIL_PAINEL = { nome: 'Painel somente leitura', verTodas: true, criar: false, editarOutras: false, campos: [], etapas: false, financeiro: false, areaGestor: true, configuracoes: false, usuarios: false, excluir: false, protegido: true };
+  A.gerarChavePainel = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.areaGestor && (ses.perfil.configuracoes || ses.perfil.usuarios), 'Somente gestores geram o link do painel.');
+    conferirSenha(ses, req.senha);
+    var c = repo.config(), havia = !!c.chavePainel;
+    c.chavePainel = repo.uuid() + repo.uuid().slice(0, 8);
+    repo.salvarConfig(c);
+    repo.historico([hist(repo, ses, havia ? 'Link do painel refeito (o anterior foi revogado)' : 'Link do painel para o Looker Studio gerado', '', '', '', '', req.motivo)]);
+    return { chave: c.chavePainel, dados: montarDados(repo, ses) };
+  };
+  A.revogarChavePainel = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.areaGestor && (ses.perfil.configuracoes || ses.perfil.usuarios), 'Somente gestores revogam o link do painel.');
+    conferirSenha(ses, req.senha);
+    var c = repo.config(); c.chavePainel = ''; repo.salvarConfig(c);
+    repo.historico([hist(repo, ses, 'Link do painel revogado', '', '', '', '', req.motivo)]);
+    return { dados: montarDados(repo, ses) };
+  };
+  A.painelPublico = function (repo, req) {
+    var c = repo.config();
+    if (!c.chavePainel || String(req.chave || '') !== c.chavePainel) falha('PAINEL', 'Link do painel inválido ou revogado. Peça um novo link ao gestor.');
+    var pub = {};
+    ['orgao', 'contratoGestao', 'contratoExecucao', 'numeroContrato', 'ataNumero', 'ataAno', 'contratada', 'vigenciaInicio', 'vigenciaFim', 'valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct', 'setores', 'locais'].forEach(function (k) { pub[k] = c[k]; });
+    return { dados: {
+      versao: repo.versao(), config: pub, lotes: repo.listar('Lotes'), empenhos: repo.listar('Empenhos'),
+      demandas: repo.listar('Demandas').map(function (d) { d.criadoPor = ''; d.atualizadoPor = ''; d.inicialPor = d.aprovacaoPor = d.execucaoPor = d.atestePor = d.pagamentoPor = ''; return d; }),
+      nfs: repo.listar('NotasFiscais').map(function (n) { n.registradoPor = ''; return n; }), perfis: [], nomes: {}, usuarios: [], historico: [],
+      sessao: { login: 'painel', nome: 'Painel somente leitura', perfil: PERFIL_PAINEL, trocarSenha: false }
+    } };
+  };
+
   A.looker = function (repo, req) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.areaGestor, 'Seu perfil não acessa os dashboards.');
@@ -1353,7 +1398,7 @@ var Servico = (function (L) {
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
-  var GRAVAM = { trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
+  var GRAVAM = { gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
   S.executar = function (repo, req) {
     try {
       var fn = A[req && req.acao];
@@ -2791,8 +2836,11 @@ var G = (function (L) {
     var und = Ch.hbars(Object.keys(U.groupBy(A.sol, function (d) { return d.unidade; })).map(function (k) { var l = A.sol.filter(function (d) { return d.unidade === k; }); return { label: k, total: U.sum(l, function (d) { return d.valorEstimado; }), color: 'var(--accent)' }; }).sort(function (a, b) { return b.total - a.total; }).slice(0, 8), { fmt: U.brlCurto });
     var saldos = Ch.meter(Object.assign({ titulo: 'Valor global da vigência' }, fin.global), U.brlCurto) +
       fin.empenhos.map(function (f) { return Ch.meter(Object.assign({ titulo: 'Empenho ' + f.empenho.numero + (f.membros.length > 1 ? ' + ' + (f.membros.length - 1) + ' reforço(s)' : '') }, f), U.brlCurto); }).join('');
-    return '<div class="stack"><div class="row no-print" style="justify-content:flex-end"><button class="btn" data-act="looker" title="Gerar link com os dados em tempo real para o Google Looker Studio">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Abrir no Google Looker Studio</button></div>' +
+    return '<div class="stack">' + (App.publico ? '' : '<div class="row no-print" style="justify-content:flex-end">' +
+      '<button class="btn primary" data-act="linkPainel" title="Gerar o link desta tela para incorporar no Google Looker Studio">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>Gerar link para o Looker Studio</button>' +
+      '<button class="btn" data-act="looker" title="Criar relatório no Looker Studio com as abas de dados da planilha">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Fontes de dados no Looker</button></div>') +
       Periodo.html(st.dash, D, { extra: filtrosExtra(st.lote, st.modalidade, 'g') }) + T.bannerFin(fin) + '<div class="kpis">' + kp + '</div>' +
       '<div class="grid g2">' + T.painel('Solicitações e execuções', 'por ' + evol.b.tipo, colEvol) + T.painel('Notas fiscais lançadas', 'por ' + nfA.b.tipo + (per.b ? ', comparado' : ''), colNF) + '</div>' +
       '<div class="grid g2">' + T.painel('Comparativo entre períodos', per.b ? e(per.a.rotulo) + ' x ' + e(per.b.rotulo) : '', comp) + T.painel('Situação atual das demandas em aberto', '', sitAtual) + '</div>' +
@@ -3132,6 +3180,50 @@ var G = (function (L) {
   }
   G.linkLooker = abrirLooker;
 
+  /* Link da tela do Dashboard (somente leitura) para incorporar no Looker Studio */
+  function urlPainel(chave) {
+    var base = location.href.split('#')[0].split('?')[0];
+    return base + '?painel=' + encodeURIComponent(chave);
+  }
+  function linkPainel() {
+    var chave = App.D.config.chavePainel, local = location.protocol === 'file:';
+    var gerar = function (refazer) {
+      UI.autorizar(refazer ? 'Gerar um novo link revoga o anterior: o Looker Studio que usa o link antigo deixará de exibir o painel. A operação exige a sua senha.' : 'O link permite ver o Dashboard em modo somente leitura, sem login, por quem o tiver. A operação exige a sua senha.')
+        .then(function (au) { if (au) Api.chamar('gerarChavePainel', { senha: au.senha, motivo: au.motivo }).then(function () { U.toast('Link gerado.', 'ok'); linkPainel(); }, UI.erro); });
+    };
+    if (!chave) {
+      UI.confirmar('Gerar link para o Looker Studio', 'Será criado um endereço que abre <b>esta mesma tela do Dashboard</b>, em modo somente leitura e sem login, para incorporar no Google Looker Studio. Os filtros usados lá não alteram nada no sistema. Deseja gerar o link?', 'Sim, gerar')
+        .then(function (ok) { return ok ? UI.pedirSenha('Confirme com a sua senha', 'Quem tiver o link poderá ver o Dashboard em modo somente leitura.', true) : null; })
+        .then(function (au) { if (au) Api.chamar('gerarChavePainel', { senha: au.senha, motivo: au.motivo }).then(function () { U.toast('Link gerado.', 'ok'); linkPainel(); }, UI.erro); });
+      return;
+    }
+    var url = urlPainel(chave);
+    var w = UI.modal({
+      title: 'Link do Dashboard para o Looker Studio', size: 'md',
+      body: (local ? '<div class="notice" style="margin-bottom:12px">Você abriu o sistema direto do computador. Para o Looker Studio, abra o site pelo endereço do GitHub Pages e copie o link de lá.</div>' : '') +
+        '<label class="f">Endereço do painel (somente leitura)<textarea class="in" id="lp-url" rows="3" readonly>' + e(url) + '</textarea></label>' +
+        '<ol class="passos"><li>No Looker Studio, abra ou crie um relatório e clique em <b>Inserir &gt; Incorporar URL</b> (ou <b>Insert &gt; Embed URL</b>).</li>' +
+        '<li>Cole o endereço acima no campo de URL.</li><li>Estique o quadro para ocupar a página (sugestão: largura de 1.200 px e altura de 2.000 px, ou use <b>Arquivo &gt; Configurações do relatório</b> para aumentar o tamanho da página).</li>' +
+        '<li>Salve e compartilhe o relatório. O painel mostra os dados da planilha e se atualiza sozinho a cada minuto.</li></ol>' +
+        '<p class="calc" style="margin-top:10px">O painel mostra exatamente o Dashboard do gestor. Os filtros de período, comparação, lote e modalidade funcionam dentro do Looker só para consulta: nada é gravado e a página do GitHub não é afetada. Quem tiver o link vê o painel; para cortar o acesso, gere um novo link ou revogue.</p>',
+      footer: '<button class="btn danger" id="lp-revogar">Revogar link</button><button class="btn" id="lp-novo">Gerar novo link</button><span style="flex:1"></span><a class="btn" href="' + e(url) + '" target="_blank" rel="noopener">Visualizar</a><button class="btn primary" id="lp-copiar">Copiar link</button>'
+    });
+    w.querySelector('#lp-copiar').onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { U.toast('Link copiado.', 'ok'); }, function () { var t = w.querySelector('#lp-url'); t.select(); document.execCommand('copy'); U.toast('Link copiado.', 'ok'); }); };
+    w.querySelector('#lp-novo').onclick = function () { w.close(); gerar(true); };
+    w.querySelector('#lp-revogar').onclick = function () {
+      w.close();
+      UI.autorizar('Revogar o link faz o painel parar de aparecer no Looker Studio. A operação exige a sua senha.').then(function (au) { if (au) Api.chamar('revogarChavePainel', { senha: au.senha, motivo: au.motivo }).then(function () { U.toast('Link revogado.', 'ok'); }, UI.erro); });
+    };
+  }
+
+  /* Tela do painel público: o mesmo Dashboard, sem gravação e sem login */
+  G.renderPainel = function (el) {
+    el.innerHTML = dashboard();
+    U.$$('.periodo', el).forEach(function (pe) { Periodo.ligar(pe, st.dash, function () { G.renderPainel(el); }); });
+    el.onchange = function (ev) { var t = ev.target; if (t.dataset.g) { st[t.dataset.g] = t.value; G.renderPainel(el); } };
+    el.onclick = null;
+  };
+
   /* Listas de apoio: inserção manual e importação de Excel */
   function salvarSetores(lista, msg) {
     var unicos = [];
@@ -3323,6 +3415,7 @@ var G = (function (L) {
         if (a === 'print') U.imprimirDoc(U.$('#relatorio').outerHTML);
         if (a === 'pdf') U.pdf(U.$('#relatorio').outerHTML, 'relatorio-' + G._rel.nome + '_' + L.hoje());
         if (a === 'looker') abrirLooker();
+        if (a === 'linkPainel') linkPainel();
         if (a === 'html') baixarHTML(G._rel.nome);
         if (a === 'rcsv' && G._rel.tabelas.length) { var tb = G._rel.tabelas[G._rel.tabelas.length > 1 && G._rel.nome !== 'ficha' ? G._rel.tabelas.length - 1 : 0]; U.download('relatorio-' + G._rel.nome + '_' + L.hoje() + '.csv', U.csv([tb.cab].concat(tb.linhas)), 'text/csv;charset=utf-8'); }
         if (a === 'rxls') U.download('relatorio-' + G._rel.nome + '_' + L.hoje() + '.xls', U.xls(G._rel.tabelas), 'application/vnd.ms-excel');
@@ -3388,8 +3481,35 @@ var App = (function (L) {
     App.D = dados;
     App.P = dados.sessao.perfil;
     App.fin = L.financeiro(dados);
+    if (App.publico) { renderPublico(); return; }
     if (U.$('#app')) App.render();
   };
+
+  /* ---------------- Painel somente leitura (link para o Looker Studio) ---------------- */
+  function renderPublico() {
+    var el = U.$('#view'); if (!el || !App.D) return;
+    var c = App.D.config;
+    U.$('#pub-org').textContent = (c.orgao || 'Instituto Estadual de Meio Ambiente (IEMA) - SUBAD') + (c.numeroContrato ? ' · Contrato nº ' + c.numeroContrato : '');
+    U.$('#sync-t').textContent = new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    var y = window.scrollY;
+    G.renderPainel(el);
+    window.scrollTo(0, y);
+  }
+  function iniciarPainel(chave) {
+    App.publico = chave;
+    document.documentElement.setAttribute('data-theme', /[?&]tema=escuro/.test(location.search) ? 'dark' : 'light');
+    document.body.classList.add('modo-painel');
+    document.body.innerHTML = '<div class="pub"><header class="pub-h"><div><div class="pub-t">Manutenção Predial · Dashboard do gestor</div><div class="pub-o" id="pub-org"></div></div>' +
+      '<div class="pub-m"><span class="conn on"><i></i>Somente leitura</span><span>Dados atualizados às <b id="sync-t">—</b></span></div></header>' +
+      '<main id="view" class="view"><div class="empty">Carregando o painel…</div></main></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+    Api.chamar('painelPublico', { chave: chave }).catch(function (e) {
+      U.$('#view').innerHTML = '<div class="empty"><b>Painel indisponível</b>' + U.esc(e && e.mensagem ? e.mensagem : 'Não foi possível carregar os dados.') + '</div>';
+    });
+    setInterval(function () {
+      if (document.hidden) return;
+      Api.chamar('versao', {}, true).then(function (r) { if (!App.D || r.versao !== App.D.versao) return Api.chamar('painelPublico', { chave: chave }, true); }).catch(function () { /* tenta no próximo ciclo */ });
+    }, 60000);
+  }
   function rota() { var h = (location.hash || '#painel').slice(1); return ROTAS[h] ? h : 'painel'; }
   function podeGestor() { var p = App.P; return p.areaGestor || p.configuracoes || p.usuarios; }
 
@@ -3480,7 +3600,7 @@ var App = (function (L) {
     try { if (!registrarAtividade._t || ultima - registrarAtividade._t > 5000) { localStorage.setItem(ATV, String(ultima)); registrarAtividade._t = ultima; } } catch (e) { /* ignora */ }
   }
   function verificarInatividade() {
-    if (!App.D) return;
+    if (!App.D || App.publico) return;
     var outra = 0; try { outra = Number(localStorage.getItem(ATV)) || 0; } catch (e) { /* ignora */ }
     if (outra > ultima) ultima = outra;
     var parado = Date.now() - ultima;
@@ -3502,13 +3622,15 @@ var App = (function (L) {
 
   /* ---------------- Sincronização automática ---------------- */
   function sincronizar() {
-    if (!App.D || document.hidden || U.$('.modal')) return;
+    if (!App.D || App.publico || document.hidden || U.$('.modal')) return;
     Api.chamar('versao', {}, true).then(function (r) { if (App.D && r.versao !== App.D.versao) return Api.chamar('dados', {}, true); }).catch(function () { /* tenta no próximo ciclo */ });
   }
 
   /* ---------------- Inicialização ---------------- */
   var TEMPLATE = '';
   function iniciar() {
+    var chavePainel = (location.search.match(/[?&]painel=([^&#]+)/) || [])[1];
+    if (chavePainel) { iniciarPainel(decodeURIComponent(chavePainel)); return; }
     TEMPLATE = U.$('#tpl-app').innerHTML;
     tema(lerTema());
     document.addEventListener('click', function (e) {
