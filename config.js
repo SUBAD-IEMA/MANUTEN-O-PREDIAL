@@ -4,5 +4,5 @@
    (termina em /exec). Deixe vazio para usar o modo demonstração.
    ========================================================================= */
 window.IEMA_CONFIG = {
-  apiUrl: ''
+  apiUrl: 'https://script.google.com/macros/s/AKfycbxMXNrCHkC4iX74CNsCR8NTTA4oyOH9hdDHm2xSw6oA-DyUf8Et8rvvcioHgFkTrjag/exec'
 };
