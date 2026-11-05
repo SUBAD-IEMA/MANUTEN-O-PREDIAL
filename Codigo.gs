@@ -218,8 +218,8 @@ var DESCR_CONFIG_ = {
   numeroContrato: 'Número do contrato', ataNumero: 'Número da ata', ataAno: 'Ano da ata (AAAA)', contratada: 'Empresa contratada',
   vigenciaInicio: 'Início da vigência (AAAA-MM-DD)', vigenciaFim: 'Fim da vigência (AAAA-MM-DD)',
   valorGlobal: 'Valor global da vigência (usado apenas se os lotes não tiverem valor). Alterar exige senha no sistema.',
-  alertaGlobalPct: 'Alerta quando o valor global executado atingir este percentual (vazio = 70). Alterar exige senha no sistema.',
-  alertaEmpenhoPct: 'Alerta quando o empenho executado atingir este percentual (vazio = 70). Alterar exige senha no sistema.',
+  alertaGlobalPct: 'Alerta quando o valor global executado atingir este percentual (padrão fixo: 70). Alterar exige senha no sistema.',
+  alertaEmpenhoPct: 'Alerta quando o empenho executado atingir este percentual (padrão fixo: 70). Alterar exige senha no sistema.',
   setores: 'Setores e unidades (um por linha)', locais: 'Não utilizado nesta versão', emailsBackup: 'E-mails que recebem o backup mensal (separados por vírgula)',
   backupAutomatico: 'TRUE para enviar o backup no 1º dia útil do mês', lookerRelatorio: 'Endereço do relatório salvo no Looker Studio', ultimoBackup: 'Preenchido automaticamente'
 };
@@ -273,6 +273,8 @@ function instalar() {
     // Atualização da versão anterior: troca a lista antiga de setores pelas siglas e remove a lista de imóveis
     if (!cfg.setores.length || cfg.setores[0] === 'Diretoria-Geral') cfg.setores = Logica.CONFIG_PADRAO.setores.slice();
     cfg.locais = [];
+    if (cfg.alertaGlobalPct === '' || !(Number(cfg.alertaGlobalPct) > 0)) cfg.alertaGlobalPct = 70;
+    if (cfg.alertaEmpenhoPct === '' || !(Number(cfg.alertaEmpenhoPct) > 0)) cfg.alertaEmpenhoPct = 70;
     Repo.salvarConfig(cfg);
   }
   var perfis = Repo.listar('Perfis');
@@ -445,7 +447,7 @@ var Logica = (function () {
   L.CONFIG_PADRAO = {
     orgao: 'Instituto Estadual de Meio Ambiente (IEMA) - SUBAD',
     contratoGestao: '', contratoExecucao: '', numeroContrato: '', ataNumero: '', ataAno: '', contratada: '', vigenciaInicio: '', vigenciaFim: '',
-    valorGlobal: 0, alertaGlobalPct: '', alertaEmpenhoPct: '',
+    valorGlobal: 0, alertaGlobalPct: 70, alertaEmpenhoPct: 70,
     setores: ['APACB', 'APAGO', 'APAGUA', 'APAPE', 'APAPM', 'APAS', 'ARIEMV', 'ASSCOM', 'ASSJUR', 'CONADM', 'DIAF', 'DILCAM', 'DISPN', 'GEA', 'GEAD',
       'GECAM', 'GEDOC', 'GEFIN', 'GEIC', 'GEOCIP', 'GEPREVINES', 'GEPRO', 'GEREF', 'GESIM', 'GFAU', 'GFI', 'GGEP', 'GGUC', 'GP', 'GQA', 'GTI',
       'MONACP', 'MONAFF', 'MONAST', 'PECF', 'PEFG', 'PEI', 'PEMF', 'PEPAZ', 'PEPCV', 'RDSCO', 'REBIODB', 'SUAP', 'SUBAD', 'SUBCON', 'SUBEC',
@@ -925,12 +927,16 @@ var Servico = (function (L) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.excluir, 'Seu perfil não permite excluir demandas.');
     conferirSenha(ses, req.senha);
+    if (!String(req.motivo || '').trim()) falha('VALIDACAO', 'Informe o motivo da exclusão.');
     var d = repo.listar('Demandas').filter(function (x) { return x.id === req.id; })[0];
     if (!d) falha('VALIDACAO', 'Demanda não encontrada.');
-    if (repo.listar('NotasFiscais').some(function (n) { return n.demandaId === d.id; })) falha('VALIDACAO', 'A demanda tem Notas Fiscais. Exclua as notas antes ou use "Cancelar demanda".');
+    var notas = repo.listar('NotasFiscais').filter(function (n) { return n.demandaId === d.id; });
+    var registros = [];
+    notas.forEach(function (n) { repo.remover('NotasFiscais', n.id); registros.push(hist(repo, ses, 'Nota Fiscal excluída com a demanda', d.id, 'NF ' + n.numero, n.valor, '', req.motivo)); });
     repo.remover('Demandas', d.id);
-    repo.historico([hist(repo, ses, 'Demanda excluída', d.id, '', d.titulo, '', req.motivo)]);
-    return { dados: montarDados(repo, ses) };
+    registros.push(hist(repo, ses, 'Demanda excluída', d.id, d.titulo, L.situacao(d).nome + (notas.length ? ' · ' + notas.length + ' nota(s) fiscal(is)' : ''), '', req.motivo));
+    repo.historico(registros);
+    return { notasExcluidas: notas.length, dados: montarDados(repo, ses) };
   };
 
   /* ---------------- Notas fiscais ---------------- */

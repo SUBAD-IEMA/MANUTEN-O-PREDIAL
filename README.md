@@ -66,7 +66,7 @@ window.IEMA_CONFIG = {
 
 ### Já instalou a versão anterior? Atualize assim
 1. No editor do Apps Script, apague o código antigo, cole o novo `Codigo.gs` e salve.
-2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações e troca a lista antiga de setores pelas siglas.
+2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações, troca a lista antiga de setores pelas siglas e fixa os alertas em 70% quando ainda estiverem vazios.
 3. Vá em **Implantar > Gerenciar implantações**, clique no lápis, escolha **Versão: Nova versão** e **Implantar**. O endereço `/exec` continua o mesmo.
 4. Envie o novo `index.html` ao GitHub, substituindo o anterior. O `config.js` não muda.
 
@@ -107,7 +107,19 @@ window.IEMA_CONFIG = {
 - Há dois alertas de execução, exibidos no painel, no dashboard, na aba Financeiro e nos relatórios financeiros:
   - **valor global** (e cada lote) executado em **70% ou mais**;
   - **empenho** (somado aos reforços) executado em **70% ou mais**.
-- Os percentuais e o valor global da vigência ficam em Configurações, com o botão **Salvar**. Depois de gravados, só mudam pelo botão **Alterar**, que pede a senha do gestor e o motivo.
+- Os dois alertas já começam **fixos em 70%**. Para mudar, use **Alterar valores** em Configurações: o sistema pergunta se o gestor realmente deseja alterar e, se sim, pede a senha e o motivo.
+- O valor global da vigência tem o botão **Salvar**; depois de gravado, só muda pelo mesmo botão **Alterar valores**.
+
+### Exclusão de demandas
+- Gestores (perfis com permissão de excluir) apagam uma demanda pelo botão **Excluir** no detalhe ou pelo ícone **×** na lista de demandas.
+- O sistema pergunta se deseja realmente excluir, mostra se há Notas Fiscais vinculadas (que também serão excluídas e voltarão ao saldo dos empenhos) e pede o motivo e a senha do gestor.
+- A exclusão fica registrada no histórico. Para manter o registro da demanda, prefira **Cancelar demanda**.
+
+### Setores e unidades
+Em **Área do Gestor > Configurações > Listas de apoio**:
+- **Inserir setor ou unidade** acrescenta uma ou várias siglas (separadas por vírgula) e já salva.
+- **Importar Excel** lê um arquivo .xlsx, .xls ou .csv com a coluna "Sigla" (ou as siglas na primeira coluna), mostra quantas são novas e permite **substituir** a lista ou **acrescentar** as novas. A lista é atualizada logo após o envio.
+- A leitura do Excel usa uma biblioteca carregada da internet na primeira vez.
 
 ### Histórico
 Toda inserção e alteração fica registrada na aba **Histórico** da planilha e na Área do Gestor, com:
@@ -136,13 +148,14 @@ Após **10 minutos sem uso** do mouse ou do teclado, o sistema avisa e, um minut
 - Filtros por período: hoje, últimos 7, 30 ou 90 dias, este mês, mês anterior, um mês específico, trimestres, ano, vigência ou datas livres.
 - Comparação com o período anterior, com o mesmo período do ano anterior ou com qualquer mês.
 - São 11 relatórios, entre gerenciais, financeiros e de controle. Saem em **PDF** (download direto, ajustado à página A4; tabelas largas saem em paisagem), **HTML**, **Excel** e **CSV**, além da impressão.
+- No PDF, a largura de cada coluna é calculada pelo conteúdo: números, datas, valores e códigos ficam numa linha só, e os textos longos ocupam o espaço restante.
 - No detalhe de cada demanda, o botão **Ficha (PDF)** baixa a ficha completa da demanda.
 - O PDF direto usa uma biblioteca carregada da internet na primeira vez. Sem internet, o sistema abre a impressão para salvar como PDF.
 
 ### Google Looker Studio
 - A planilha mantém três abas só para o Looker Studio: **Looker - Demandas**, **Looker - Notas Fiscais** e **Looker - Saldos**. Elas são refeitas a cada gravação do sistema e têm as mesmas informações usadas nos filtros do gestor (período, mês, ano, lote, modalidade, situação, prazo, unidade, local, sistema, empenho e alertas).
-- Na Área do Gestor, aba **Dashboard**, o botão **Abrir no Google Looker Studio** gera o link que cria o relatório já conectado a essas abas.
-- Na primeira vez: abra o link, inclua os controles de filtro e os gráficos, clique em **Editar e compartilhar** para salvar e cole o endereço do relatório salvo em **Configurações > Google Looker Studio**. Depois, o mesmo botão abre o relatório salvo.
+- Na Área do Gestor, aba **Dashboard**, o botão **Abrir no Google Looker Studio** mostra um link para cada aba: **Demandas**, **Notas Fiscais** e **Saldos**. Cada link cria um relatório já conectado àquela aba.
+- Na primeira vez: use o link de **Demandas**. No Looker, acrescente as outras abas em **Adicionar dados > Google Planilhas**, inclua os controles de filtro e os gráficos e clique em **Editar e compartilhar** para salvar. Cole o endereço do relatório salvo em **Configurações > Google Looker Studio**; depois disso, o botão abre direto esse relatório.
 - Os filtros usados no Looker Studio servem apenas para consulta e apresentação: não alteram o sistema nem a tela do gestor.
 - O Looker Studio atualiza os dados conforme a frequência configurada na fonte de dados; para ver na hora, use **Atualizar dados** no próprio Looker.
 

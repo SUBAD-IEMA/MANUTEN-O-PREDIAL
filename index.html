@@ -337,6 +337,14 @@ table.t { width: 100%; border-collapse: collapse; font-size: 14px; }
 .doc .foot { margin-top: 28px; padding-top: 10px; border-top: 1px solid #D5DEDB; font-size: 11.5px; color: #4B5C61; display: flex; justify-content: space-between; gap: 20px; }
 .doc .grid.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .doc.pdf { border: 0; box-shadow: none; border-radius: 0; padding: 0; width: 100%; }
+.doc table.t.ajustada { table-layout: fixed; }
+.doc table.t.ajustada td, .doc table.t.ajustada th { vertical-align: top; overflow-wrap: break-word; word-break: normal; hyphens: manual; }
+.doc table.t.ajustada td.curta, .doc table.t.ajustada th.curta { white-space: nowrap; }
+.doc table.t.ajustada td.right, .doc table.t.ajustada th.right { text-align: right; }
+.doc.pdf table.t th { line-height: 1.25; }
+.doc.pdf table.t td { line-height: 1.35; }
+.doc.pdf .sub { font-size: 10px; }
+.doc.pdf .tag { white-space: normal; font-size: 10.5px; padding: 1px 6px; }
 .doc.pdf .grid.g2 { grid-template-columns: 1fr; }
 .doc.pdf .chart { max-width: 640px; margin: 0 auto; }
 #print-area { display: none; }
@@ -601,7 +609,7 @@ var Logica = (function () {
   L.CONFIG_PADRAO = {
     orgao: 'Instituto Estadual de Meio Ambiente (IEMA) - SUBAD',
     contratoGestao: '', contratoExecucao: '', numeroContrato: '', ataNumero: '', ataAno: '', contratada: '', vigenciaInicio: '', vigenciaFim: '',
-    valorGlobal: 0, alertaGlobalPct: '', alertaEmpenhoPct: '',
+    valorGlobal: 0, alertaGlobalPct: 70, alertaEmpenhoPct: 70,
     setores: ['APACB', 'APAGO', 'APAGUA', 'APAPE', 'APAPM', 'APAS', 'ARIEMV', 'ASSCOM', 'ASSJUR', 'CONADM', 'DIAF', 'DILCAM', 'DISPN', 'GEA', 'GEAD',
       'GECAM', 'GEDOC', 'GEFIN', 'GEIC', 'GEOCIP', 'GEPREVINES', 'GEPRO', 'GEREF', 'GESIM', 'GFAU', 'GFI', 'GGEP', 'GGUC', 'GP', 'GQA', 'GTI',
       'MONACP', 'MONAFF', 'MONAST', 'PECF', 'PEFG', 'PEI', 'PEMF', 'PEPAZ', 'PEPCV', 'RDSCO', 'REBIODB', 'SUAP', 'SUBAD', 'SUBCON', 'SUBEC',
@@ -1080,12 +1088,16 @@ var Servico = (function (L) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.excluir, 'Seu perfil não permite excluir demandas.');
     conferirSenha(ses, req.senha);
+    if (!String(req.motivo || '').trim()) falha('VALIDACAO', 'Informe o motivo da exclusão.');
     var d = repo.listar('Demandas').filter(function (x) { return x.id === req.id; })[0];
     if (!d) falha('VALIDACAO', 'Demanda não encontrada.');
-    if (repo.listar('NotasFiscais').some(function (n) { return n.demandaId === d.id; })) falha('VALIDACAO', 'A demanda tem Notas Fiscais. Exclua as notas antes ou use "Cancelar demanda".');
+    var notas = repo.listar('NotasFiscais').filter(function (n) { return n.demandaId === d.id; });
+    var registros = [];
+    notas.forEach(function (n) { repo.remover('NotasFiscais', n.id); registros.push(hist(repo, ses, 'Nota Fiscal excluída com a demanda', d.id, 'NF ' + n.numero, n.valor, '', req.motivo)); });
     repo.remover('Demandas', d.id);
-    repo.historico([hist(repo, ses, 'Demanda excluída', d.id, '', d.titulo, '', req.motivo)]);
-    return { dados: montarDados(repo, ses) };
+    registros.push(hist(repo, ses, 'Demanda excluída', d.id, d.titulo, L.situacao(d).nome + (notas.length ? ' · ' + notas.length + ' nota(s) fiscal(is)' : ''), '', req.motivo));
+    repo.historico(registros);
+    return { notasExcluidas: notas.length, dados: montarDados(repo, ses) };
   };
 
   /* ---------------- Notas fiscais ---------------- */
@@ -1805,9 +1817,60 @@ var U = (function (L) {
       })();
     });
   };
+  /* Distribui a largura das colunas conforme o conteúdo (usado no PDF, na impressão e no HTML) */
+  U.ajustarColunas = function (raiz) {
+    Array.prototype.forEach.call(raiz.querySelectorAll('table.t'), function (tb) {
+      var cab = tb.tHead && tb.tHead.rows[0];
+      if (!cab) return;
+      var n = cab.cells.length, W = tb.getBoundingClientRect().width || tb.parentNode.getBoundingClientRect().width || 700;
+      var amostra = tb.tBodies[0] && tb.tBodies[0].rows[0] && tb.tBodies[0].rows[0].cells[0];
+      var fs = parseFloat(getComputedStyle(amostra || cab.cells[0]).fontSize) || 12, px = fs * 0.64, pad = 16;
+      var maxLen = [], palavra = [], numerica = [], unica = [];
+      for (var c = 0; c < n; c++) { maxLen[c] = 0; palavra[c] = 0; numerica[c] = true; unica[c] = true; }
+      var medir = function (txt) { return txt.replace(/\s+/g, ' ').trim(); };
+      Array.prototype.forEach.call(tb.rows, function (tr, ri) {
+        if (tr.cells.length !== n) return;
+        Array.prototype.forEach.call(tr.cells, function (td, c) {
+          var partes = td.querySelectorAll('.sub, div').length ? Array.prototype.map.call(td.childNodes, function (x) { return medir(x.textContent || ''); }) : [medir(td.textContent || '')];
+          var maiorParte = partes.reduce(function (m, t) { return Math.max(m, t.length); }, 0);
+          var maiorPalavra = partes.join(' ').split(' ').reduce(function (m, w) { return Math.max(m, w.length); }, 0);
+          if (ri === 0) { palavra[c] = Math.max(palavra[c], Math.min(maiorPalavra, 14)); return; }
+          maxLen[c] = Math.max(maxLen[c], Math.min(maiorParte, 80)); palavra[c] = Math.max(palavra[c], Math.min(maiorPalavra, 24));
+          var t = partes.join(' ');
+          if (t && !/^[-+R$\s\d.,%:\/—]+$/.test(t)) numerica[c] = false;
+          if (partes.length > 1 || /\s/.test(t)) unica[c] = false;
+        });
+      });
+      var minimo = [], desejo = [];
+      for (c = 0; c < n; c++) {
+        var curta = ((numerica[c] || unica[c]) && maxLen[c] <= 18) || maxLen[c] <= 9;
+        minimo[c] = (curta ? Math.max(maxLen[c], palavra[c]) : palavra[c]) * px + pad;
+        desejo[c] = Math.max(minimo[c], Math.min(maxLen[c], 60) * px + pad);
+      }
+      var somaMin = minimo.reduce(function (a, b) { return a + b; }, 0), larg;
+      if (somaMin >= W) larg = minimo.map(function (m) { return m * W / somaMin; });
+      else {
+        var sobra = W - somaMin, folga = desejo.map(function (d, k) { return d - minimo[k]; }), somaF = folga.reduce(function (a, b) { return a + b; }, 0);
+        larg = minimo.map(function (m, k) { return m + (somaF ? Math.min(folga[k], sobra * folga[k] / somaF) : 0); });
+        var resto = W - larg.reduce(function (a, b) { return a + b; }, 0);
+        var texto = maxLen.map(function (m, k) { return numerica[k] ? 0 : m; }), somaT = texto.reduce(function (a, b) { return a + b; }, 0);
+        if (resto > 1) larg = larg.map(function (l, k) { return l + (somaT ? resto * texto[k] / somaT : resto / n); });
+      }
+      var antigo = tb.querySelector('colgroup'); if (antigo) antigo.remove();
+      var cg = document.createElement('colgroup'), tot = larg.reduce(function (a, b) { return a + b; }, 0);
+      larg.forEach(function (l) { var col = document.createElement('col'); col.style.width = (l / tot * 100).toFixed(2) + '%'; cg.appendChild(col); });
+      tb.insertBefore(cg, tb.firstChild);
+      tb.classList.add('ajustada');
+      Array.prototype.forEach.call(tb.rows, function (tr, ri) {
+        if (ri === 0 || tr.cells.length !== n) return;
+        Array.prototype.forEach.call(tr.cells, function (td, c) { if (((numerica[c] || unica[c]) && maxLen[c] <= 18) || maxLen[c] <= 9) td.classList.add('curta'); });
+      });
+    });
+    return raiz;
+  };
   U.imprimirDoc = function (html) {
     var area = document.createElement('div'); area.id = 'print-area'; area.innerHTML = html;
-    document.body.appendChild(area); document.body.classList.add('print-doc');
+    document.body.appendChild(area); U.ajustarColunas(area); document.body.classList.add('print-doc');
     var fim = function () { document.body.classList.remove('print-doc'); area.remove(); window.removeEventListener('afterprint', fim); };
     window.addEventListener('afterprint', fim);
     setTimeout(function () { window.print(); setTimeout(fim, 1500); }, 60);
@@ -1819,6 +1882,8 @@ var U = (function (L) {
       var box = document.createElement('div');
       box.innerHTML = html;
       var doc = box.firstElementChild; doc.classList.add('pdf');
+      box.style.cssText = 'position:fixed;left:0;top:0;width:' + (Math.max.apply(null, [0].concat(Array.prototype.map.call(doc.querySelectorAll('table'), function (t) { return t.rows[0] ? t.rows[0].cells.length : 0; }))) >= 8 ? 1047 : 718) + 'px;left:-20000px;background:#fff';
+      document.body.appendChild(box); U.ajustarColunas(doc); box.remove(); box.style.cssText = '';
       var cols = Math.max.apply(null, [0].concat(Array.prototype.map.call(doc.querySelectorAll('table'), function (t) { return t.rows[0] ? t.rows[0].cells.length : 0; })));
       return window.html2pdf().set({
         margin: [10, 9, 12, 9], filename: nome + '.pdf', image: { type: 'jpeg', quality: 0.96 },
@@ -1829,6 +1894,24 @@ var U = (function (L) {
     }).then(function () { U.toast('PDF gerado: ' + nome + '.pdf', 'ok'); }, function () {
       U.toast('Não foi possível gerar o PDF direto (sem acesso à internet?). Abrindo a impressão: escolha "Salvar como PDF".', 'erro');
       U.imprimirDoc(html);
+    });
+  };
+
+  /* Leitura de planilhas Excel/CSV (SheetJS, carregado só quando necessário) */
+  U.lerPlanilha = function (arquivo) {
+    var pronto = window.XLSX ? Promise.resolve() : U.carregarScript(['https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', 'https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js']);
+    return pronto.then(function () {
+      return new Promise(function (res, rej) {
+        var rd = new FileReader();
+        rd.onload = function () {
+          try {
+            var wb = window.XLSX.read(new Uint8Array(rd.result), { type: 'array' });
+            res(window.XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '', raw: false }));
+          } catch (e) { rej(new Error('Não foi possível ler a planilha. Use um arquivo .xlsx, .xls ou .csv.')); }
+        };
+        rd.onerror = function () { rej(new Error('Falha ao ler o arquivo.')); };
+        rd.readAsArrayBuffer(arquivo);
+      });
     });
   };
 
@@ -2163,6 +2246,7 @@ var T = (function (L) {
       var anos = Object.keys(U.groupBy(D.demandas, function (d) { return d.dataSolicitacao.slice(0, 4); })).sort().reverse();
       var sel = function (k, l, arr) { return '<label class="f">' + l + '<select class="in" data-f="' + k + '">' + U.opts(arr, f[k] || '', 'Todos') + '</select></label>'; };
       var cols = [['id', 'Nº'], ['titulo', 'Demanda'], ['modalidade', 'Modalidade'], ['situacao', 'Situação'], ['prazo', 'Prazo'], ['fimPrevisto', 'Término previsto'], ['valorEstimado', 'Valor estimado']];
+      var podeExcluir = App.P.excluir;
       var th = cols.map(function (c) { return '<th' + (c[0] === 'valorEstimado' ? ' class="right"' : '') + ' aria-sort="' + (st.sort.k === c[0] ? (st.sort.dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button data-sort="' + c[0] + '">' + c[1] + (st.sort.k === c[0] ? (st.sort.dir > 0 ? ' ▲' : ' ▼') : '') + '</button></th>'; }).join('');
       var rows = lista.map(function (d) {
         return '<tr class="click" data-open="' + d.id + '" tabindex="0"><td class="id">' + U.esc(d.id) + '</td>' +
@@ -2170,7 +2254,7 @@ var T = (function (L) {
           '<td><span class="tag mod">' + U.esc(d.modalidade) + '</span></td>' +
           '<td>' + T.sit(d) + '<div style="margin-top:4px">' + T.marks(d) + '</div></td>' +
           '<td>' + T.prazoTag(d) + '</td><td class="nowrap">' + U.fmt(d.fimPrevisto) + '<div class="sub">' + U.esc(L.prazoTexto(d.prazoQtd, d.prazoUnidade)) + '</div></td>' +
-          '<td class="right nowrap">' + U.brl(d.valorEstimado) + '</td></tr>';
+          '<td class="right nowrap">' + U.brl(d.valorEstimado) + '</td>' + (podeExcluir ? '<td class="right"><button class="btn sm ghost danger" data-excluir="' + d.id + '" title="Excluir demanda (exige senha)" aria-label="Excluir ' + d.id + '">' + U.icon.x + '</button></td>' : '') + '</tr>';
       }).join('');
       el.innerHTML = '<section class="panel"><div class="filters">' +
         '<label class="f grow">Buscar<input class="in" data-f="q" type="search" placeholder="Título, nº, local, OS, atendimento" value="' + U.esc(f.q || '') + '"></label>' +
@@ -2180,10 +2264,11 @@ var T = (function (L) {
         sel('sistema', 'Sistema', L.SISTEMAS) + sel('criticidade', 'Criticidade', L.CRITICIDADES) + sel('ano', 'Ano', anos) + '</div>' +
         '<div class="count"><span>' + lista.length + ' demanda(s) · ' + U.brl(U.sum(lista, function (d) { return d.valorEstimado; })) + ' estimados</span><span class="row">' +
         '<button class="btn sm ghost" data-act="limpar">Limpar filtros</button><button class="btn sm" data-act="xls">' + U.icon.down + 'Excel</button><button class="btn sm" data-act="csv">' + U.icon.down + 'CSV</button></span></div>' +
-        '<div class="table-wrap"><table class="t"><thead><tr>' + th + '</tr></thead><tbody>' + (rows || '<tr><td colspan="7"><div class="empty"><b>Nenhuma demanda encontrada</b>Ajuste os filtros' + (App.P.criar ? ' ou registre uma nova demanda' : '') + '.</div></td></tr>') + '</tbody></table></div></section>';
+        '<div class="table-wrap"><table class="t"><thead><tr>' + th + (podeExcluir ? '<th></th>' : '') + '</tr></thead><tbody>' + (rows || '<tr><td colspan="8"><div class="empty"><b>Nenhuma demanda encontrada</b>Ajuste os filtros' + (App.P.criar ? ' ou registre uma nova demanda' : '') + '.</div></td></tr>') + '</tbody></table></div></section>';
       el.oninput = function (e) { if (e.target.dataset.f === 'q') { st.filtros.q = e.target.value; clearTimeout(T._t); T._t = setTimeout(function () { App.render(); var i = U.$('[data-f="q"]'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 250); } };
       el.onchange = function (e) { var t = e.target; if (t.dataset.f && t.dataset.f !== 'q') { st.filtros[t.dataset.f] = t.value; App.render(); } };
       el.onclick = function (e) {
+        var ex = e.target.closest('[data-excluir]'); if (ex) { e.stopPropagation(); T.excluir(T.dem(ex.dataset.excluir)); return; }
         var s = e.target.closest('[data-sort]'); if (s) { st.sort = { k: s.dataset.sort, dir: st.sort.k === s.dataset.sort ? -st.sort.dir : 1 }; App.render(); return; }
         var a = e.target.closest('[data-act]'); if (!a) return;
         var t = T.linhasDemandas(lista);
@@ -2396,11 +2481,17 @@ var T = (function (L) {
       body: '<label class="f"><span class="req">Motivo do cancelamento</span><textarea class="in" id="mc" rows="3"></textarea></label>',
       onOk: function (w) { var m = w.querySelector('#mc').value.trim(); if (!m) { w.erro('Informe o motivo.'); return false; } var n = copia(d); n.cancelada = true; n.motivoCancelamento = m; return T.salvar(n, d).then(function (r) { return !!r; }); } });
     if (a === 'reativar') { var n3 = copia(d); n3.cancelada = false; n3.motivoCancelamento = ''; T.salvar(n3, d).catch(UI.erro); }
-    if (a === 'excluir') UI.confirmar('Excluir demanda', 'A demanda ' + U.esc(d.id) + ' será removida da planilha. Prefira "Cancelar demanda" para manter o registro. Deseja continuar?', 'Sim, excluir', true)
-      .then(function (ok) { return ok ? UI.pedirSenha('Confirme a exclusão', 'Informe o motivo e a sua senha.', true) : null; })
-      .then(function (au) { if (au) Api.chamar('excluirDemanda', { id: d.id, senha: au.senha, motivo: au.motivo }).then(function () { T.fechar(); U.toast('Demanda excluída.'); }, UI.erro); });
+    if (a === 'excluir') T.excluir(d);
     if (a === 'imprimir') G.fichaPdf(d.id);
   }
+  T.excluir = function (d) {
+    var nfs = nfsDe(d.id);
+    UI.confirmar('Excluir demanda', 'Deseja realmente excluir a demanda <b>' + U.esc(d.id) + '</b> (' + U.esc(d.titulo) + ')?' +
+      (nfs.length ? '<br><br>Ela tem <b>' + nfs.length + ' Nota(s) Fiscal(is)</b> (' + U.brl(U.sum(nfs, function (n) { return n.valor; })) + '), que também serão excluídas e voltarão ao saldo dos empenhos.' : '') +
+      '<br><br>A exclusão fica registrada no histórico.', 'Sim, excluir', true)
+      .then(function (ok) { return ok ? UI.pedirSenha('Confirme a exclusão com a sua senha', 'Informe o motivo e a sua senha de gestor.', true) : null; })
+      .then(function (au) { if (au) Api.chamar('excluirDemanda', { id: d.id, senha: au.senha, motivo: au.motivo }).then(function (r) { T.fechar(); U.toast('Demanda ' + d.id + ' excluída' + (r.notasExcluidas ? ' com ' + r.notasExcluidas + ' nota(s) fiscal(is)' : '') + '.', 'ok'); }, UI.erro); });
+  };
   function mudancaDetalhe(ev) {
     var t = ev.target; if (!t.dataset.etapa) return;
     var d = dem(aberta), e = L.ETAPAS.filter(function (x) { return x.id === t.dataset.etapa; })[0];
@@ -2919,7 +3010,7 @@ var G = (function (L) {
   function baixarHTML(nome) {
     var css = '';
     Array.prototype.forEach.call(document.styleSheets, function (sh) { try { Array.prototype.forEach.call(sh.cssRules, function (r) { css += r.cssText + '\n'; }); } catch (err) { /* folha externa */ } });
-    U.download('relatorio-' + nome + '_' + L.hoje() + '.html', '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Relatório</title><style>' + css + ' html,body{background:#fff;overflow-x:hidden} body{padding:16px;max-width:1120px;margin:0 auto} @page{size:A4;margin:12mm}</style></head><body data-theme="light">' + U.$('#relatorio').outerHTML + '</body></html>', 'text/html;charset=utf-8');
+    U.download('relatorio-' + nome + '_' + L.hoje() + '.html', '<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Relatório</title><style>' + css + ' html,body{background:#fff;overflow-x:hidden} body{padding:16px;max-width:1120px;margin:0 auto} @page{size:A4;margin:12mm}</style></head><body data-theme="light">' + (function () { var box = document.createElement('div'); box.style.cssText = 'position:fixed;left:-20000px;top:0;width:1100px'; box.innerHTML = U.$('#relatorio').outerHTML; document.body.appendChild(box); U.ajustarColunas(box); var h = box.innerHTML; box.remove(); return h; })() + '</body></html>', 'text/html;charset=utf-8');
   }
 
   /* =====================================================================
@@ -2970,16 +3061,19 @@ var G = (function (L) {
       (auth ? '<span class="tag atencao">Alteração liberada com senha</span>' : algumTravado ? 'valores definidos: alterar exige a senha do gestor' : 'defina os valores e salve') + '</span></div><div class="panel-b"><div class="fgrid c3">' +
       (fin.origemGlobal === 'lotes' ? '<label class="f">Valor global da vigência<input class="in" value="' + e(U.brl(fin.somaLotes)) + '" readonly><span class="calc">Soma automática dos ' + D.lotes.length + ' lote(s). Para alterar, edite o valor dos lotes.</span></label>'
         : '<label class="f">Valor global da vigência' + U.inputMoeda('valorGlobal', c.valorGlobal, ro(travaG)) + '<span class="calc">Ao informar valor nos lotes, o valor global passa a ser a soma deles.</span></label>') +
-      '<label class="f">Alerta do valor global executado (%)<input class="in" name="alertaGlobalPct" type="number" min="1" max="100" step="1" placeholder="70" value="' + e(c.alertaGlobalPct) + '"' + ro(travaA) + '><span class="calc">Alerta quando as notas fiscais atingirem este percentual do valor global (e de cada lote). Padrão: 70%.</span></label>' +
-      '<label class="f">Alerta do empenho executado (%)<input class="in" name="alertaEmpenhoPct" type="number" min="1" max="100" step="1" placeholder="70" value="' + e(c.alertaEmpenhoPct) + '"' + ro(travaE) + '><span class="calc">Alerta quando as notas fiscais atingirem este percentual de cada empenho (com reforços). Padrão: 70%.</span></label></div>' +
+      '<label class="f">Alerta do valor global executado (%)<input class="in" name="alertaGlobalPct" type="number" min="1" max="100" step="1" placeholder="70" value="' + e(c.alertaGlobalPct) + '"' + ro(travaA) + '><span class="calc">Padrão fixo de 70%: alerta quando as notas fiscais atingirem este percentual do valor global e de cada lote.</span></label>' +
+      '<label class="f">Alerta do empenho executado (%)<input class="in" name="alertaEmpenhoPct" type="number" min="1" max="100" step="1" placeholder="70" value="' + e(c.alertaEmpenhoPct) + '"' + ro(travaE) + '><span class="calc">Padrão fixo de 70%: alerta quando as notas fiscais atingirem este percentual de cada empenho (com reforços).</span></label></div>' +
       '<div class="row" style="margin-top:14px"><button class="btn primary" type="submit"' + (travaG && travaA && travaE && fin.origemGlobal !== 'lotes' ? ' disabled' : (travaA && travaE && fin.origemGlobal === 'lotes' ? ' disabled' : '')) + '>Salvar</button>' +
-      (algumTravado && !auth ? '<button class="btn" type="button" data-act="liberarGlobal">' + U.icon.edit + 'Alterar (exige senha do gestor)</button>' : '') +
+      (algumTravado && !auth ? '<button class="btn" type="button" data-act="liberarGlobal">' + U.icon.edit + 'Alterar valores (exige confirmação e senha)</button>' : '') +
       (auth ? '<button class="btn ghost" type="button" data-act="travarGlobal">Cancelar alteração</button>' : '') + '</div></div></section></form>';
     return '<div class="stack">' + painelGlobal + '<form id="fcfg" class="stack" novalidate>' +
       T.painel('Processos, contrato e vigência', '', '<div class="fgrid c3">' + inp('contratoGestao', 'Processo de gestão') + inp('contratoExecucao', 'Processo de execução') + inp('numeroContrato', 'Número do contrato') +
         inp('ataNumero', 'Número da ata') + inp('ataAno', 'Ano da ata', 'text', ' inputmode="numeric" maxlength="4" placeholder="AAAA"') + inp('contratada', 'Contratada') +
         inp('vigenciaInicio', 'Início da vigência', 'date') + inp('vigenciaFim', 'Fim da vigência', 'date') + inp('orgao', 'Nome do órgão nos relatórios') + '</div>') +
-      T.painel('Listas de apoio', '', '<label class="f">Setores e unidades<span class="calc">Uma sigla por linha. Usada em unidade demandante, local e setores atendidos.</span><textarea class="in" name="setores" rows="10">' + e(c.setores.join('\n')) + '</textarea></label>') +
+      T.painel('Listas de apoio', c.setores.length + ' setores e unidades', '<div class="row" style="margin-bottom:10px"><button class="btn" type="button" data-act="setorManual">' + U.icon.plus + 'Inserir setor ou unidade</button>' +
+        '<label class="btn" style="cursor:pointer">' + U.icon.up + 'Importar Excel<input type="file" accept=".xlsx,.xls,.csv" data-act="setorExcel" class="sr-only"></label>' +
+        '<span class="calc">A planilha pode ter a coluna "Sigla" ou as siglas na primeira coluna.</span></div>' +
+        '<label class="f">Setores e unidades<span class="calc">Uma sigla por linha. Usada em unidade demandante, local e setores atendidos. Edite aqui e clique em Salvar configurações, ou use os botões acima, que já salvam.</span><textarea class="in" name="setores" rows="10">' + e(c.setores.join('\n')) + '</textarea></label>') +
       T.painel('Google Looker Studio', '', '<label class="f">Endereço do relatório salvo no Looker Studio<span class="calc">Opcional. Depois de salvar o relatório criado pelo botão do Dashboard, cole aqui o endereço para abri-lo direto.</span><input class="in" name="lookerRelatorio" value="' + e(c.lookerRelatorio || '') + '" placeholder="https://lookerstudio.google.com/reporting/..."></label>') +
       (c.emailsBackup !== undefined ? T.painel('Backup automático mensal', 'último: ' + e(c.ultimoBackup || 'ainda não enviado'), '<div class="fgrid"><label class="f full">E-mails que recebem o backup<span class="calc">Separe por vírgula</span><input class="in" name="emailsBackup" value="' + e(c.emailsBackup) + '"></label>' +
         '<label class="check full"><input type="checkbox" name="backupAutomatico"' + (c.backupAutomatico ? ' checked' : '') + '><span>Enviar automaticamente no 1º dia útil de cada mês (Excel, JSON e CSV)</span></label></div>') : '') +
@@ -3011,29 +3105,79 @@ var G = (function (L) {
 
   /* Google Looker Studio: link com a base em tempo real (somente leitura) */
   function abrirLooker() {
-    var corpo = function (info) {
-      var base = 'https://lookerstudio.google.com/reporting/create?';
-      var q = ['r.reportName=' + encodeURIComponent('Manutenção Predial IEMA - SUBAD'), 'c.mode=edit'];
-      [['ds0', info.demandas, 'Demandas'], ['ds1', info.notas, 'Notas Fiscais'], ['ds2', info.saldos, 'Saldos']].forEach(function (x) {
-        q.push('ds.' + x[0] + '.connector=googleSheets', 'ds.' + x[0] + '.spreadsheetId=' + encodeURIComponent(info.spreadsheetId), 'ds.' + x[0] + '.worksheetId=' + encodeURIComponent(x[1]),
-          'ds.' + x[0] + '.hasHeader=true', 'ds.' + x[0] + '.datasourceName=' + encodeURIComponent('Manutenção Predial - ' + x[2]));
-      });
-      return base + q.join('&');
+    /* Sem relatório-modelo, o Looker Studio aceita uma única fonte de dados, sem alias (ds.connector=…) */
+    var linkDe = function (info, gid, nome) {
+      return 'https://lookerstudio.google.com/reporting/create?' + [
+        'r.reportName=' + encodeURIComponent('Manutenção Predial IEMA - SUBAD (' + nome + ')'),
+        'ds.connector=googleSheets', 'ds.spreadsheetId=' + encodeURIComponent(info.spreadsheetId), 'ds.worksheetId=' + encodeURIComponent(gid),
+        'ds.datasourceName=' + encodeURIComponent('Manutenção Predial - ' + nome)].join('&');
     };
     Api.chamar('looker').then(function (r) {
-      var link = corpo(r.looker), salvo = r.relatorio;
+      var info = r.looker, salvo = r.relatorio;
+      var links = [['Demandas', info.demandas], ['Notas Fiscais', info.notas], ['Saldos', info.saldos]].map(function (x) { return { nome: x[0], url: linkDe(info, x[1], x[0]) }; });
       var w = UI.modal({
         title: 'Google Looker Studio', size: 'md',
-        body: '<p>O Looker Studio lê as abas <b>Looker - Demandas</b>, <b>Looker - Notas Fiscais</b> e <b>Looker - Saldos</b> da planilha, que o sistema atualiza a cada gravação. Os filtros que você usar no Looker (período, lote, modalidade, situação, unidade, local, sistema, empenho) servem só para consulta e apresentação: não alteram nada no sistema nem nesta tela.</p>' +
-          '<label class="f" style="margin-top:14px">Link para criar o relatório<textarea class="in" rows="4" readonly id="lk-link">' + e(link) + '</textarea></label>' +
-          '<p class="calc" style="margin-top:8px">Na primeira vez: abra o link, adicione os controles de filtro e os gráficos desejados, clique em <b>Editar e compartilhar</b> para salvar e cole o endereço do relatório salvo em Configurações. Depois disso, o botão abre direto o relatório salvo, sempre com os dados atuais da planilha.</p>',
-        footer: '<button class="btn" data-close>Fechar</button><button class="btn" id="lk-copiar">Copiar link</button>' + (salvo ? '<a class="btn" href="' + e(salvo) + '" target="_blank" rel="noopener">Abrir relatório salvo</a>' : '') + '<a class="btn primary" href="' + e(link) + '" target="_blank" rel="noopener">Criar relatório no Looker Studio</a>'
+        body: '<p>O Looker Studio lê as abas <b>Looker - Demandas</b>, <b>Looker - Notas Fiscais</b> e <b>Looker - Saldos</b> da planilha, que o sistema refaz a cada gravação. Os filtros usados no Looker (período, lote, modalidade, situação, unidade, local, sistema, empenho) servem só para consulta e apresentação: não alteram o sistema nem esta tela.</p>' +
+          '<div class="stack" style="gap:8px;margin-top:14px">' + links.map(function (l, i) { return '<div class="row" style="justify-content:space-between;border:1px solid var(--line);border-radius:8px;padding:10px 12px"><span><b>' + e(l.nome) + '</b><div class="calc">Cria um relatório com a aba "Looker - ' + e(l.nome) + '"</div></span><span class="row"><button class="btn sm" data-copiar="' + i + '">Copiar link</button><a class="btn sm primary" href="' + e(l.url) + '" target="_blank" rel="noopener">Criar relatório</a></span></div>'; }).join('') + '</div>' +
+          '<p class="calc" style="margin-top:12px">Comece por <b>Demandas</b>. Para usar as outras abas no mesmo relatório, no Looker clique em <b>Adicionar dados &gt; Google Planilhas</b>, escolha esta planilha e a aba desejada. Depois, clique em <b>Editar e compartilhar</b> para salvar e cole o endereço do relatório salvo em Configurações: o botão passa a abri-lo direto.</p>',
+        footer: '<button class="btn" data-close>Fechar</button>' + (salvo ? '<a class="btn primary" href="' + e(salvo) + '" target="_blank" rel="noopener">Abrir relatório salvo</a>' : '')
       });
-      w.querySelector('#lk-copiar').onclick = function () {
-        var t = w.querySelector('#lk-link'); t.select();
-        (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function () { U.toast('Link copiado.', 'ok'); }, function () { document.execCommand('copy'); U.toast('Link copiado.', 'ok'); });
-      };
+      U.$$('[data-copiar]', w).forEach(function (b) {
+        b.onclick = function () {
+          var link = links[+b.dataset.copiar].url;
+          (navigator.clipboard ? navigator.clipboard.writeText(link) : Promise.reject()).then(function () { U.toast('Link copiado.', 'ok'); }, function () { window.prompt('Copie o link:', link); });
+        };
+      });
     }, UI.erro);
+  }
+  G.linkLooker = abrirLooker;
+
+  /* Listas de apoio: inserção manual e importação de Excel */
+  function salvarSetores(lista, msg) {
+    var unicos = [];
+    lista.forEach(function (x) { x = String(x || '').trim().toUpperCase(); if (x && unicos.indexOf(x) < 0) unicos.push(x); });
+    unicos.sort(function (a, b) { return a.localeCompare(b, 'pt-BR'); });
+    return Api.chamar('salvarConfig', { config: { setores: unicos } }).then(function (r) { U.toast(r.semAlteracao ? 'A lista já estava atualizada.' : msg + ' A lista tem ' + unicos.length + ' setores e unidades.', 'ok'); return true; });
+  }
+  function inserirSetor() {
+    UI.modal({
+      title: 'Inserir setor ou unidade', size: 'sm', ok: 'Inserir',
+      body: '<label class="f"><span class="req">Sigla</span><input class="in" id="nova-sigla" autocomplete="off" placeholder="Ex.: SUBAD"><span class="calc">Para inserir várias de uma vez, separe por vírgula.</span></label>',
+      onOk: function (w) {
+        var novas = w.querySelector('#nova-sigla').value.split(/[,;\n]/).map(function (x) { return x.trim().toUpperCase(); }).filter(Boolean);
+        if (!novas.length) { w.erro('Informe a sigla.'); return false; }
+        var atuais = App.D.config.setores, ja = novas.filter(function (x) { return atuais.indexOf(x) >= 0; });
+        if (ja.length === novas.length) { w.erro('Já está na lista: ' + ja.join(', ') + '.'); return false; }
+        return salvarSetores(atuais.concat(novas), (novas.length - ja.length) + ' inserido(s).');
+      }
+    });
+  }
+  function importarSetores(arquivo) {
+    U.toast('Lendo a planilha…');
+    U.lerPlanilha(arquivo).then(function (linhas) {
+      linhas = linhas.filter(function (l) { return l.some(function (c) { return String(c).trim(); }); });
+      if (!linhas.length) throw new Error('A planilha está vazia.');
+      var col = 0, ini = 0;
+      for (var r = 0; r < Math.min(5, linhas.length) && !ini; r++) {
+        var ix = linhas[r].map(function (c) { return U.norm(c).trim(); }).findIndex(function (c) { return c === 'sigla' || c === 'siglas' || c === 'setor' || c === 'setores' || c === 'unidade'; });
+        if (ix >= 0) { col = ix; ini = r + 1; }
+      }
+      var siglas = [];
+      linhas.slice(ini).forEach(function (l) { var v = String(l[col] || '').trim().toUpperCase(); if (v && siglas.indexOf(v) < 0) siglas.push(v); });
+      if (!siglas.length) throw new Error('Nenhuma sigla encontrada na planilha.');
+      var atuais = App.D.config.setores, novas = siglas.filter(function (x) { return atuais.indexOf(x) < 0; }), sairiam = atuais.filter(function (x) { return siglas.indexOf(x) < 0; });
+      UI.modal({
+        title: 'Importar setores e unidades', size: 'md', ok: 'Atualizar lista',
+        body: '<p><b>' + siglas.length + '</b> sigla(s) encontrada(s) em "' + e(arquivo.name) + '": <b>' + novas.length + '</b> nova(s) e ' + (siglas.length - novas.length) + ' já cadastrada(s).</p>' +
+          '<div class="stack" style="gap:8px;margin-top:12px"><label class="check"><input type="radio" name="modo" value="substituir" checked><span>Substituir a lista atual pela planilha' + (sairiam.length ? ' (sairão ' + sairiam.length + ': ' + e(sairiam.slice(0, 12).join(', ')) + (sairiam.length > 12 ? '…' : '') + ')' : '') + '</span></label>' +
+          '<label class="check"><input type="radio" name="modo" value="acrescentar"><span>Acrescentar as novas siglas à lista atual</span></label></div>' +
+          '<p class="calc" style="margin-top:10px">Demandas já registradas mantêm as siglas que tinham.</p>',
+        onOk: function (w) {
+          var modo = w.querySelector('[name=modo]:checked').value;
+          return salvarSetores(modo === 'substituir' ? siglas : atuais.concat(novas), 'Lista importada.');
+        }
+      });
+    }).catch(function (err) { U.toast(err && err.message ? err.message : 'Não foi possível importar a planilha.', 'erro'); });
   }
 
   function formEmpenho(emp) {
@@ -3149,6 +3293,7 @@ var G = (function (L) {
         if (t.dataset.g) { st[t.dataset.g] = t.value; refazer(); }
         if (t.dataset.r) { st[t.dataset.r] = t.value; refazer(); }
         if (t.dataset.h) { st[t.dataset.h] = t.value; refazer(); }
+        if (t.dataset.act === 'setorExcel' && t.files[0]) { importarSetores(t.files[0]); t.value = ''; return; }
         if (t.dataset.act === 'bimp' && t.files[0]) {
           var rd = new FileReader();
           rd.onload = function () {
@@ -3189,6 +3334,7 @@ var G = (function (L) {
         }
         if (a === 'liberarGlobal') UI.autorizar('Alterar o valor global da vigência ou os percentuais de alerta exige a senha do gestor.').then(function (au) { if (au) { st.cfgAuth = au; refazer(); } });
         if (a === 'travarGlobal') { st.cfgAuth = null; refazer(); }
+        if (a === 'setorManual') inserirSetor();
         if (a === 'novoLote') T.formLote(null);
         if (a === 'novoEmp') formEmpenho(null);
         if (a === 'novoUser') formUsuario(null);
