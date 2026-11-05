@@ -64,14 +64,21 @@ window.IEMA_CONFIG = {
 4. Em **Settings > Pages**, escolha **Deploy from a branch**, depois **main** e **/ (root)**, e clique em **Save**.
 5. Em 1 a 3 minutos, o endereço do site aparece no topo da página de Pages.
 
+### Já instalou a versão anterior? Atualize assim
+1. No editor do Apps Script, apague o código antigo, cole o novo `Codigo.gs` e salve.
+2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações e troca a lista antiga de setores pelas siglas.
+3. Vá em **Implantar > Gerenciar implantações**, clique no lápis, escolha **Versão: Nova versão** e **Implantar**. O endereço `/exec` continua o mesmo.
+4. Envie o novo `index.html` ao GitHub, substituindo o anterior. O `config.js` não muda.
+
 ### 7. Primeiro acesso
 1. Abra o site e entre com o login `master` e a senha provisória definida no passo 2.
 2. O sistema pede uma senha pessoal. Defina-a.
 3. Em **Área do Gestor > Configurações**, cadastre:
-   - contrato de gestão, contrato de execução, contratada e vigência;
+   - processo de gestão, processo de execução, número do contrato, número e ano da ata, contratada e vigência;
    - os **lotes**, com número, descrição e valor (o valor global da vigência passa a ser a soma deles);
    - os **empenhos**, novos e reforços;
-   - setores, locais e os e-mails que recebem o backup.
+   - o valor global da vigência (se não usar valores nos lotes) e os percentuais de alerta de execução;
+   - os setores e unidades (já vêm as siglas do IEMA) e os e-mails que recebem o backup.
 4. Em **Área do Gestor > Usuários e perfis**, crie os usuários de cada pessoa.
 
 ---
@@ -80,8 +87,11 @@ window.IEMA_CONFIG = {
 
 ### Registro de demandas
 - Toda demanda é obrigatoriamente vinculada a um **lote**. Quem tem permissão financeira pode criar um lote novo direto do formulário.
-- O **prazo estimado** é informado em **semanas, quinzenas ou meses**, e o término previsto é calculado automaticamente.
-- Há campos para o nº do processo, o **nº da Ordem de Serviço** e o **nº do Atendimento (Help Desk)**.
+- O **prazo estimado** é informado em **dias, semanas ou meses**, e o término previsto é calculado automaticamente.
+- Em demandas **programadas**, o **valor estimado é obrigatório**; o formulário avisa enquanto ele não for preenchido.
+- Unidade demandante, local e setores atendidos usam a lista de **siglas dos setores e unidades** (com filtro para localizar a sigla).
+- Há campos para o **nº da Ordem de Serviço** e o **nº do Atendimento (Help Desk)**.
+- Valores em reais são digitados só com números: os pontos, a vírgula e o "R$" aparecem automaticamente.
 
 ### Andamento por marcação
 - O gestor marca cada etapa na própria demanda: **Demanda inicial**, **Aprovação**, **Execução**, **Ateste** e **Pagamento**.
@@ -94,7 +104,10 @@ window.IEMA_CONFIG = {
 - Depois do ateste, registra-se a **Nota Fiscal**: número, valor do serviço, data e empenho.
 - O valor da nota é deduzido automaticamente do **empenho** (somado aos seus reforços), do **lote** e do **valor global da vigência**.
 - O sistema não aceita uma nota maior que o saldo do empenho.
-- Quando o saldo do valor global, de um lote ou de um empenho fica **abaixo de 30%**, aparece um alerta no painel, no dashboard, na aba Financeiro e nos relatórios financeiros. O percentual pode ser ajustado em Configurações.
+- Há dois alertas de execução, exibidos no painel, no dashboard, na aba Financeiro e nos relatórios financeiros:
+  - **valor global** (e cada lote) executado em **70% ou mais**;
+  - **empenho** (somado aos reforços) executado em **70% ou mais**.
+- Os percentuais e o valor global da vigência ficam em Configurações, com o botão **Salvar**. Depois de gravados, só mudam pelo botão **Alterar**, que pede a senha do gestor e o motivo.
 
 ### Histórico
 Toda inserção e alteração fica registrada na aba **Histórico** da planilha e na Área do Gestor, com:
@@ -116,10 +129,22 @@ Os perfis já criados são:
 | **Contratada (consulta)** | Somente leitura das demandas e do cronograma |
 | **Somente leitura** | Consulta, incluindo dashboards e relatórios |
 
+### Segurança da sessão
+Após **10 minutos sem uso** do mouse ou do teclado, o sistema avisa e, um minuto depois, encerra a sessão, exigindo login e senha novamente.
+
 ### Dashboards e relatórios
 - Filtros por período: hoje, últimos 7, 30 ou 90 dias, este mês, mês anterior, um mês específico, trimestres, ano, vigência ou datas livres.
 - Comparação com o período anterior, com o mesmo período do ano anterior ou com qualquer mês.
-- São 11 relatórios, entre gerenciais, financeiros e de controle. Saem em **PDF** (Imprimir > Salvar como PDF), **HTML**, **Excel** e **CSV**.
+- São 11 relatórios, entre gerenciais, financeiros e de controle. Saem em **PDF** (download direto, ajustado à página A4; tabelas largas saem em paisagem), **HTML**, **Excel** e **CSV**, além da impressão.
+- No detalhe de cada demanda, o botão **Ficha (PDF)** baixa a ficha completa da demanda.
+- O PDF direto usa uma biblioteca carregada da internet na primeira vez. Sem internet, o sistema abre a impressão para salvar como PDF.
+
+### Google Looker Studio
+- A planilha mantém três abas só para o Looker Studio: **Looker - Demandas**, **Looker - Notas Fiscais** e **Looker - Saldos**. Elas são refeitas a cada gravação do sistema e têm as mesmas informações usadas nos filtros do gestor (período, mês, ano, lote, modalidade, situação, prazo, unidade, local, sistema, empenho e alertas).
+- Na Área do Gestor, aba **Dashboard**, o botão **Abrir no Google Looker Studio** gera o link que cria o relatório já conectado a essas abas.
+- Na primeira vez: abra o link, inclua os controles de filtro e os gráficos, clique em **Editar e compartilhar** para salvar e cole o endereço do relatório salvo em **Configurações > Google Looker Studio**. Depois, o mesmo botão abre o relatório salvo.
+- Os filtros usados no Looker Studio servem apenas para consulta e apresentação: não alteram o sistema nem a tela do gestor.
+- O Looker Studio atualiza os dados conforme a frequência configurada na fonte de dados; para ver na hora, use **Atualizar dados** no próprio Looker.
 
 ### Backup: duas formas
 1. **Automático:** no 1º dia útil de cada mês (dias úteis desconsideram fins de semana e feriados), a planilha envia para os e-mails configurados a planilha completa em Excel (.xlsx), a base em JSON e as tabelas em CSV.

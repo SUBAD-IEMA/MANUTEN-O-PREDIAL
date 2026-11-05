@@ -122,6 +122,7 @@ var Repo = {
       var k = String(r[0]); if (!k || !(k in cfg)) return;
       var t = Logica.CONFIG_TIPOS[k], v = r[1];
       if (t === 'num') v = Number(v) || 0;
+      else if (t === 'numOpc') v = v === '' || v == null ? '' : Number(v) || 0;
       else if (t === 'bool') v = v === true || v === 'TRUE' || v === 'Sim';
       else if (t === 'lista') v = String(v).split(/\n|;/).map(function (x) { return x.trim(); }).filter(String);
       else v = lerCelula_(v, 'data') === v ? String(v) : lerCelula_(v, 'data');
@@ -154,14 +155,73 @@ var Repo = {
     lock.waitLock(30000);
     try { cache_ = {}; return fn(); } finally { SpreadsheetApp.flush(); lock.releaseLock(); }
   },
-  enviarBackup: function (origem) { return enviarBackup_(origem); }
+  enviarBackup: function (origem) { return enviarBackup_(origem); },
+  aposGravar: function () { atualizarLooker_(); },
+  looker: function () {
+    atualizarLooker_();
+    var ss = planilha_(), id = function (n) { var sh = ss.getSheetByName(n); return sh ? String(sh.getSheetId()) : ''; };
+    return { spreadsheetId: ss.getId(), demandas: id(LOOKER_ABAS.demandas), notas: id(LOOKER_ABAS.notas), saldos: id(LOOKER_ABAS.saldos), nome: ss.getName() };
+  }
 };
+
+/* ---------------------------------------------------------------------
+   Base para o Google Looker Studio (somente leitura, refeita a cada gravação)
+   --------------------------------------------------------------------- */
+var LOOKER_ABAS = { demandas: 'Looker - Demandas', notas: 'Looker - Notas Fiscais', saldos: 'Looker - Saldos' };
+function dataLk_(s) { if (!s) return ''; var p = String(s).slice(0, 10).split('-'); return new Date(+p[0], +p[1] - 1, +p[2], 12); }
+function escreverAba_(nome, cab, linhas, formatos) {
+  var ss = planilha_(), sh = ss.getSheetByName(nome) || ss.insertSheet(nome);
+  sh.clearContents();
+  var rows = [cab].concat(linhas);
+  sh.getRange(1, 1, rows.length, cab.length).setValues(rows);
+  sh.getRange(1, 1, 1, cab.length).setFontWeight('bold').setBackground('#0B4F4A').setFontColor('#FFFFFF');
+  if (linhas.length && formatos) formatos.forEach(function (f, i) { if (f) sh.getRange(2, i + 1, linhas.length, 1).setNumberFormat(f); });
+  sh.setFrozenRows(1);
+}
+function atualizarLooker_() {
+  var dados = { config: Repo.config(), lotes: Repo.listar('Lotes'), empenhos: Repo.listar('Empenhos'), demandas: Repo.listar('Demandas'), nfs: Repo.listar('NotasFiscais') };
+  var fin = Logica.financeiro(dados), hoje = Logica.hoje();
+  var lote = {}; dados.lotes.forEach(function (l) { lote[l.id] = l; });
+  var emp = {}; dados.empenhos.forEach(function (e) { emp[e.id] = e; });
+  var dem = {}; dados.demandas.forEach(function (d) { dem[d.id] = d; });
+  var D = 'dd/mm/yyyy', M = '"R$" #,##0.00';
+  escreverAba_(LOOKER_ABAS.demandas,
+    ['Nº', 'Título', 'Modalidade', 'Lote', 'Descrição do lote', 'Situação', 'Prazo', 'Em atraso', 'Dias de atraso', 'Unidade demandante', 'Setores atendidos', 'Local',
+      'Sistema afetado', 'Criticidade', 'Data da solicitação', 'Mês da solicitação', 'Ano da solicitação', 'Início previsto', 'Término previsto',
+      'Execução: início', 'Execução: término', 'Ateste: data', 'Pagamento: data', 'Valor estimado', 'Valor atestado', 'Valor das notas fiscais',
+      'Nº da Ordem de Serviço', 'Nº do Atendimento (Help Desk)', 'Registrado por', 'Atualizado em'],
+    dados.demandas.map(function (d) {
+      var l = lote[d.loteId] || {}, pz = Logica.prazo(d, hoje);
+      return [d.id, d.titulo, d.modalidade, l.numero ? 'Lote ' + l.numero : '', l.descricao || '', Logica.situacao(d).nome, pz.nome, pz.k === 'atrasada' ? 'Sim' : 'Não',
+        pz.k === 'atrasada' || pz.k === 'concluida-atraso' ? pz.dias : 0, d.unidade, d.setores.join(', '), d.local, d.sistema, d.criticidade,
+        dataLk_(d.dataSolicitacao), String(d.dataSolicitacao).slice(0, 7), String(d.dataSolicitacao).slice(0, 4), dataLk_(d.inicioPrevisto), dataLk_(d.fimPrevisto),
+        dataLk_(d.execucaoInicio), d.execucaoOk ? dataLk_(d.execucaoFim) : '', d.atesteOk ? dataLk_(d.atesteData) : '', d.pagamentoOk ? dataLk_(d.pagamentoData) : '',
+        d.valorEstimado, d.atesteOk ? d.atesteValor : 0, fin.nfPorDemanda[d.id] || 0, d.osNumero, d.atendimentoNumero, d.criadoPor, d.atualizadoEm];
+    }), [0, 0, 0, 0, 0, 0, 0, 0, '0', 0, 0, 0, 0, 0, D, '@', '@', D, D, D, D, D, D, M, M, M, '@', '@', 0, 0]);
+  escreverAba_(LOOKER_ABAS.notas,
+    ['Data de emissão', 'Mês', 'Ano', 'Nº da Nota Fiscal', 'Valor do serviço', 'Demanda', 'Título', 'Modalidade', 'Lote', 'Unidade demandante', 'Local',
+      'Empenho', 'Tipo do empenho', 'Empenho principal'],
+    dados.nfs.map(function (n) {
+      var d = dem[n.demandaId] || {}, l = lote[d.loteId] || {}, e = emp[n.empenhoId] || {}, pr = e.tipo === 'Reforço' ? (emp[e.vinculadoA] || {}) : e;
+      return [dataLk_(n.data), String(n.data).slice(0, 7), String(n.data).slice(0, 4), n.numero, n.valor, n.demandaId, d.titulo || '', d.modalidade || '',
+        l.numero ? 'Lote ' + l.numero : '', d.unidade || '', d.local || '', e.numero || '', e.tipo || '', pr.numero || ''];
+    }), [D, '@', '@', '@', M, 0, 0, 0, 0, 0, 0, '@', 0, '@']);
+  var linha = function (tipo, nome, o) { return [tipo, nome, o.total, o.usado, o.saldo, Math.round(o.pctUsado * 10) / 10, o.limite, o.alerta ? 'Sim' : 'Não', Repo.agora()]; };
+  escreverAba_(LOOKER_ABAS.saldos, ['Tipo', 'Nome', 'Valor total', 'Executado (notas fiscais)', 'Saldo', '% executado', 'Limite de alerta (%)', 'Em alerta', 'Atualizado em'],
+    [linha('Valor global', 'Valor global da vigência', fin.global)]
+      .concat(fin.lotes.map(function (x) { return linha('Lote', 'Lote ' + x.lote.numero + ' - ' + x.lote.descricao, x); }))
+      .concat(fin.empenhos.map(function (x) { return linha('Empenho', x.empenho.numero + (x.membros.length > 1 ? ' (com reforços)' : ''), x); })),
+    [0, 0, M, M, M, '0.0', '0', 0, 0]);
+}
 var DESCR_CONFIG_ = {
-  orgao: 'Nome exibido no sistema e nos relatórios', contratoGestao: 'Contrato de gestão', contratoExecucao: 'Contrato de execução',
-  contratada: 'Empresa contratada', vigenciaInicio: 'Início da vigência (AAAA-MM-DD)', vigenciaFim: 'Fim da vigência (AAAA-MM-DD)',
-  valorGlobal: 'Valor global da vigência (usado apenas se os lotes não tiverem valor)', alertaPct: 'Alerta quando o saldo ficar abaixo deste percentual',
-  setores: 'Setores (um por linha)', locais: 'Imóveis e Unidades de Conservação (um por linha)', emailsBackup: 'E-mails que recebem o backup mensal (separados por vírgula)',
-  backupAutomatico: 'TRUE para enviar o backup no 1º dia útil do mês', ultimoBackup: 'Preenchido automaticamente'
+  orgao: 'Nome exibido no sistema e nos relatórios', contratoGestao: 'Processo de gestão', contratoExecucao: 'Processo de execução',
+  numeroContrato: 'Número do contrato', ataNumero: 'Número da ata', ataAno: 'Ano da ata (AAAA)', contratada: 'Empresa contratada',
+  vigenciaInicio: 'Início da vigência (AAAA-MM-DD)', vigenciaFim: 'Fim da vigência (AAAA-MM-DD)',
+  valorGlobal: 'Valor global da vigência (usado apenas se os lotes não tiverem valor). Alterar exige senha no sistema.',
+  alertaGlobalPct: 'Alerta quando o valor global executado atingir este percentual (vazio = 70). Alterar exige senha no sistema.',
+  alertaEmpenhoPct: 'Alerta quando o empenho executado atingir este percentual (vazio = 70). Alterar exige senha no sistema.',
+  setores: 'Setores e unidades (um por linha)', locais: 'Não utilizado nesta versão', emailsBackup: 'E-mails que recebem o backup mensal (separados por vírgula)',
+  backupAutomatico: 'TRUE para enviar o backup no 1º dia útil do mês', lookerRelatorio: 'Endereço do relatório salvo no Looker Studio', ultimoBackup: 'Preenchido automaticamente'
 };
 
 function formatarLinhas_(sh, tabela, linha, qtd) {
@@ -208,7 +268,13 @@ function instalar() {
     if (t === 'Usuarios') { var ix = atual.indexOf('Hash da senha'); if (ix >= 0) sh.hideColumns(ix + 1); ix = atual.indexOf('Salt'); if (ix >= 0) sh.hideColumns(ix + 1); }
   });
   if (!ss.getSheetByName(ABA_CONFIG)) Repo.salvarConfig(Logica.CONFIG_PADRAO);
-  else Repo.salvarConfig(Repo.config());
+  else {
+    var cfg = Repo.config();
+    // Atualização da versão anterior: troca a lista antiga de setores pelas siglas e remove a lista de imóveis
+    if (!cfg.setores.length || cfg.setores[0] === 'Diretoria-Geral') cfg.setores = Logica.CONFIG_PADRAO.setores.slice();
+    cfg.locais = [];
+    Repo.salvarConfig(cfg);
+  }
   var perfis = Repo.listar('Perfis');
   Logica.PERFIS_PADRAO.forEach(function (p) { if (!perfis.some(function (x) { return x.nome === p.nome; })) Repo.salvar('Perfis', Logica.normalizar('Perfis', p)); });
   if (!Repo.listar('Usuarios').some(function (u) { return u.perfil === 'Gestor Master'; })) {
@@ -218,6 +284,7 @@ function instalar() {
   var p1 = ss.getSheetByName('Sheet1') || ss.getSheetByName('Página1');
   if (p1 && p1.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(p1);
   instalarGatilho_();
+  atualizarLooker_();
   Repo.marcarVersao();
   Repo.historico([{ em: Repo.agora(), usuario: 'sistema', perfil: '', acao: 'Estrutura instalada ou atualizada', demandaId: '', campo: '', anterior: '', novo: '', motivo: '' }]);
   return 'Instalação concluída. Usuário: master · senha provisória: ' + SENHA_INICIAL_MASTER;
@@ -377,25 +444,32 @@ var Logica = (function () {
 
   L.CONFIG_PADRAO = {
     orgao: 'Instituto Estadual de Meio Ambiente (IEMA) - SUBAD',
-    contratoGestao: '', contratoExecucao: '', contratada: '', vigenciaInicio: '', vigenciaFim: '',
-    valorGlobal: 0, alertaPct: 30,
-    setores: ['Diretoria-Geral', 'Diretoria Administrativa e Financeira', 'Diretoria Técnica', 'Gerência de Licenciamento',
-      'Gerência de Unidades de Conservação', 'Gerência de Recursos Hídricos', 'Subgerência de Administração (SUBAD)',
-      'Protocolo e Atendimento', 'Gestão de Pessoas', 'Tecnologia da Informação', 'Laboratório', 'Almoxarifado e Patrimônio'],
-    locais: ['Sede do IEMA (Cariacica)', 'Parque Estadual de Itaúnas', 'Parque Estadual da Pedra Azul', 'Parque Estadual da Fonte Grande',
-      'Parque Estadual Paulo César Vinha', 'Parque Estadual do Forno Grande', 'Parque Estadual Mata das Flores',
-      'Parque Estadual Cachoeira da Fumaça', 'Reserva Biológica de Duas Bocas'],
+    contratoGestao: '', contratoExecucao: '', numeroContrato: '', ataNumero: '', ataAno: '', contratada: '', vigenciaInicio: '', vigenciaFim: '',
+    valorGlobal: 0, alertaGlobalPct: '', alertaEmpenhoPct: '',
+    setores: ['APACB', 'APAGO', 'APAGUA', 'APAPE', 'APAPM', 'APAS', 'ARIEMV', 'ASSCOM', 'ASSJUR', 'CONADM', 'DIAF', 'DILCAM', 'DISPN', 'GEA', 'GEAD',
+      'GECAM', 'GEDOC', 'GEFIN', 'GEIC', 'GEOCIP', 'GEPREVINES', 'GEPRO', 'GEREF', 'GESIM', 'GFAU', 'GFI', 'GGEP', 'GGUC', 'GP', 'GQA', 'GTI',
+      'MONACP', 'MONAFF', 'MONAST', 'PECF', 'PEFG', 'PEI', 'PEMF', 'PEPAZ', 'PEPCV', 'RDSCO', 'REBIODB', 'SUAP', 'SUBAD', 'SUBCON', 'SUBEC',
+      'SUBED', 'SUBEI', 'SUBEUC', 'SUBFAU', 'SUBIO', 'SUBMIN', 'SUBOC', 'SUBOR', 'SUBPOI', 'SUBSAN', 'SUBSID', 'SUCOP', 'SUFAM', 'SUGEO', 'SUPAT'],
+    locais: [],
     emailsBackup: 'cleilson.costa@iema.es.gov.br, subad@iema.es.gov.br',
     backupAutomatico: true,
+    lookerRelatorio: '',
     ultimoBackup: ''
   };
-  L.CONFIG_TIPOS = { valorGlobal: 'num', alertaPct: 'num', setores: 'lista', locais: 'lista', backupAutomatico: 'bool' };
+  L.ALERTA_PADRAO = 70;
+  L.ROTULOS_CONFIG = {
+    contratoGestao: 'Processo de gestão', contratoExecucao: 'Processo de execução', numeroContrato: 'Número do contrato', ataNumero: 'Número da ata',
+    ataAno: 'Ano da ata', contratada: 'Contratada', vigenciaInicio: 'Início da vigência', vigenciaFim: 'Fim da vigência', valorGlobal: 'Valor global da vigência',
+    alertaGlobalPct: 'Alerta de execução do valor global (%)', alertaEmpenhoPct: 'Alerta de execução do empenho (%)', setores: 'Setores e unidades',
+    emailsBackup: 'E-mails do backup', backupAutomatico: 'Backup automático', lookerRelatorio: 'Relatório salvo no Looker Studio', orgao: 'Órgão'
+  };
+  L.CONFIG_TIPOS = { valorGlobal: 'num', alertaGlobalPct: 'numOpc', alertaEmpenhoPct: 'numOpc', setores: 'lista', locais: 'lista', backupAutomatico: 'bool' };
 
   L.GRUPOS = [
     { id: 'identificacao', nome: 'Identificação e problema', campos: ['titulo', 'descricao', 'modalidade', 'unidade', 'solicitante', 'sistema', 'criticidade', 'risco', 'pessoas'] },
     { id: 'local', nome: 'Local, setores e lote', campos: ['local', 'localInterno', 'setores', 'responsavelLocal', 'loteId'] },
-    { id: 'prazo', nome: 'Datas e prazo estimado', campos: ['dataSolicitacao', 'inicioPrevisto', 'prazoQtd', 'prazoUnidade'] },
-    { id: 'contrato', nome: 'Processo, OS, atendimento e valor', campos: ['processo', 'osNumero', 'atendimentoNumero', 'valorEstimado', 'obs'] }
+    { id: 'prazo', nome: 'Datas, prazo estimado e valor estimado', campos: ['dataSolicitacao', 'inicioPrevisto', 'prazoQtd', 'prazoUnidade', 'valorEstimado'] },
+    { id: 'contrato', nome: 'Ordem de Serviço, atendimento e observações', campos: ['osNumero', 'atendimentoNumero', 'obs'] }
   ];
   L.ETAPAS = [
     { id: 'inicial', nome: 'Demanda inicial', campos: ['inicialOk', 'inicialData'], obrig: ['inicialData'] },
@@ -415,7 +489,7 @@ var Logica = (function () {
     'Combate a incêndio', 'Acessibilidade', 'Pavimentação', 'Urbanização'];
   L.CRITICIDADES = ['Baixa', 'Média', 'Alta', 'Crítica'];
   L.MODALIDADES = ['Programado', 'Contínuo'];
-  L.UNIDADES_PRAZO = ['semanas', 'quinzenas', 'meses'];
+  L.UNIDADES_PRAZO = ['dias', 'semanas', 'meses'];
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -451,7 +525,7 @@ var Logica = (function () {
   L.prazoTexto = function (qtd, unidade) {
     qtd = Number(qtd) || 0;
     if (!qtd) return '—';
-    var sing = { semanas: 'semana', quinzenas: 'quinzena', meses: 'mês' };
+    var sing = { dias: 'dia', semanas: 'semana', quinzenas: 'quinzena', meses: 'mês' };
     return qtd + ' ' + (qtd === 1 ? (sing[unidade] || unidade) : unidade);
   };
 
@@ -567,30 +641,31 @@ var Logica = (function () {
     dem.forEach(function (d) { demPorId[d.id] = d; });
     var nfPorDemanda = {};
     nfs.forEach(function (n) { nfPorDemanda[n.demandaId] = (nfPorDemanda[n.demandaId] || 0) + (Number(n.valor) || 0); });
-    var lim = (Number(cfg.alertaPct) || 30) / 100;
-    var item = function (o) { o.saldo = o.total - o.usado; o.pctUsado = o.total ? o.usado / o.total * 100 : 0; o.pctSaldo = o.total ? o.saldo / o.total * 100 : 0; o.alerta = o.total > 0 && o.saldo <= o.total * lim; return o; };
+    var limG = Number(cfg.alertaGlobalPct) > 0 ? Number(cfg.alertaGlobalPct) : L.ALERTA_PADRAO;
+    var limE = Number(cfg.alertaEmpenhoPct) > 0 ? Number(cfg.alertaEmpenhoPct) : L.ALERTA_PADRAO;
+    var item = function (o, lim) { o.saldo = o.total - o.usado; o.pctUsado = o.total ? o.usado / o.total * 100 : 0; o.pctSaldo = o.total ? o.saldo / o.total * 100 : 0; o.limite = lim; o.alerta = o.total > 0 && o.pctUsado >= lim - 1e-9; return o; };
 
     var porLote = lotes.map(function (l) {
       var usado = nfs.reduce(function (a, n) { var d = demPorId[n.demandaId]; return a + (d && d.loteId === l.id ? (Number(n.valor) || 0) : 0); }, 0);
-      return item({ lote: l, total: Number(l.valor) || 0, usado: usado });
+      return item({ lote: l, total: Number(l.valor) || 0, usado: usado }, limG);
     });
     var novos = emp.filter(function (e) { return e.tipo !== 'Reforço' || !emp.some(function (x) { return x.id === e.vinculadoA && x.tipo !== 'Reforço'; }); });
     var familias = novos.map(function (n) {
       var membros = [n].concat(emp.filter(function (e) { return e.tipo === 'Reforço' && e.vinculadoA === n.id && e.id !== n.id; }));
       var ids = membros.map(function (m) { return m.id; });
       var usado = nfs.reduce(function (a, x) { return a + (ids.indexOf(x.empenhoId) >= 0 ? (Number(x.valor) || 0) : 0); }, 0);
-      return item({ empenho: n, membros: membros, ids: ids, total: membros.reduce(function (a, m) { return a + (Number(m.valor) || 0); }, 0), usado: usado });
+      return item({ empenho: n, membros: membros, ids: ids, total: membros.reduce(function (a, m) { return a + (Number(m.valor) || 0); }, 0), usado: usado }, limE);
     });
     var comprometido = dem.reduce(function (a, d) {
       if (d.cancelada || d.pagamentoOk) return a;
       var base = d.atesteOk && d.atesteValor ? d.atesteValor : d.valorEstimado;
       return a + Math.max(0, (Number(base) || 0) - (nfPorDemanda[d.id] || 0));
     }, 0);
-    var g = item({ total: global, usado: nfTotal });
+    var g = item({ total: global, usado: nfTotal }, limG);
     return {
       global: g, origemGlobal: somaLotes > 0 ? 'lotes' : 'manual', somaLotes: somaLotes, lotes: porLote, empenhos: familias,
       totalEmpenhado: emp.reduce(function (a, e) { return a + (Number(e.valor) || 0); }, 0),
-      comprometido: comprometido, saldoProjetado: g.saldo - comprometido, nfPorDemanda: nfPorDemanda, limite: lim * 100,
+      comprometido: comprometido, saldoProjetado: g.saldo - comprometido, nfPorDemanda: nfPorDemanda, limiteGlobal: limG, limiteEmpenho: limE,
       alertas: [g.alerta ? { tipo: 'global', nome: 'Valor global da vigência', item: g } : null]
         .concat(porLote.filter(function (x) { return x.alerta; }).map(function (x) { return { tipo: 'lote', nome: 'Lote ' + x.lote.numero, item: x }; }))
         .concat(familias.filter(function (x) { return x.alerta; }).map(function (x) { return { tipo: 'empenho', nome: 'Empenho ' + x.empenho.numero, item: x }; }))
@@ -666,6 +741,7 @@ var Logica = (function () {
       ['descricao', 'descrição'], ['responsavelLocal', 'responsável local'], ['dataSolicitacao', 'data da solicitação'], ['prazoUnidade', 'unidade do prazo']]
       .forEach(function (x) { if (!d[x[0]]) faltam.push(x[1]); });
     if (!(Number(d.prazoQtd) > 0)) faltam.push('prazo estimado');
+    if (d.modalidade === 'Programado' && !(Number(d.valorEstimado) > 0)) faltam.push('valor estimado (obrigatório para demandas programadas)');
     return faltam;
   };
 
@@ -986,19 +1062,26 @@ var Servico = (function (L) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.configuracoes, 'Seu perfil não permite alterar as configurações.');
     var atual = repo.config(), novo = req.config || {}, registros = [];
-    var permitidas = ['orgao', 'contratoGestao', 'contratoExecucao', 'contratada', 'vigenciaInicio', 'vigenciaFim', 'valorGlobal', 'alertaPct', 'setores', 'locais', 'emailsBackup', 'backupAutomatico'];
+    var permitidas = ['orgao', 'contratoGestao', 'contratoExecucao', 'numeroContrato', 'ataNumero', 'ataAno', 'contratada', 'vigenciaInicio', 'vigenciaFim',
+      'valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct', 'setores', 'emailsBackup', 'backupAutomatico', 'lookerRelatorio'];
     var muda = permitidas.filter(function (k) { return novo[k] !== undefined && L.valorTexto(novo[k]) !== L.valorTexto(atual[k]); });
     if (!muda.length) return { semAlteracao: true, dados: montarDados(repo, ses) };
-    if (muda.indexOf('valorGlobal') >= 0 || muda.indexOf('alertaPct') >= 0) conferirSenha(ses, req.senha);
+    var protegidos = ['valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct'].filter(function (k) { return muda.indexOf(k) >= 0 && atual[k] !== '' && Number(atual[k]) > 0; });
+    if (protegidos.length) {
+      conferirSenha(ses, req.senha);
+      if (!String(req.motivo || '').trim()) falha('VALIDACAO', 'Informe o motivo da alteração.');
+    }
     muda.forEach(function (k) {
       var v = novo[k];
       if (L.CONFIG_TIPOS[k] === 'num') v = Number(v) || 0;
+      if (L.CONFIG_TIPOS[k] === 'numOpc') v = v === '' || v == null ? '' : Number(v) || 0;
       if (L.CONFIG_TIPOS[k] === 'bool') v = v === true || v === 'true';
       if (L.CONFIG_TIPOS[k] === 'lista') v = (Array.isArray(v) ? v : String(v).split(/\n|;/)).map(function (x) { return String(x).trim(); }).filter(function (x) { return x; });
-      registros.push(hist(repo, ses, 'Configuração alterada', '', k, L.valorTexto(atual[k]), L.valorTexto(v), req.motivo));
+      registros.push(hist(repo, ses, 'Configuração alterada', '', L.ROTULOS_CONFIG[k] || k, L.valorTexto(atual[k]), L.valorTexto(v), req.motivo));
       atual[k] = v;
     });
-    if (atual.alertaPct < 1 || atual.alertaPct > 90) falha('VALIDACAO', 'O percentual de alerta deve ficar entre 1 e 90.');
+    ['alertaGlobalPct', 'alertaEmpenhoPct'].forEach(function (k) { if (atual[k] !== '' && (Number(atual[k]) < 1 || Number(atual[k]) > 100)) falha('VALIDACAO', 'O percentual de alerta deve ficar entre 1 e 100.'); });
+    if (String(atual.ataAno || '') && !/^\d{4}$/.test(String(atual.ataAno))) falha('VALIDACAO', 'Informe o ano da ata com quatro dígitos.');
     repo.salvarConfig(atual);
     repo.historico(registros);
     return { dados: montarDados(repo, ses) };
@@ -1093,6 +1176,13 @@ var Servico = (function (L) {
     return { mensagem: 'Backup enviado para ' + r.destinatarios + '.', dados: montarDados(repo, ses) };
   };
 
+  A.looker = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.areaGestor, 'Seu perfil não acessa os dashboards.');
+    if (!repo.looker) falha('INDISPONIVEL', 'O Looker Studio usa a planilha Google: conecte o sistema à planilha para gerar o link.');
+    return { looker: repo.looker(), relatorio: repo.config().lookerRelatorio || '' };
+  };
+
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
@@ -1101,7 +1191,15 @@ var Servico = (function (L) {
     try {
       var fn = A[req && req.acao];
       if (!fn) falha('ACAO', 'Ação desconhecida.');
-      var exec = function () { var r = fn(repo, req); if (GRAVAM[req.acao]) { repo.marcarVersao(); if (r.dados) r.dados.versao = repo.versao(); } return r; };
+      var exec = function () {
+        var r = fn(repo, req);
+        if (GRAVAM[req.acao]) {
+          repo.marcarVersao();
+          if (r.dados) r.dados.versao = repo.versao();
+          if (repo.aposGravar && !r.semAlteracao) { try { repo.aposGravar(); } catch (e) { /* a base do Looker é refeita na próxima gravação */ } }
+        }
+        return r;
+      };
       var r = GRAVAM[req.acao] && repo.travar ? repo.travar(exec) : exec();
       r.ok = true;
       return r;
