@@ -512,6 +512,183 @@ code { font-size: 12.5px; background: var(--surface-2); padding: 1px 5px; border
 .modo-painel .view { max-width: none; }
 ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; }
 
+/* =========================================================================
+   CENTRAL DE ATENDIMENTO (HELP DESK)
+   ========================================================================= */
+.tag.hd-tag { background: #EDE9FE; color: #5B21B6; font-size: 11px; padding: 1px 7px; vertical-align: middle; }
+.link-hd { font-size: 13.5px; font-weight: 600; text-align: center; }
+.modo-hd { background: #F3F6F8; }
+.hd { min-height: 100vh; display: flex; flex-direction: column; color: #14232A; }
+.hd-top { display: flex; justify-content: space-between; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding: 14px clamp(16px, 4vw, 48px); background: #083B37; color: #E6F4F1; }
+.hd-marca { display: flex; align-items: center; gap: 12px; }
+.hd-logo { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #14B8A6, #0E7490); display: grid; place-items: center; color: #fff; flex: none; }
+.hd-logo svg { width: 24px; height: 24px; }
+.hd-nome { font-size: 18px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+.hd-sub { font-size: 12.5px; color: #9CCFC7; }
+.hd-acoes { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.hd-acoes button, .hd-equipe { border: 1px solid rgba(255,255,255,.25); background: transparent; color: #E6F4F1; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 7px; }
+.hd-acoes button:hover, .hd-equipe:hover { background: rgba(255,255,255,.1); }
+.hd-priv svg { width: 15px; height: 15px; }
+.hd-priv[aria-pressed="true"] { background: #FDE68A; color: #713F12; border-color: #FDE68A; }
+.hd-hero { background: linear-gradient(160deg, #0B4F4A 0%, #0E7490 70%, #1D4ED8 130%); color: #fff; padding: 36px clamp(16px, 4vw, 48px) 64px; }
+.hd-hero-in { max-width: 1180px; margin: 0 auto; }
+.hd-hero h1 { font-size: clamp(26px, 3.2vw, 36px); font-weight: 800; letter-spacing: -0.02em; }
+.hd-hero p { max-width: 720px; margin-top: 8px; color: #D7F0EC; font-size: 15.5px; }
+.hd-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+.hd-card { text-align: left; border: 0; border-radius: 16px; padding: 18px; background: #fff; color: #14232A; cursor: pointer; display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 14px; box-shadow: 0 12px 30px -16px rgba(0,0,0,.45); transition: transform .15s; }
+.hd-card:hover { transform: translateY(-2px); }
+.hd-card .ic { grid-row: span 2; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; background: var(--c); color: #fff; }
+.hd-card .ic svg { width: 22px; height: 22px; }
+.hd-card b { font-size: 16px; } .hd-card span:last-child { font-size: 13px; color: #5E7075; }
+.hd-abas { max-width: 1180px; width: calc(100% - 2 * clamp(16px, 4vw, 48px)); margin: -26px auto 0; background: #fff; border-radius: 14px; box-shadow: 0 10px 30px -18px rgba(0,0,0,.35); display: flex; padding: 6px; gap: 6px; position: relative; z-index: 2; }
+.hd-abas button { flex: 1; border: 0; background: transparent; padding: 12px; border-radius: 10px; font-weight: 700; font-size: 15px; color: #5E7075; cursor: pointer; }
+.hd-abas button[aria-selected="true"] { background: #0B4F4A; color: #fff; }
+.hd-main { max-width: 1180px; width: calc(100% - 2 * clamp(16px, 4vw, 48px)); margin: 22px auto 40px; flex: 1; }
+.hd-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+.hd-lado { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 14px; }
+.hd-box { background: #fff; border: 1px solid #DDE5E3; border-radius: 14px; padding: 16px 18px; font-size: 13.5px; }
+.hd-box > b { display: block; font-size: 14.5px; margin-bottom: 8px; }
+.hd-box p { color: #4B5C61; }
+.hd-passos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; counter-reset: p; }
+.hd-passos li { display: flex; align-items: center; gap: 10px; counter-increment: p; }
+.hd-passos li::before { content: counter(p); width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 700; background: #EEF2F1; color: #5E7075; flex: none; }
+.hd-passos li.feita::before { content: "✓"; background: var(--c); color: #fff; }
+.hd-passos a { color: #14232A; text-decoration: none; font-weight: 600; }
+.hd-como, .hd-glos { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; color: #33464C; }
+.hd-sec { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; margin-bottom: 18px; overflow: hidden; box-shadow: 0 1px 2px rgba(20,35,42,.05); scroll-margin-top: 16px; }
+.hd-sec > header { display: flex; align-items: center; gap: 14px; padding: 16px 20px; border-bottom: 1px solid #E6ECEA; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 10%, #fff), #fff 70%); border-top: 4px solid var(--c); }
+.hd-sec .num { width: 34px; height: 34px; border-radius: 10px; background: var(--c); color: #fff; display: grid; place-items: center; font-weight: 800; flex: none; }
+.hd-sec .num svg { width: 18px; height: 18px; }
+.hd-sec h2 { font-size: 17px; } .hd-sec header p { font-size: 13px; color: #5E7075; }
+.hd-sec .ok { margin-left: auto; width: 26px; height: 26px; border-radius: 50%; background: #EEF2F1; color: transparent; display: grid; place-items: center; font-weight: 800; flex: none; }
+.hd-sec.feita .ok { background: var(--c); color: #fff; }
+.hd-sec-b { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 14px; }
+.hd-g2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; }
+.hd-g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px; }
+.hd-f { display: flex; flex-direction: column; gap: 6px; font-size: 13.5px; font-weight: 600; color: #33464C; }
+.hd-f.full { grid-column: 1 / -1; }
+.hd-f small { font-weight: 400; color: #5E7075; font-size: 12px; }
+.hd .in { padding: 10px 12px; border-radius: 10px; font-size: 14.5px; }
+.hd-setores { max-height: 150px; }
+.hd-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; }
+.hd-tile { border: 1.5px solid #DDE5E3; border-radius: 12px; padding: 12px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; color: #33464C; background: #fff; }
+.hd-tile svg { width: 26px; height: 26px; color: #B45309; }
+.hd-tile input { position: absolute; opacity: 0; pointer-events: none; }
+.hd-tile:has(input:checked) { border-color: #B45309; background: #FFF7ED; box-shadow: 0 0 0 3px rgba(180, 83, 9, .15); }
+.hd-tile:has(input:focus-visible) { outline: 2px solid #0EA5A0; }
+.hd-risco { display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; background: #FEF2F2; border: 1px solid #FECACA; color: #7F1D1D; font-size: 14px; cursor: pointer; }
+.hd-risco input { width: 18px; height: 18px; margin-top: 2px; accent-color: #B91C1C; }
+.hd-urg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.hd-u { border: 1.5px solid #DDE5E3; border-radius: 12px; padding: 12px; cursor: pointer; display: flex; flex-direction: column; gap: 2px; font-size: 12.5px; color: #4B5C61; position: relative; }
+.hd-u input { position: absolute; opacity: 0; }
+.hd-u b { font-size: 14.5px; color: #14232A; }
+.hd-u.u0 { --u: #0284C7; } .hd-u.u1 { --u: #CA8A04; } .hd-u.u2 { --u: #EA580C; } .hd-u.u3 { --u: #DC2626; }
+.hd-u::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--u); margin-bottom: 4px; }
+.hd-u:has(input:checked) { border-color: var(--u); box-shadow: 0 0 0 3px color-mix(in srgb, var(--u) 20%, transparent); background: color-mix(in srgb, var(--u) 7%, #fff); }
+.hd-seg { display: flex; } .hd-seg label { flex: 1; } .hd-seg input { position: absolute; opacity: 0; }
+.hd-seg span { display: block; text-align: center; padding: 8px 10px; border-radius: 7px; font-weight: 600; font-size: 13px; color: #5E7075; cursor: pointer; }
+.hd-seg label:has(input:checked) span { background: #fff; color: #14232A; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+.hd-drop { border: 2px dashed #C4B5FD; border-radius: 14px; padding: 26px; display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; cursor: pointer; background: #FAF8FF; color: #4C1D95; }
+.hd-drop svg { width: 36px; height: 36px; color: #6D28D9; }
+.hd-drop span { font-size: 12.5px; color: #6B5B95; }
+.hd-drop.sobre, .hd-drop:hover { background: #F3EEFF; border-color: #6D28D9; }
+.hd-medidor { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #4B5C61; }
+.hd-medidor .track { flex: 1; height: 8px; border-radius: 999px; background: #EDE9FE; overflow: hidden; }
+.hd-medidor i { display: block; height: 100%; width: 0; background: #6D28D9; transition: width .2s; }
+.hd-medidor i.alto { background: #DC2626; }
+.hd-fotos { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+.hd-fotos figure { margin: 0; border: 1px solid #DDE5E3; border-radius: 12px; overflow: hidden; position: relative; background: #fff; }
+.hd-fotos img { width: 100%; height: 96px; object-fit: cover; display: block; }
+.hd-fotos figcaption { padding: 6px 8px; font-size: 11.5px; display: flex; flex-direction: column; }
+.hd-fotos figcaption span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; }
+.hd-fotos figcaption small { color: #5E7075; }
+.hd-fotos figure button { position: absolute; top: 6px; right: 6px; width: 26px; height: 26px; border-radius: 50%; border: 0; background: rgba(0,0,0,.6); color: #fff; display: grid; place-items: center; cursor: pointer; }
+.hd-fotos figure button svg { width: 14px; height: 14px; }
+.hd-resumo dl { display: grid; grid-template-columns: 150px 1fr; gap: 6px 12px; margin: 0; font-size: 13.5px; }
+.hd-resumo dt { color: #5E7075; } .hd-resumo dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.hd-resumo .falta { color: #B45309; font-weight: 500; font-style: italic; }
+.hd-decl { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; cursor: pointer; padding: 12px 14px; border-radius: 12px; background: #F0FDF4; border: 1px solid #BBF7D0; }
+.hd-decl input { width: 18px; height: 18px; margin-top: 2px; accent-color: #15803D; }
+.hd-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.hd-enviar { align-self: flex-end; display: inline-flex; align-items: center; gap: 10px; padding: 14px 26px; border-radius: 12px; border: 0; background: linear-gradient(135deg, #15803D, #0B4F4A); color: #fff; font-size: 16px; font-weight: 800; cursor: pointer; box-shadow: 0 10px 24px -12px rgba(21,128,61,.8); }
+.hd-enviar svg { width: 19px; height: 19px; }
+.hd-enviar[disabled] { opacity: .7; cursor: progress; }
+.hd [aria-invalid="true"] { border-color: #DC2626 !important; box-shadow: 0 0 0 1px #DC2626; }
+.hd-ok { background: #fff; border: 1px solid #DDE5E3; border-radius: 18px; padding: 40px clamp(18px, 4vw, 48px); text-align: center; max-width: 760px; margin: 0 auto; }
+.hd-ok .sel { width: 68px; height: 68px; border-radius: 50%; background: #15803D; color: #fff; font-size: 34px; font-weight: 800; display: grid; place-items: center; margin: 0 auto 14px; }
+.hd-ok h2 { font-size: 26px; } .hd-ok > p { color: #4B5C61; margin-top: 8px; }
+.hd-prot { display: inline-flex; align-items: center; gap: 14px; margin: 20px 0 8px; padding: 14px 20px; border-radius: 14px; background: #ECFDF5; border: 1px solid #A7F3D0; }
+.hd-prot span { font-size: 13px; color: #065F46; } .hd-prot b { font-size: 28px; letter-spacing: .03em; color: #064E3B; }
+.hd-prot button { border: 1px solid #065F46; background: #fff; color: #065F46; border-radius: 8px; padding: 6px 12px; font-weight: 700; cursor: pointer; }
+.hd-aviso { margin: 12px 0; padding: 12px 14px; border-radius: 12px; background: #FEF3C7; color: #713F12; font-size: 14px; }
+.hd-recentes { margin-top: 10px; font-size: 12.5px; color: #5E7075; }
+.hd-recentes > div { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px; }
+.hd-rec { border: 1px solid #DDE5E3; background: #fff; border-radius: 10px; padding: 6px 10px; cursor: pointer; display: flex; flex-direction: column; align-items: flex-start; font-size: 12px; max-width: 220px; }
+.hd-rec span { color: #5E7075; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+.hd-ped { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; overflow: hidden; border-top: 5px solid var(--c); }
+.hd-ped > header { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 18px 20px; border-bottom: 1px solid #E6ECEA; }
+.hd-num { font-size: 13px; font-weight: 800; color: var(--c); letter-spacing: .03em; }
+.hd-ped h2 { font-size: 20px; margin-top: 2px; } .hd-ped header p { font-size: 13.5px; color: #5E7075; }
+.hd-sit { text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.hd-sit span { font-size: 12px; color: #5E7075; } .hd-sit b { font-size: 18px; color: var(--c); } .hd-sit em { font-style: normal; }
+.hd-ped > .hd-aviso { margin: 14px 20px 0; }
+.hd-step { list-style: none; margin: 0; padding: 22px 20px 10px; display: flex; gap: 0; }
+.hd-step li { flex: 1; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; position: relative; font-size: 12.5px; color: #5E7075; }
+.hd-step li::before { content: ""; position: absolute; top: 15px; left: -50%; right: 50%; height: 3px; background: #E1E8E6; z-index: 0; }
+.hd-step li:first-child::before { display: none; }
+.hd-step li.ok::before { background: #15803D; }
+.hd-step .b { width: 32px; height: 32px; border-radius: 50%; background: #EEF2F1; color: #5E7075; display: grid; place-items: center; font-weight: 800; position: relative; z-index: 1; border: 3px solid #fff; }
+.hd-step li.ok .b { background: #15803D; color: #fff; }
+.hd-step li.prox .b { background: #fff; border-color: var(--c); color: var(--c); }
+.hd-step b { color: #14232A; font-size: 12.5px; }
+.hd-info { padding: 10px 20px 4px; }
+.hd-info > div { background: #F6F8F8; border-radius: 10px; padding: 10px 12px; display: flex; flex-direction: column; gap: 2px; }
+.hd-info span { font-size: 12px; color: #5E7075; } .hd-info b { font-size: 14px; overflow-wrap: anywhere; }
+.hd-ped .hd-g2 { padding: 4px 20px 20px; }
+.hd-ped h3 { font-size: 14.5px; margin: 14px 0 8px; }
+.hd-tl { list-style: none; margin: 0; padding: 0; position: relative; max-height: 340px; overflow-y: auto; }
+.hd-tl li { padding: 0 0 12px 22px; position: relative; font-size: 13.5px; display: flex; flex-direction: column; }
+.hd-tl li::before { content: ""; position: absolute; left: 4px; top: 6px; width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.hd-tl li::after { content: ""; position: absolute; left: 8.5px; top: 18px; bottom: 0; width: 1px; background: #DDE5E3; }
+.hd-tl li:last-child::after { display: none; }
+.hd-tl small { color: #5E7075; }
+.hd-thumbs { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.hd-th { aspect-ratio: 1; border-radius: 10px; border: 1px solid #DDE5E3; background: #EEF2F1 center / cover no-repeat; cursor: pointer; position: relative; overflow: hidden; padding: 0; }
+.hd-th span { position: absolute; left: 0; right: 0; bottom: 0; font-size: 10.5px; padding: 3px 5px; background: rgba(0,0,0,.55); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left; }
+.hd-th:not(.carregada)::after { content: "carregando…"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 11px; color: #5E7075; }
+.hd-th.erro::after { content: "indisponível"; }
+.hd-mais { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.hd-rodape { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 16px clamp(16px, 4vw, 48px); font-size: 12.5px; color: #5E7075; border-top: 1px solid #DDE5E3; background: #fff; }
+.hd-fab { position: fixed; right: 20px; bottom: 20px; z-index: 60; display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 13px 18px; background: linear-gradient(135deg, #6D28D9, #1D4ED8); color: #fff; font-weight: 800; font-size: 14.5px; cursor: pointer; box-shadow: 0 14px 30px -12px rgba(76,29,149,.7); }
+.hd-fab svg { width: 20px; height: 20px; }
+.hd-fab.aberto { display: none; }
+.hd-chat { position: fixed; right: 20px; bottom: 20px; z-index: 61; width: min(400px, calc(100vw - 24px)); height: min(600px, calc(100vh - 40px)); background: #fff; border-radius: 18px; box-shadow: 0 30px 70px -20px rgba(0,0,0,.45); display: flex; flex-direction: column; overflow: hidden; border: 1px solid #DDE5E3; }
+.hd-chat > header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: linear-gradient(135deg, #6D28D9, #1D4ED8); color: #fff; }
+.hd-chat > header div { display: flex; flex-direction: column; } .hd-chat > header span { font-size: 12px; color: #DDD6FE; }
+.hd-chat > header button { border: 0; background: rgba(255,255,255,.15); color: #fff; width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; }
+.hd-chat > header button svg { width: 16px; height: 16px; }
+.hd-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; background: #F7F7FB; }
+.hd-msgs .m { max-width: 86%; padding: 10px 12px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+.hd-msgs .m.bot { background: #fff; border: 1px solid #E4E2F3; border-bottom-left-radius: 4px; align-self: flex-start; }
+.hd-msgs .m.eu { background: #4C1D95; color: #fff; border-bottom-right-radius: 4px; align-self: flex-end; }
+.hd-chips { display: flex; gap: 6px; flex-wrap: wrap; padding: 8px 12px; border-top: 1px solid #ECEAF5; max-height: 110px; overflow-y: auto; }
+.hd-chips button { border: 1px solid #C4B5FD; background: #F5F3FF; color: #4C1D95; border-radius: 999px; padding: 5px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+.hd-chat form { display: flex; gap: 8px; padding: 10px 12px; border-top: 1px solid #ECEAF5; }
+.hd-chat form input { flex: 1; border: 1px solid #D4D0EA; border-radius: 10px; padding: 9px 11px; font-size: 14px; }
+.hd-chat form button { border: 0; background: #4C1D95; color: #fff; border-radius: 10px; padding: 0 14px; font-weight: 700; cursor: pointer; }
+@media (max-width: 980px) {
+  .hd-grid { grid-template-columns: 1fr; } .hd-lado { position: static; }
+  .hd-cards { grid-template-columns: 1fr; } .hd-urg { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hd-g3 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .hd-g2, .hd-g3 { grid-template-columns: 1fr; } .hd-resumo dl { grid-template-columns: 1fr; }
+  .hd-step { overflow-x: auto; } .hd-step li { min-width: 86px; }
+  .hd-enviar { width: 100%; justify-content: center; }
+  .hd-fab span { display: none; }
+}
+@media print { .modo-hd .hd, .modo-hd .hd-fab, .modo-hd .hd-chat { display: none !important; } }
+
   </style>
   <script src="config.js"></script>
 </head>
@@ -530,6 +707,7 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
           <a href="#demandas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Demandas</a>
           <a href="#cronograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M8 12h11M6 18h7"/><path d="M3 3v18h18" stroke-linejoin="round"/></svg>Cronograma de obras</a>
           <a href="#setores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 21h16"/></svg>Setores atendidos</a>
+          <a href="?helpdesk" target="_blank" rel="noopener" class="nav-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>Central de Atendimento</a>
           <div class="sep" role="separator"></div>
           <a href="#gestor" id="nav-gestor" class="gestor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Área do Gestor<span id="gestor-badge" class="tag atrasada" style="margin-left:auto;padding:0 8px" hidden title="Saldo próximo do fim"></span></a>
         </nav>
@@ -572,7 +750,8 @@ var Logica = (function () {
   L.TABELAS = {
     Demandas: { chave: 'id', colunas: [
       ['id', 'Nº', 'texto'], ['titulo', 'Título', 'texto'], ['modalidade', 'Modalidade', 'texto'], ['loteId', 'Lote', 'texto'],
-      ['unidade', 'Unidade demandante', 'texto'], ['solicitante', 'Solicitante', 'texto'], ['setores', 'Setores atendidos', 'lista'],
+      ['unidade', 'Unidade demandante', 'texto'], ['solicitante', 'Solicitante', 'texto'], ['solicitanteEmail', 'E-mail do solicitante', 'texto'],
+      ['solicitanteTelefone', 'Telefone do solicitante', 'texto'], ['origem', 'Origem', 'texto'], ['setores', 'Setores atendidos', 'lista'],
       ['local', 'Local', 'texto'], ['localInterno', 'Localização interna', 'texto'], ['sistema', 'Sistema afetado', 'texto'],
       ['criticidade', 'Criticidade', 'texto'], ['risco', 'Risco declarado', 'bool'], ['pessoas', 'Pessoas impactadas', 'int'],
       ['responsavelLocal', 'Responsável local', 'texto'], ['descricao', 'Descrição', 'texto'],
@@ -610,6 +789,10 @@ var Logica = (function () {
       ['configuracoes', 'Altera configurações', 'bool'], ['usuarios', 'Gerencia usuários e perfis', 'bool'], ['excluir', 'Exclui e cancela demandas', 'bool'],
       ['protegido', 'Perfil do sistema', 'bool']
     ] },
+    Anexos: { chave: 'id', colunas: [
+      ['id', 'Código interno', 'texto'], ['demandaId', 'Demanda', 'texto'], ['nome', 'Nome do arquivo', 'texto'], ['tipo', 'Tipo', 'texto'],
+      ['tamanho', 'Tamanho (bytes)', 'int'], ['arquivoId', 'Arquivo no Google Drive', 'texto'], ['enviadoPor', 'Enviado por', 'texto'], ['enviadoEm', 'Enviado em', 'datahora']
+    ] },
     Historico: { chave: null, colunas: [
       ['em', 'Data e hora', 'datahora'], ['usuario', 'Usuário', 'texto'], ['perfil', 'Perfil', 'texto'], ['acao', 'Ação', 'texto'],
       ['demandaId', 'Demanda', 'texto'], ['campo', 'Campo', 'texto'], ['anterior', 'Valor anterior', 'texto'], ['novo', 'Valor novo', 'texto'], ['motivo', 'Motivo', 'texto']
@@ -629,6 +812,8 @@ var Logica = (function () {
     backupAutomatico: true,
     lookerRelatorio: '',
     chavePainel: '',
+    helpdeskAtivo: true,
+    helpdeskContato: 'SUBAD · subad@iema.es.gov.br',
     ultimoBackup: ''
   };
   L.ALERTA_PADRAO = 70;
@@ -636,12 +821,12 @@ var Logica = (function () {
     contratoGestao: 'Processo de gestão', contratoExecucao: 'Processo de execução', numeroContrato: 'Número do contrato', ataNumero: 'Número da ata',
     ataAno: 'Ano da ata', contratada: 'Contratada', vigenciaInicio: 'Início da vigência', vigenciaFim: 'Fim da vigência', valorGlobal: 'Valor global da vigência',
     alertaGlobalPct: 'Alerta de execução do valor global (%)', alertaEmpenhoPct: 'Alerta de execução do empenho (%)', setores: 'Setores e unidades',
-    emailsBackup: 'E-mails do backup', backupAutomatico: 'Backup automático', lookerRelatorio: 'Relatório salvo no Looker Studio', orgao: 'Órgão'
+    emailsBackup: 'E-mails do backup', backupAutomatico: 'Backup automático', helpdeskAtivo: 'Help Desk ativo', helpdeskContato: 'Contato exibido no Help Desk', lookerRelatorio: 'Relatório salvo no Looker Studio', orgao: 'Órgão'
   };
-  L.CONFIG_TIPOS = { valorGlobal: 'num', alertaGlobalPct: 'numOpc', alertaEmpenhoPct: 'numOpc', setores: 'lista', locais: 'lista', backupAutomatico: 'bool' };
+  L.CONFIG_TIPOS = { helpdeskAtivo: 'bool', valorGlobal: 'num', alertaGlobalPct: 'numOpc', alertaEmpenhoPct: 'numOpc', setores: 'lista', locais: 'lista', backupAutomatico: 'bool' };
 
   L.GRUPOS = [
-    { id: 'identificacao', nome: 'Identificação e problema', campos: ['titulo', 'descricao', 'modalidade', 'unidade', 'solicitante', 'sistema', 'criticidade', 'risco', 'pessoas'] },
+    { id: 'identificacao', nome: 'Identificação e problema', campos: ['titulo', 'descricao', 'modalidade', 'unidade', 'solicitante', 'solicitanteEmail', 'solicitanteTelefone', 'sistema', 'criticidade', 'risco', 'pessoas'] },
     { id: 'local', nome: 'Local, setores e lote', campos: ['local', 'localInterno', 'setores', 'responsavelLocal', 'loteId'] },
     { id: 'prazo', nome: 'Datas, prazo estimado e valor estimado', campos: ['dataSolicitacao', 'inicioPrevisto', 'prazoQtd', 'prazoUnidade', 'valorEstimado'] },
     { id: 'contrato', nome: 'Ordem de Serviço, atendimento e observações', campos: ['osNumero', 'atendimentoNumero', 'obs'] }
@@ -665,6 +850,10 @@ var Logica = (function () {
   L.CRITICIDADES = ['Baixa', 'Média', 'Alta', 'Crítica'];
   L.MODALIDADES = ['Programado', 'Contínuo'];
   L.UNIDADES_PRAZO = ['dias', 'semanas', 'meses'];
+  L.LIMITE_ANEXOS = 15 * 1024 * 1024;
+  L.emailValido = function (e) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(e || '').trim()); };
+  /* Nomes das etapas como o solicitante as vê no Help Desk */
+  L.ETAPAS_SOLICITANTE = { inicial: 'Recebida pela equipe', aprovacao: 'Aprovada', execucao: 'Serviço executado', ateste: 'Serviço conferido (ateste)', pagamento: 'Encerrada' };
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -897,6 +1086,7 @@ var Logica = (function () {
     var erros = [];
     var programado = d.modalidade === 'Programado';
     if (!programado && d.aprovacaoOk) erros.push('A etapa de aprovação só se aplica a demandas programadas.');
+    if (d.inicialOk && !d.loteId) erros.push('Vincule a demanda a um lote antes de marcar a demanda inicial.');
     if (d.aprovacaoOk && !d.inicialOk) erros.push('Marque a demanda inicial antes da aprovação.');
     if (d.execucaoOk && !d.inicialOk) erros.push('Marque a demanda inicial antes da execução.');
     if (d.atesteOk && !d.execucaoOk) erros.push('Marque a execução antes do ateste.');
@@ -958,6 +1148,12 @@ var Servico = (function (L) {
   function hist(repo, ses, acao, demandaId, campo, anterior, novo, motivo) {
     return { em: repo.agora(), usuario: ses.login, perfil: ses.perfil.nome, acao: acao, demandaId: demandaId || '', campo: campo || '', anterior: anterior == null ? '' : String(anterior), novo: novo == null ? '' : String(novo), motivo: motivo || '' };
   }
+  function gerarId(todas, d) {
+    var ano = String(d.dataSolicitacao).slice(0, 4);
+    var pre = (d.modalidade === 'Contínuo' ? 'MC' : 'MP') + '-' + ano + '-';
+    var nums = todas.filter(function (x) { return x.id.indexOf(pre) === 0; }).map(function (x) { return parseInt(x.id.slice(pre.length), 10) || 0; });
+    return pre + ('00' + ((nums.length ? Math.max.apply(null, nums) : 0) + 1)).slice(-3);
+  }
   function publico(u) { return { login: u.login, nome: u.nome, email: u.email, perfil: u.perfil, ativo: u.ativo, trocarSenha: u.trocarSenha, criadoEm: u.criadoEm }; }
 
   /* ---------------- Dados visíveis para a sessão ---------------- */
@@ -973,6 +1169,7 @@ var Servico = (function (L) {
     var usuarios = repo.listar('Usuarios');
     var nomes = {};
     usuarios.forEach(function (u) { nomes[u.login] = u.nome; });
+    nomes.helpdesk = 'Solicitante (Help Desk)';
     var historico = repo.listar('Historico');
     if (!p.areaGestor) historico = historico.filter(function (h) { return ids[h.demandaId]; });
     if (historico.length > 4000) historico = historico.slice(historico.length - 4000);
@@ -981,6 +1178,7 @@ var Servico = (function (L) {
     return {
       versao: repo.versao(), config: cfg, lotes: repo.listar('Lotes'), empenhos: verFin ? repo.listar('Empenhos') : [],
       demandas: demandas, nfs: nfs, perfis: repo.listar('Perfis'), nomes: nomes,
+      anexos: repo.listar('Anexos').filter(function (a) { return ids[a.demandaId]; }),
       usuarios: p.usuarios ? usuarios.map(publico) : [], historico: historico.reverse(),
       sessao: { login: ses.login, nome: ses.nome, perfil: p, trocarSenha: ses.usuario.trocarSenha }
     };
@@ -1046,10 +1244,8 @@ var Servico = (function (L) {
       var faltam = L.validarObrigatorios(d);
       if (faltam.length) falha('VALIDACAO', 'Preencha os campos obrigatórios: ' + faltam.join(', ') + '.');
       if (!lotes.some(function (l) { return l.id === d.loteId; })) falha('VALIDACAO', 'Selecione um lote cadastrado. Toda demanda precisa estar vinculada a um lote.');
-      var ano = String(d.dataSolicitacao).slice(0, 4);
-      var pre = (d.modalidade === 'Contínuo' ? 'MC' : 'MP') + '-' + ano + '-';
-      var nums = todas.filter(function (x) { return x.id.indexOf(pre) === 0; }).map(function (x) { return parseInt(x.id.slice(pre.length), 10) || 0; });
-      d.id = pre + ('00' + ((nums.length ? Math.max.apply(null, nums) : 0) + 1)).slice(-3);
+      d.id = gerarId(todas, d);
+      d.origem = 'Sistema';
       d.criadoPor = ses.login;
       d.criadoEm = repo.agora();
       registros.push(hist(repo, ses, 'Demanda registrada', d.id, '', '', d.titulo, ''));
@@ -1242,7 +1438,7 @@ var Servico = (function (L) {
     exigir(ses.perfil.configuracoes, 'Seu perfil não permite alterar as configurações.');
     var atual = repo.config(), novo = req.config || {}, registros = [];
     var permitidas = ['orgao', 'contratoGestao', 'contratoExecucao', 'numeroContrato', 'ataNumero', 'ataAno', 'contratada', 'vigenciaInicio', 'vigenciaFim',
-      'valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct', 'setores', 'emailsBackup', 'backupAutomatico', 'lookerRelatorio'];
+      'valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct', 'setores', 'emailsBackup', 'backupAutomatico', 'lookerRelatorio', 'helpdeskAtivo', 'helpdeskContato'];
     var muda = permitidas.filter(function (k) { return novo[k] !== undefined && L.valorTexto(novo[k]) !== L.valorTexto(atual[k]); });
     if (!muda.length) return { semAlteracao: true, dados: montarDados(repo, ses) };
     var protegidos = ['valorGlobal', 'alertaGlobalPct', 'alertaEmpenhoPct'].filter(function (k) { return muda.indexOf(k) >= 0 && atual[k] !== '' && Number(atual[k]) > 0; });
@@ -1388,6 +1584,135 @@ var Servico = (function (L) {
     } };
   };
 
+  /* =====================================================================
+     HELP DESK (página pública do solicitante)
+     ===================================================================== */
+  function limitar(repo, chave, max, janela) {
+    if (!repo.contador) return;
+    if (repo.contador(chave, janela) > max) falha('LIMITE', 'Muitas tentativas em pouco tempo. Aguarde alguns minutos e tente novamente.');
+  }
+  function demandaDoSolicitante(repo, protocolo, email) {
+    protocolo = String(protocolo || '').trim().toUpperCase(); email = String(email || '').trim().toLowerCase();
+    if (!protocolo || !L.emailValido(email)) falha('VALIDACAO', 'Informe o número do pedido e o e-mail usado na solicitação.');
+    limitar(repo, 'cons_' + email, 40, 600);
+    var d = repo.listar('Demandas').filter(function (x) { return x.id.toUpperCase() === protocolo; })[0];
+    if (!d || String(d.solicitanteEmail || '').trim().toLowerCase() !== email) falha('NAO_ENCONTRADO', 'Não encontramos um pedido com esse número e e-mail. Confira os dados informados.');
+    return d;
+  }
+  function dataEtapa(d, id) { return id === 'execucao' ? (d.execucaoOk ? d.execucaoFim : '') : d[id + 'Data']; }
+  function visaoPublica(repo, d) {
+    var anexos = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
+    var eventos = repo.listar('Historico').filter(function (h) {
+      return h.demandaId === d.id && /^(Demanda registrada|Etapa marcada|Etapa desmarcada|Situação alterada|Mensagem do solicitante|Anexo enviado|Demanda alterada)/.test(h.acao) &&
+        (h.acao.indexOf('Demanda alterada') < 0 || h.campo === 'Execução: início');
+    }).map(function (h) {
+      var t = h.acao;
+      if (h.acao.indexOf('Etapa marcada') === 0) { var et = L.ETAPAS.filter(function (e) { return h.acao.indexOf(e.nome) >= 0; })[0]; t = et ? L.ETAPAS_SOLICITANTE[et.id] : h.acao; }
+      else if (h.acao.indexOf('Etapa desmarcada') === 0) t = 'Etapa reaberta pela equipe';
+      else if (h.acao.indexOf('Demanda alterada') === 0) t = 'Execução iniciada';
+      else if (h.acao.indexOf('Mensagem do solicitante') === 0) t = 'Sua observação: ' + h.novo;
+      else if (h.acao.indexOf('Demanda registrada') === 0) t = 'Solicitação registrada';
+      return { em: h.em, texto: t };
+    });
+    return {
+      id: d.id, titulo: d.titulo, modalidade: d.modalidade, unidade: d.unidade, local: d.local, localInterno: d.localInterno, sistema: d.sistema,
+      criticidade: d.criticidade, risco: d.risco, descricao: d.descricao, solicitante: d.solicitante, dataSolicitacao: d.dataSolicitacao,
+      prazoQtd: d.prazoQtd, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicioPrevisto, fimPrevisto: d.fimPrevisto, execucaoInicio: d.execucaoInicio,
+      osNumero: d.osNumero, atendimentoNumero: d.atendimentoNumero, cancelada: d.cancelada, motivoCancelamento: d.motivoCancelamento,
+      situacao: L.situacao(d), prazo: L.prazo(d),
+      etapas: L.ETAPAS.filter(function (e) { return !e.soProgramado || d.modalidade === 'Programado'; }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
+      anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tamanho: a.tamanho, enviadoEm: a.enviadoEm }; }),
+      eventos: eventos
+    };
+  }
+  A.helpdeskConfig = function (repo) {
+    var c = repo.config();
+    return { config: { ativo: c.helpdeskAtivo !== false, setores: c.setores, contato: c.helpdeskContato, orgao: c.orgao, sistemas: L.SISTEMAS, limite: L.LIMITE_ANEXOS } };
+  };
+  A.helpdeskRegistrar = function (repo, req) {
+    var c = repo.config();
+    if (c.helpdeskAtivo === false) falha('INDISPONIVEL', 'O Help Desk está temporariamente desativado. Procure a SUBAD.');
+    var e = req.demanda || {};
+    if (req.armadilha) falha('VALIDACAO', 'Solicitação recusada.');
+    var email = String(e.solicitanteEmail || '').trim().toLowerCase();
+    if (!L.emailValido(email)) falha('VALIDACAO', 'Informe um e-mail válido: ele será usado para acompanhar o pedido.');
+    limitar(repo, 'reg_' + email, 8, 3600);
+    limitar(repo, 'reg_global', 120, 3600);
+    var d = L.normalizar('Demandas', {});
+    ['titulo', 'descricao', 'modalidade', 'unidade', 'solicitante', 'solicitanteTelefone', 'local', 'localInterno', 'setores', 'responsavelLocal', 'sistema',
+      'criticidade', 'risco', 'pessoas', 'prazoQtd', 'prazoUnidade'].forEach(function (k) { if (e[k] !== undefined) d[k] = e[k]; });
+    d = L.normalizar('Demandas', d);
+    d.solicitanteEmail = email;
+    if (L.MODALIDADES.indexOf(d.modalidade) < 0) d.modalidade = 'Contínuo';
+    if (L.CRITICIDADES.indexOf(d.criticidade) < 0) d.criticidade = 'Média';
+    if (!d.responsavelLocal) d.responsavelLocal = d.solicitante;
+    if (!d.setores.length && d.unidade) d.setores = [d.unidade];
+    d.dataSolicitacao = L.hoje(); d.inicioPrevisto = d.dataSolicitacao;
+    if (L.UNIDADES_PRAZO.indexOf(d.prazoUnidade) < 0) d.prazoUnidade = 'semanas';
+    if (!(d.prazoQtd > 0)) d.prazoQtd = 1;
+    d.fimPrevisto = L.fimPrevisto(d.inicioPrevisto, d.prazoQtd, d.prazoUnidade);
+    var faltam = [];
+    [['solicitante', 'seu nome'], ['unidade', 'unidade'], ['local', 'local'], ['sistema', 'tipo de problema'], ['titulo', 'assunto'], ['descricao', 'descrição']].forEach(function (x) { if (!d[x[0]]) faltam.push(x[1]); });
+    if (faltam.length) falha('VALIDACAO', 'Preencha: ' + faltam.join(', ') + '.');
+    if (d.descricao.length > 4000 || d.titulo.length > 160) falha('VALIDACAO', 'O texto informado é longo demais.');
+    var todas = repo.listar('Demandas');
+    d.id = gerarId(todas, d);
+    d.origem = 'Help Desk'; d.criadoPor = 'helpdesk'; d.criadoEm = repo.agora(); d.atualizadoPor = 'helpdesk'; d.atualizadoEm = d.criadoEm;
+    repo.salvar('Demandas', d);
+    repo.historico([{ em: repo.agora(), usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'Demanda registrada pelo Help Desk', demandaId: d.id, campo: '', anterior: '', novo: d.titulo + ' · ' + d.solicitante + ' <' + email + '>', motivo: '' }]);
+    if (repo.emailSolicitante) {
+      try {
+        repo.emailSolicitante(email, 'Solicitação ' + d.id + ' registrada - Manutenção Predial IEMA',
+          '<p>Olá, ' + d.solicitante + '.</p><p>Sua solicitação foi registrada com o número <b>' + d.id + '</b>.</p><p><b>Assunto:</b> ' + d.titulo + '<br><b>Local:</b> ' + d.local + (d.localInterno ? ' (' + d.localInterno + ')' : '') +
+          '</p><p>Para acompanhar, abra a Central de Atendimento, escolha "Acompanhar solicitação" e informe o número do pedido e este e-mail.</p><p>' + (c.helpdeskContato || '') + '</p>');
+      } catch (er) { /* o registro vale mesmo sem o e-mail */ }
+    }
+    return { id: d.id, pedido: visaoPublica(repo, d) };
+  };
+  A.helpdeskConsultar = function (repo, req) {
+    var d = demandaDoSolicitante(repo, req.protocolo, req.email);
+    return { pedido: visaoPublica(repo, d), versao: repo.versao() };
+  };
+  A.helpdeskAnexo = function (repo, req) {
+    var d = demandaDoSolicitante(repo, req.protocolo, req.email);
+    if (d.cancelada || d.pagamentoOk) falha('VALIDACAO', 'Este pedido já foi encerrado e não recebe novos anexos.');
+    var tipo = String(req.tipo || ''), b64 = String(req.base64 || '');
+    if (!/^image\/(jpeg|png|webp|gif|heic|heif|bmp)$/i.test(tipo)) falha('VALIDACAO', 'Envie apenas imagens (JPG, PNG, WEBP, GIF ou HEIC).');
+    var tamanho = Math.floor(b64.length * 3 / 4);
+    var atuais = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
+    if (atuais.reduce(function (s, a) { return s + (a.tamanho || 0); }, 0) + tamanho > L.LIMITE_ANEXOS) falha('LIMITE', 'O total de imagens deste pedido passaria de 15 MB.');
+    if (atuais.length >= 30) falha('LIMITE', 'Este pedido já tem o número máximo de imagens.');
+    var nome = String(req.nome || 'imagem').replace(/[\\/:*?"<>|]+/g, '_').slice(0, 120);
+    var arq = repo.salvarArquivo(d.id, nome, tipo, b64);
+    var a = L.normalizar('Anexos', { id: 'ANX' + repo.uuid().slice(0, 10).toUpperCase(), demandaId: d.id, nome: nome, tipo: tipo, tamanho: tamanho, arquivoId: arq.arquivoId, enviadoPor: req.origem === 'gestor' ? 'gestor' : 'helpdesk', enviadoEm: repo.agora() });
+    repo.salvar('Anexos', a);
+    repo.historico([{ em: repo.agora(), usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'Anexo enviado pelo solicitante', demandaId: d.id, campo: nome, anterior: '', novo: Math.round(tamanho / 1024) + ' KB', motivo: '' }]);
+    return { anexo: { id: a.id, nome: a.nome, tamanho: a.tamanho } };
+  };
+  A.helpdeskMensagem = function (repo, req) {
+    var d = demandaDoSolicitante(repo, req.protocolo, req.email);
+    var texto = String(req.texto || '').trim().slice(0, 1000);
+    if (!texto) falha('VALIDACAO', 'Escreva a observação.');
+    limitar(repo, 'msg_' + d.id, 20, 3600);
+    repo.historico([{ em: repo.agora(), usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'Mensagem do solicitante (Help Desk)', demandaId: d.id, campo: d.solicitante, anterior: '', novo: texto, motivo: '' }]);
+    return { pedido: visaoPublica(repo, d) };
+  };
+  A.anexoConteudo = function (repo, req) {
+    var a = repo.listar('Anexos').filter(function (x) { return x.id === req.id; })[0];
+    if (!a) falha('VALIDACAO', 'Anexo não encontrado.');
+    if (req.token) {
+      var ses = sessao(repo, req.token);
+      var d = repo.listar('Demandas').filter(function (x) { return x.id === a.demandaId; })[0];
+      exigir(d && (ses.perfil.verTodas || d.criadoPor === ses.login), 'Você não tem acesso a este anexo.');
+    } else {
+      var d2 = demandaDoSolicitante(repo, req.protocolo, req.email);
+      if (d2.id !== a.demandaId) falha('PERMISSAO', 'Anexo de outro pedido.');
+    }
+    var arq = repo.lerArquivo(a.arquivoId);
+    if (!arq) falha('VALIDACAO', 'O arquivo não está mais disponível.');
+    return { nome: a.nome, tipo: a.tipo || arq.tipo, base64: arq.base64 };
+  };
+
   A.looker = function (repo, req) {
     var ses = sessao(repo, req.token);
     exigir(ses.perfil.areaGestor, 'Seu perfil não acessa os dashboards.');
@@ -1398,7 +1723,7 @@ var Servico = (function (L) {
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
-  var GRAVAM = { gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
+  var GRAVAM = { helpdeskRegistrar: 1, helpdeskAnexo: 1, helpdeskMensagem: 1, gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
   S.executar = function (repo, req) {
     try {
       var fn = A[req && req.acao];
@@ -1429,14 +1754,14 @@ var Servico = (function (L) {
    ========================================================================= */
 var RepoLocal = (function (L) {
   'use strict';
-  var KEY = 'iema-manutencao-v4-demo';
-  var db = null, memoria = false;
+  var KEY = 'iema-manutencao-v7-demo';
+  var db = null, memoria = false, cont = {}, ultimoTexto = null;
 
   function carregar() {
     try { var t = localStorage.getItem(KEY); if (t) return JSON.parse(t); } catch (e) { memoria = true; }
     return null;
   }
-  function gravar() { if (memoria) return; try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) { memoria = true; } }
+  function gravar() { if (memoria) return; try { ultimoTexto = JSON.stringify(db); localStorage.setItem(KEY, ultimoTexto); } catch (e) { memoria = true; } }
   function copia(x) { return JSON.parse(JSON.stringify(x)); }
   function agora() { var d = new Date(); return L.iso(d) + 'T' + L.pad(d.getHours()) + ':' + L.pad(d.getMinutes()) + ':' + L.pad(d.getSeconds()); }
   function uuid() { return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) { var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }); }
@@ -1461,7 +1786,19 @@ var RepoLocal = (function (L) {
     versao: function () { return db.versao || '0'; },
     marcarVersao: function () { db.versao = String(Date.now()); gravar(); },
     reiniciar: function () { db = semente(); gravar(); },
-    temporario: function () { return memoria; }
+    salvarArquivo: function (demandaId, nome, tipo, base64) {
+      var id = 'ARQ' + uuid().slice(0, 12);
+      db.Arquivos = db.Arquivos || {};
+      db.Arquivos[id] = { tipo: tipo, base64: base64 };
+      var antes = memoria; gravar();
+      if (!antes && memoria) { delete db.Arquivos[id]; memoria = false; throw new Error('Sem espaço no navegador para a imagem (modo demonstração).'); }
+      return { arquivoId: id };
+    },
+    lerArquivo: function (id) { return (db.Arquivos || {})[id] || null; },
+    contador: function (chave, janela) { var k = chave, agora = Date.now(); cont[k] = (cont[k] || []).filter(function (t) { return agora - t < janela * 1000; }); cont[k].push(agora); return cont[k].length; },
+    temporario: function () { return memoria; },
+    /* Relê o navegador para refletir gravações feitas em outra aba (modo demonstração) */
+    recarregar: function () { if (memoria) return; try { var t = localStorage.getItem(KEY); if (t && t !== ultimoTexto) { db = JSON.parse(t); ultimoTexto = t; } } catch (e) { /* mantém */ } }
   };
 
   /* ---------------- Dados fictícios de demonstração ---------------- */
@@ -1554,6 +1891,8 @@ var RepoLocal = (function (L) {
       d.fimPrevisto = L.fimPrevisto(d.inicioPrevisto, d.prazoQtd, d.prazoUnidade);
       var t = ini, quem = rnd() < 0.35 ? ['solicitante', 'Solicitante'] : ['gestor', 'Gestor'];
       d.criadoPor = quem[0]; d.criadoEm = ini + 'T09:10:00';
+      d.origem = quem[0] === 'solicitante' && rnd() < 0.6 ? 'Help Desk' : 'Sistema';
+      if (d.origem === 'Help Desk') { d.criadoPor = 'helpdesk'; d.solicitanteEmail = 'ana.ribeiro@iema.es.gov.br'; d.solicitante = 'Ana Paula Ribeiro'; d.solicitanteTelefone = '(27) 3636-2500'; }
       h(ini, quem[0], quem[1], 'Demanda registrada', null, '', d.titulo);
       var marcar = function (et, data) { d[et + 'Ok'] = true; d[et + 'Por'] = 'gestor'; h(data, 'gestor', 'Gestor', 'Etapa marcada: ' + L.ETAPAS.filter(function (x) { return x.id === et; })[0].nome, null, L.ROTULOS[et + 'Ok'], 'Sim'); };
       if (ate >= 1) { t = L.addDias(t, dur.inicial); d.inicialData = t; marcar('inicial', t); }
@@ -1614,7 +1953,7 @@ var RepoLocal = (function (L) {
     hist = [];
     demandas.forEach(function (d) {
       var reg = function (data, u, p, acao, campo, novo) { hist.push(L.normalizar('Historico', { em: data + 'T' + L.pad(9 + (hist.length % 8)) + ':' + L.pad((hist.length * 7) % 60) + ':00', usuario: u, perfil: p, acao: acao, demandaId: d.id, campo: campo, anterior: '', novo: novo, motivo: '' })); };
-      reg(d.dataSolicitacao, d.criadoPor, d.criadoPor === 'gestor' ? 'Gestor' : 'Solicitante', 'Demanda registrada', '', d.titulo);
+      reg(d.dataSolicitacao, d.criadoPor, d.criadoPor === 'gestor' ? 'Gestor' : d.criadoPor === 'helpdesk' ? 'Solicitante (Help Desk)' : 'Solicitante', d.criadoPor === 'helpdesk' ? 'Demanda registrada pelo Help Desk' : 'Demanda registrada', '', d.titulo);
       L.ETAPAS.forEach(function (e) {
         var dt = d[e.id === 'execucao' ? 'execucaoFim' : e.id + 'Data'];
         if (e.id === 'execucao' && d.execucaoInicio) reg(d.execucaoInicio, 'gestor', 'Gestor', 'Demanda alterada', 'Execução: início', L.parse(d.execucaoInicio).toLocaleDateString('pt-BR'));
@@ -2003,7 +2342,7 @@ var Api = (function () {
       ? fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(req), redirect: 'follow' })
         .then(function (r) { if (!r.ok) throw { codigo: 'REDE', mensagem: 'O Google Apps Script respondeu com erro ' + r.status + '. Confira a implantação.' }; return r.json(); })
         .catch(function (e) { throw e && e.codigo ? e : { codigo: 'REDE', mensagem: 'Sem conexão com a planilha Google. Verifique a internet e o endereço em config.js.' }; })
-      : new Promise(function (res) { setTimeout(function () { res(Servico.executar(RepoLocal, req)); }, 90); });
+      : new Promise(function (res) { setTimeout(function () { if (RepoLocal.recarregar) RepoLocal.recarregar(); res(Servico.executar(RepoLocal, req)); }, 90); });
     return p.then(function (r) {
       if (!silencioso) carregando(-1);
       if (!r || !r.ok) {
@@ -2295,7 +2634,7 @@ var T = (function (L) {
       var th = cols.map(function (c) { return '<th' + (c[0] === 'valorEstimado' ? ' class="right"' : '') + ' aria-sort="' + (st.sort.k === c[0] ? (st.sort.dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button data-sort="' + c[0] + '">' + c[1] + (st.sort.k === c[0] ? (st.sort.dir > 0 ? ' ▲' : ' ▼') : '') + '</button></th>'; }).join('');
       var rows = lista.map(function (d) {
         return '<tr class="click" data-open="' + d.id + '" tabindex="0"><td class="id">' + U.esc(d.id) + '</td>' +
-          '<td><div class="tt">' + U.esc(d.titulo) + '</div><div class="sub">' + U.esc(d.local + ' · ' + T.loteCurto(d.loteId)) + '</div></td>' +
+          '<td><div class="tt">' + U.esc(d.titulo) + (d.origem === 'Help Desk' ? ' <span class="tag hd-tag">Help Desk</span>' : '') + '</div><div class="sub">' + U.esc(d.local + ' · ' + (d.loteId ? T.loteCurto(d.loteId) : 'sem lote')) + '</div></td>' +
           '<td><span class="tag mod">' + U.esc(d.modalidade) + '</span></td>' +
           '<td>' + T.sit(d) + '<div style="margin-top:4px">' + T.marks(d) + '</div></td>' +
           '<td>' + T.prazoTag(d) + '</td><td class="nowrap">' + U.fmt(d.fimPrevisto) + '<div class="sub">' + U.esc(L.prazoTexto(d.prazoQtd, d.prazoUnidade)) + '</div></td>' +
@@ -2400,7 +2739,8 @@ var T = (function (L) {
       ['Modalidade', U.esc(d.modalidade)], ['Lote', U.esc(T.lote(d.loteId))], ['Criticidade', U.esc(d.criticidade) + (d.risco ? ' <span class="tag atrasada">Risco declarado</span>' : '')],
       ['Local', U.esc(d.local) + (d.localInterno ? '<div class="muted small">' + U.esc(d.localInterno) + '</div>' : '')], ['Sistema afetado', U.esc(d.sistema)],
       ['Unidade demandante', U.esc(d.unidade)], ['Setores atendidos', U.esc(d.setores.join(', ') || '—')], ['Pessoas impactadas', U.int(d.pessoas)],
-      ['Solicitante', U.esc(d.solicitante || '—')], ['Responsável local', U.esc(d.responsavelLocal || '—')],
+      ['Solicitante', U.esc(d.solicitante || '—') + (d.origem === 'Help Desk' ? ' <span class="tag hd-tag">Help Desk</span>' : '')],
+      ['Contato do solicitante', U.esc([d.solicitanteEmail, d.solicitanteTelefone].filter(Boolean).join(' · ') || '—')], ['Responsável local', U.esc(d.responsavelLocal || '—')],
       ['Nº da Ordem de Serviço', U.esc(d.osNumero || '—')], ['Nº do Atendimento (Help Desk)', U.esc(d.atendimentoNumero || '—')],
       ['Data da solicitação', U.fmt(d.dataSolicitacao)], ['Prazo estimado', U.esc(L.prazoTexto(d.prazoQtd, d.prazoUnidade)) + ', de ' + U.fmt(d.inicioPrevisto) + ' a ' + U.fmt(d.fimPrevisto)],
       ['Valor estimado', U.brl(d.valorEstimado)], ['Registrado por', U.esc(T.nome(d.criadoPor)) + ' em ' + U.fmtDH(d.criadoEm)]
@@ -2420,11 +2760,27 @@ var T = (function (L) {
       (d.cancelada ? '<div class="notice" style="margin-top:8px">Cancelada: ' + U.esc(d.motivoCancelamento) + '</div>' : '') + '</div>' +
       '<button class="btn ghost icon-btn" data-a="fechar" aria-label="Fechar">' + U.icon.x + '</button></div></div>' +
       '<div class="drawer-b"><section><div class="sec-t"><span>Andamento</span>' + (p.etapas ? '<span class="muted small">Etapas já marcadas só são alteradas com senha</span>' : '') + '</div><div class="etapas">' + et + '</div></section>' +
-      nfH + '<section><div class="sec-t"><span>Dados da demanda</span></div><dl class="kv">' + kv + '</dl>' +
+      fotosH(d) + nfH + '<section><div class="sec-t"><span>Dados da demanda</span></div><dl class="kv">' + kv + '</dl>' +
       (d.descricao ? '<p style="margin-top:12px">' + U.esc(d.descricao) + '</p>' : '') + (d.obs ? '<p class="muted small" style="margin-top:8px">Observações: ' + U.esc(d.obs) + '</p>' : '') + '</section>' +
       '<section><div class="sec-t"><span>Histórico de alterações</span><span class="muted small">' + hist.length + ' registro(s)</span></div>' + histH + '</section></div>' +
       '<div class="drawer-f">' + acoes + '</div>';
   };
+
+  /* ---------------- Fotos enviadas pelo Help Desk ---------------- */
+  var cacheFotos = {};
+  function fotosH(d) {
+    var l = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id; });
+    if (!l.length) return '';
+    var tot = l.reduce(function (s, a) { return s + (a.tamanho || 0); }, 0);
+    setTimeout(function () { U.$$('#drawer [data-foto]').forEach(carregarFoto); }, 30);
+    return '<section><div class="sec-t"><span>Fotos anexadas (' + l.length + ')</span><span class="muted small">' + (tot / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB · enviadas pelo solicitante</span></div><div class="hd-thumbs">' +
+      l.map(function (a) { return '<button type="button" class="hd-th" data-foto="' + U.esc(a.id) + '" title="' + U.esc(a.nome + ' · ' + U.fmtDH(a.enviadoEm)) + '"><span>' + U.esc(a.nome) + '</span></button>'; }).join('') + '</div></section>';
+  }
+  function carregarFoto(btn) {
+    var id = btn.dataset.foto, pinta = function (src) { btn.style.backgroundImage = 'url("' + src + '")'; btn.classList.add('carregada'); btn.onclick = function () { UI.modal({ title: btn.title, size: 'md', body: '<img src="' + src + '" alt="" style="max-width:100%;display:block;margin:auto;border-radius:8px">', footer: '<a class="btn" download="' + U.esc(btn.querySelector('span').textContent) + '" href="' + src + '">Baixar</a><button class="btn primary" data-close>Fechar</button>' }); }; };
+    if (cacheFotos[id]) { pinta(cacheFotos[id]); return; }
+    Api.chamar('anexoConteudo', { id: id }, true).then(function (r) { cacheFotos[id] = 'data:' + r.tipo + ';base64,' + r.base64; pinta(cacheFotos[id]); }, function () { btn.classList.add('erro'); });
+  }
 
   /* ---------------- Gravação com senha quando exigido ---------------- */
   T.salvar = function (nova, antes, auth) {
@@ -2443,7 +2799,9 @@ var T = (function (L) {
   function modalEtapa(d, e, editar, auth) {
     var hoje = L.hoje(), f = '';
     var v = function (k, def) { return U.esc(d[k] || def || ''); };
-    if (e.id === 'inicial') f = '<label class="f"><span class="req">Data de recebimento</span><input class="in" type="date" name="inicialData" value="' + v('inicialData', hoje) + '"></label>';
+    if (e.id === 'inicial') f = '<label class="f"><span class="req">Data de recebimento</span><input class="in" type="date" name="inicialData" value="' + v('inicialData', hoje) + '"></label>' +
+      (!d.loteId ? '<label class="f"><span class="req">Lote</span><select class="in" name="loteId">' + U.opts(App.D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero + ' · ' + l.descricao }; }), '', 'Selecione o lote') + '</select><span class="calc">Demanda do Help Desk: vincule a um lote.</span></label>' : '') +
+      (d.modalidade === 'Programado' && !(d.valorEstimado > 0) ? '<label class="f"><span class="req">Valor estimado</span>' + U.inputMoeda('valorEstimado', 0) + '<span class="calc">Obrigatório para demandas programadas.</span></label>' : '');
     if (e.id === 'aprovacao') f = '<label class="f"><span class="req">Data da aprovação</span><input class="in" type="date" name="aprovacaoData" value="' + v('aprovacaoData', hoje) + '"></label><label class="f full">Observação<textarea class="in" name="aprovacaoObs" rows="2">' + v('aprovacaoObs') + '</textarea></label>';
     if (e.id === 'execucao') f = '<label class="f"><span class="req">Início da execução</span><input class="in" type="date" name="execucaoInicio" value="' + v('execucaoInicio', d.inicioPrevisto && d.inicioPrevisto <= hoje ? d.inicioPrevisto : hoje) + '"></label><label class="f"><span class="req">Término da execução</span><input class="in" type="date" name="execucaoFim" value="' + v('execucaoFim', hoje) + '"></label>';
     if (e.id === 'ateste') f = '<label class="f"><span class="req">Data do ateste</span><input class="in" type="date" name="atesteData" value="' + v('atesteData', hoje) + '"></label><label class="f"><span class="req">Valor atestado</span>' + U.inputMoeda('atesteValor', d.atesteValor || d.valorEstimado) + '</label>';
@@ -2570,7 +2928,8 @@ var T = (function (L) {
     var body = '<form id="fdem" novalidate>' +
       '<fieldset class="fs"><legend>Identificação</legend><div class="fgrid">' + inp('titulo', 'Título da demanda', 'text', true, true) +
       sel('modalidade', 'Modalidade', L.MODALIDADES, true, null) + sel('unidade', 'Unidade demandante', setores, true) +
-      inp('solicitante', 'Servidor solicitante') + sel('criticidade', 'Criticidade', L.CRITICIDADES, true, null) + '</div>' +
+      inp('solicitante', 'Servidor solicitante') + sel('criticidade', 'Criticidade', L.CRITICIDADES, true, null) +
+      inp('solicitanteEmail', 'E-mail do solicitante', 'email') + inp('solicitanteTelefone', 'Telefone do solicitante', 'tel') + '</div>' +
       '<p class="calc" style="margin-top:8px">Programado: serviço planejado (permite a etapa de aprovação e exige o valor estimado). Contínuo: demanda rotineira com impacto imediato.</p></fieldset>' +
       '<fieldset class="fs"><legend>Lote, local e setores atendidos</legend><div class="fgrid">' +
       '<div class="f full">' + rot('Lote', true) + '<div class="row" style="flex-wrap:nowrap"><select class="in" name="loteId"' + dis('loteId') + '>' + U.opts(lotesOpts(), d.loteId, 'Selecione o lote') + '</select>' +
@@ -3064,14 +3423,15 @@ var G = (function (L) {
   /* =====================================================================
      HISTÓRICO
      ===================================================================== */
-  var TIPOS_H = [{ v: 'senha', l: 'Alterações com senha' }, { v: 'etapa', l: 'Marcação de etapas' }, { v: 'nf', l: 'Notas fiscais' }, { v: 'registro', l: 'Novas demandas' }, { v: 'fin', l: 'Empenhos e lotes' }, { v: 'config', l: 'Configurações, usuários e backup' }, { v: 'acesso', l: 'Entradas no sistema' }];
+  var TIPOS_H = [{ v: 'helpdesk', l: 'Help Desk: observações e fotos' }, { v: 'senha', l: 'Alterações com senha' }, { v: 'etapa', l: 'Marcação de etapas' }, { v: 'nf', l: 'Notas fiscais' }, { v: 'registro', l: 'Novas demandas' }, { v: 'fin', l: 'Empenhos e lotes' }, { v: 'config', l: 'Configurações, usuários e backup' }, { v: 'acesso', l: 'Entradas no sistema' }];
   function tipoH(h) {
     var a = h.acao;
     if (a === 'Entrada no sistema') return 'acesso';
     if (h.motivo || a === 'Alteração com senha') return 'senha';
     if (a.indexOf('Etapa') === 0) return 'etapa';
     if (a.indexOf('Nota Fiscal') >= 0) return 'nf';
-    if (a === 'Demanda registrada') return 'registro';
+    if (a.indexOf('Demanda registrada') === 0) return 'registro';
+    if (a.indexOf('Mensagem do solicitante') === 0 || a.indexOf('Anexo enviado') === 0) return 'helpdesk';
     if (a.indexOf('Empenho') === 0 || a.indexOf('Lote') === 0) return 'fin';
     if (/Configura|Usuário|Perfil|Backup|Senha|Estrutura/.test(a)) return 'config';
     return 'outro';
@@ -3122,6 +3482,10 @@ var G = (function (L) {
         '<label class="btn" style="cursor:pointer">' + U.icon.up + 'Importar Excel<input type="file" accept=".xlsx,.xls,.csv" data-act="setorExcel" class="sr-only"></label>' +
         '<span class="calc">A planilha pode ter a coluna "Sigla" ou as siglas na primeira coluna.</span></div>' +
         '<label class="f">Setores e unidades<span class="calc">Uma sigla por linha. Usada em unidade demandante, local e setores atendidos. Edite aqui e clique em Salvar configurações, ou use os botões acima, que já salvam.</span><textarea class="in" name="setores" rows="10">' + e(c.setores.join('\n')) + '</textarea></label>') +
+      T.painel('Central de Atendimento (Help Desk)', '', '<div class="fgrid"><div class="f full"><span>Endereço da Central para os solicitantes</span><div class="row" style="flex-wrap:nowrap"><input class="in" id="hd-link" readonly value="' + e(location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '') + 'helpdesk.html') + '">' +
+        '<button class="btn" type="button" data-act="copiarHd">Copiar</button><a class="btn" href="?helpdesk" target="_blank" rel="noopener">Abrir</a></div><span class="calc">Divulgue este endereço aos servidores. As solicitações chegam em Demandas, na situação "Aguardando análise", com as fotos e o contato do solicitante.</span></div>' +
+        '<label class="f full">Contato exibido aos solicitantes<input class="in" name="helpdeskContato" value="' + e(c.helpdeskContato || '') + '"></label>' +
+        '<label class="check full"><input type="checkbox" name="helpdeskAtivo"' + (c.helpdeskAtivo !== false ? ' checked' : '') + '><span>Aceitar novas solicitações pela Central de Atendimento</span></label></div>') +
       T.painel('Google Looker Studio', '', '<label class="f">Endereço do relatório salvo no Looker Studio<span class="calc">Opcional. Depois de salvar o relatório criado pelo botão do Dashboard, cole aqui o endereço para abri-lo direto.</span><input class="in" name="lookerRelatorio" value="' + e(c.lookerRelatorio || '') + '" placeholder="https://lookerstudio.google.com/reporting/..."></label>') +
       (c.emailsBackup !== undefined ? T.painel('Backup automático mensal', 'último: ' + e(c.ultimoBackup || 'ainda não enviado'), '<div class="fgrid"><label class="f full">E-mails que recebem o backup<span class="calc">Separe por vírgula</span><input class="in" name="emailsBackup" value="' + e(c.emailsBackup) + '"></label>' +
         '<label class="check full"><input type="checkbox" name="backupAutomatico"' + (c.backupAutomatico ? ' checked' : '') + '><span>Enviar automaticamente no 1º dia útil de cada mês (Excel, JSON e CSV)</span></label></div>') : '') +
@@ -3428,6 +3792,7 @@ var G = (function (L) {
         if (a === 'liberarGlobal') UI.autorizar('Alterar o valor global da vigência ou os percentuais de alerta exige a senha do gestor.').then(function (au) { if (au) { st.cfgAuth = au; refazer(); } });
         if (a === 'travarGlobal') { st.cfgAuth = null; refazer(); }
         if (a === 'setorManual') inserirSetor();
+        if (a === 'copiarHd') { var hl = U.$('#hd-link'); (navigator.clipboard ? navigator.clipboard.writeText(hl.value) : Promise.reject()).then(function () { U.toast('Endereço copiado.', 'ok'); }, function () { hl.select(); document.execCommand('copy'); U.toast('Endereço copiado.', 'ok'); }); }
         if (a === 'novoLote') T.formLote(null);
         if (a === 'novoEmp') formEmpenho(null);
         if (a === 'novoUser') formUsuario(null);
@@ -3469,6 +3834,490 @@ var G = (function (L) {
 })(Logica);
 
 /* =========================================================================
+   CENTRAL DE ATENDIMENTO (HELP DESK) DO SOLICITANTE
+   Página pública: registra a demanda na mesma planilha da Área do Gestor,
+   envia fotos (até 15 MB no total), consulta o pedido por número e e-mail
+   e oferece um assistente que responde sobre o andamento.
+   ========================================================================= */
+var Helpdesk = (function (L) {
+  'use strict';
+  var H = {}, e = U.esc;
+  var K_PRIV = 'iema-hd-privado', K_DADOS = 'iema-hd-dados';
+  var st = { aba: 'nova', cfg: null, fotos: [], privado: false, pedido: null, consulta: null, enviando: false, chatAberto: false, msgs: [], thumbs: {}, timer: null };
+  var ICONES = {
+    'Hidrossanitário': '<path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/>',
+    'Elétrico': '<path d="M13 2L4 14h7l-1 8 9-12h-7z"/>',
+    'Cobertura': '<path d="M3 12l9-8 9 8M5 10v10h14V10"/>',
+    'Alvenaria e revestimentos': '<path d="M3 6h18v12H3zM3 12h18M9 6v6M15 12v6"/>',
+    'Esquadrias': '<path d="M5 3h14v18H5zM12 3v18M5 12h14"/>',
+    'Climatização': '<path d="M12 2v20M4.9 7l14.2 10M19.1 7L4.9 17M9 4l3 3 3-3M9 20l3-3 3 3"/>',
+    'Combate a incêndio': '<path d="M12 22a7 7 0 0 0 7-7c0-4-3-6-4-9-1 2-2 3-3 3 0-2-1-4-3-6-1 4-4 7-4 12a7 7 0 0 0 7 7z"/>',
+    'Acessibilidade': '<circle cx="12" cy="4" r="2"/><path d="M5 8h14M12 8v6l-3 7M12 14l3 7"/>',
+    'Pavimentação': '<path d="M8 3L4 21M16 3l4 18M12 5v2M12 11v2M12 17v2"/>',
+    'Urbanização': '<path d="M12 22v-6M7 16h10l-5-12z"/>'
+  };
+  var URGENCIAS = [
+    { v: 'Baixa', t: 'Baixa', d: 'Pode aguardar o planejamento.' },
+    { v: 'Média', t: 'Média', d: 'Atrapalha, mas há alternativa.' },
+    { v: 'Alta', t: 'Alta', d: 'Prejudica as atividades do setor.' },
+    { v: 'Crítica', t: 'Crítica', d: 'Risco ou paralisação do serviço.' }
+  ];
+  var SECOES = [
+    { id: 's1', t: 'Seus dados', cor: '#1D4ED8', campos: ['solicitante', 'solicitanteEmail', 'unidade'] },
+    { id: 's2', t: 'Onde é o problema', cor: '#0E7490', campos: ['local'] },
+    { id: 's3', t: 'O que está acontecendo', cor: '#B45309', campos: ['titulo', 'sistema', 'descricao'] },
+    { id: 's4', t: 'Urgência e prazo', cor: '#BE123C', campos: ['criticidade', 'prazoQtd'] },
+    { id: 's5', t: 'Fotos', cor: '#6D28D9', campos: [] },
+    { id: 's6', t: 'Revisão e envio', cor: '#15803D', campos: ['declaro'] }
+  ];
+
+  /* ---------------- Armazenamento local (respeita o modo privado) ---------------- */
+  function lerPriv() { try { return localStorage.getItem(K_PRIV) === '1'; } catch (x) { return true; } }
+  function dadosSalvos() { if (st.privado) return {}; try { return JSON.parse(localStorage.getItem(K_DADOS) || '{}'); } catch (x) { return {}; } }
+  function guardar(parcial) {
+    if (st.privado) return;
+    try { var d = dadosSalvos(); Object.keys(parcial).forEach(function (k) { d[k] = parcial[k]; }); localStorage.setItem(K_DADOS, JSON.stringify(d)); } catch (x) { /* sem armazenamento */ }
+  }
+  function lembrarPedido(id, email, titulo) {
+    var d = dadosSalvos(), l = (d.pedidos || []).filter(function (p) { return p.id !== id; });
+    l.unshift({ id: id, email: email, titulo: titulo }); guardar({ pedidos: l.slice(0, 5) });
+  }
+  function apagarTudo() {
+    try { localStorage.removeItem(K_DADOS); sessionStorage.clear(); } catch (x) { /* ignora */ }
+  }
+
+  /* ---------------- Chamadas (sempre sem a sessão da equipe) ---------------- */
+  function api(acao, dados) { return Api.chamar(acao, Object.assign({ token: null }, dados || {})); }
+
+  /* =====================================================================
+     ESTRUTURA DA PÁGINA
+     ===================================================================== */
+  H.iniciar = function () {
+    App.helpdesk = true;
+    st.privado = lerPriv();
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.title = 'Central de Atendimento | Manutenção Predial IEMA - SUBAD';
+    document.body.className = 'modo-hd';
+    document.body.innerHTML = '<div class="hd">' +
+      '<header class="hd-top"><div class="hd-marca"><span class="hd-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></span>' +
+      '<div><div class="hd-nome">Central de Atendimento</div><div class="hd-sub">Manutenção Predial · Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</div></div></div>' +
+      '<div class="hd-acoes"><button class="hd-priv" id="hd-priv" type="button" aria-pressed="' + st.privado + '" title="Quando ativado, nenhum dado seu fica gravado neste computador">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="hd-priv-t"></span></button>' +
+      '<button class="hd-limpar" id="hd-limpar" type="button">Limpar meus dados</button><a class="hd-equipe" href="index.html">Acesso da equipe</a></div></header>' +
+      '<section class="hd-hero"><div class="hd-hero-in"><h1>Como podemos ajudar?</h1><p>Registre uma solicitação de manutenção predial ou acompanhe um pedido já aberto. O atendimento é direcionado automaticamente à equipe de gestão da SUBAD.</p>' +
+      '<div class="hd-cards"><button class="hd-card" data-aba="nova" type="button"><span class="ic" style="--c:#1D4ED8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Nova solicitação</b><span>Descreva o problema e envie fotos</span></button>' +
+      '<button class="hd-card" data-aba="acompanhar" type="button"><span class="ic" style="--c:#0E7490"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><b>Acompanhar solicitação</b><span>Use o número do pedido e o seu e-mail</span></button>' +
+      '<button class="hd-card" data-chat type="button"><span class="ic" style="--c:#6D28D9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></span><b>Assistente virtual</b><span>Tire dúvidas sobre o andamento</span></button></div></div></section>' +
+      '<nav class="hd-abas" role="tablist"><button role="tab" data-aba="nova">Nova solicitação</button><button role="tab" data-aba="acompanhar">Acompanhar solicitação</button></nav>' +
+      '<main class="hd-main" id="hd-main"><div class="empty">Carregando…</div></main>' +
+      '<footer class="hd-rodape"><span>Manutenção Predial · IEMA - SUBAD</span><span id="hd-contato"></span></footer></div>' +
+      '<button class="hd-fab" id="hd-fab" type="button" aria-label="Abrir o assistente virtual"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01" stroke-linecap="round"/></svg><span>Assistente</span></button>' +
+      '<section class="hd-chat" id="hd-chat" hidden aria-label="Assistente virtual"><header><div><b>Assistente virtual</b><span>Andamento das solicitações</span></div><button type="button" id="hd-chat-x" aria-label="Fechar o assistente">' + U.icon.x + '</button></header>' +
+      '<div class="hd-msgs" id="hd-msgs" aria-live="polite"></div><div class="hd-chips" id="hd-chips"></div>' +
+      '<form id="hd-chat-f"><input id="hd-chat-in" autocomplete="off" placeholder="Digite sua pergunta ou o número do pedido"><button type="submit">Enviar</button></form></section>' +
+      '<div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+    atualizarPriv();
+    U.$('#hd-priv').onclick = alternarPriv;
+    U.$('#hd-limpar').onclick = limparDados;
+    U.$('#hd-fab').onclick = function () { abrirChat(!st.chatAberto); };
+    U.$('#hd-chat-x').onclick = function () { abrirChat(false); };
+    U.$('#hd-chat-f').onsubmit = function (ev) { ev.preventDefault(); var i = U.$('#hd-chat-in'), t = i.value.trim(); if (!t) return; i.value = ''; ouvir(t); };
+    document.addEventListener('click', function (ev) {
+      var a = ev.target.closest('[data-aba]'); if (a) { trocarAba(a.dataset.aba); window.scrollTo({ top: U.$('.hd-abas').offsetTop - 8, behavior: 'smooth' }); }
+      if (ev.target.closest('[data-chat]')) abrirChat(true);
+    });
+    api('helpdeskConfig').then(function (r) {
+      st.cfg = r.config;
+      U.$('#hd-contato').textContent = st.cfg.contato || '';
+      var q = location.search.match(/[?&]pedido=([^&#]+)/);
+      if (q) { st.consulta = { protocolo: decodeURIComponent(q[1]), email: '' }; trocarAba('acompanhar'); } else trocarAba('nova');
+      boasVindas();
+    }, function (er) { U.$('#hd-main').innerHTML = '<div class="empty"><b>Central indisponível</b>' + e(er.mensagem || 'Não foi possível carregar.') + '</div>'; });
+  };
+  function atualizarPriv() {
+    var b = U.$('#hd-priv'); if (!b) return;
+    b.setAttribute('aria-pressed', String(st.privado));
+    U.$('#hd-priv-t').textContent = st.privado ? 'Não salvar nesta máquina: ativado' : 'Não salvar nesta máquina';
+    U.$$('.hd input, .hd textarea').forEach(function (i) { i.setAttribute('autocomplete', st.privado ? 'off' : (i.dataset.ac || 'on')); });
+  }
+  function alternarPriv() {
+    st.privado = !st.privado;
+    try { if (st.privado) { localStorage.setItem(K_PRIV, '1'); apagarTudo(); } else localStorage.removeItem(K_PRIV); } catch (x) { /* ignora */ }
+    atualizarPriv();
+    U.toast(st.privado ? 'Modo privado ativado: nada do que você digitar ficará salvo neste computador.' : 'Seus dados de contato voltarão a ser lembrados neste computador.', 'ok');
+    if (st.aba === 'acompanhar') render();
+  }
+  function limparDados() {
+    UI.confirmar('Limpar meus dados', 'Os dados do formulário, as consultas, a conversa com o assistente e as informações lembradas neste computador serão apagados. Deseja continuar?', 'Sim, limpar').then(function (ok) {
+      if (!ok) return;
+      apagarTudo();
+      try { if (window.history && history.replaceState) history.replaceState(null, '', location.pathname + '?helpdesk'); } catch (x) { /* ignora */ }
+      location.reload();
+    });
+  }
+  function trocarAba(a) {
+    st.aba = a;
+    U.$$('.hd-abas [data-aba]').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.aba === a)); });
+    render();
+  }
+  function render() { if (st.aba === 'nova') renderNova(); else renderAcompanhar(); }
+
+  /* =====================================================================
+     NOVA SOLICITAÇÃO
+     ===================================================================== */
+  function secao(n, s, corpo, extra) {
+    return '<section class="hd-sec" id="' + s.id + '" style="--c:' + s.cor + '"><header><span class="num">' + n + '</span><div><h2>' + e(s.t) + '</h2>' + (extra ? '<p>' + extra + '</p>' : '') + '</div><span class="ok" aria-hidden="true">✓</span></header><div class="hd-sec-b">' + corpo + '</div></section>';
+  }
+  function campo(nome, rot, req, html, dica, full) { return '<label class="hd-f' + (full ? ' full' : '') + '"><span class="' + (req ? 'req' : '') + '">' + rot + '</span>' + html + (dica ? '<small>' + dica + '</small>' : '') + '</label>'; }
+  function renderNova() {
+    var c = st.cfg, sv = dadosSalvos(), el = U.$('#hd-main');
+    if (c.ativo === false) { el.innerHTML = '<div class="hd-aviso">O registro de novas solicitações está temporariamente desativado. ' + e(c.contato || '') + '</div>'; return; }
+    var setores = c.setores || [];
+    var inp = function (n, t, v, extra) { return '<input class="in" name="' + n + '" type="' + (t || 'text') + '" value="' + e(v || '') + '"' + (extra || '') + '>'; };
+    var sel = function (n, v) { return '<select class="in" name="' + n + '">' + U.opts(setores, v || '', 'Selecione a sigla') + '</select>'; };
+    var s1 = '<div class="hd-g2">' + campo('solicitante', 'Nome completo', true, inp('solicitante', 'text', sv.nome, ' data-ac="name" maxlength="120"')) +
+      campo('solicitanteEmail', 'E-mail', true, inp('solicitanteEmail', 'email', sv.email, ' data-ac="email" maxlength="120" placeholder="nome@iema.es.gov.br"'), 'Usado para acompanhar o pedido e receber a confirmação.') +
+      campo('solicitanteTelefone', 'Telefone ou ramal', false, inp('solicitanteTelefone', 'tel', sv.telefone, ' data-ac="tel" maxlength="40" placeholder="(27) 0000-0000"')) +
+      campo('unidade', 'Sua unidade (setor)', true, sel('unidade', sv.unidade)) + '</div>';
+    var s2 = '<div class="hd-g2">' + campo('local', 'Local do problema (setor ou unidade)', true, sel('local', sv.unidade)) +
+      campo('localInterno', 'Localização exata', false, inp('localInterno', 'text', '', ' maxlength="120" placeholder="Ex.: Bloco B, 2º andar, sala 204"')) +
+      '<div class="hd-f full"><span>Setores atendidos pelo serviço</span><input class="in" type="search" id="hd-filtro" placeholder="Filtrar siglas" style="max-width:240px"><div class="chips hd-setores" id="hd-setores">' +
+      setores.map(function (s) { return '<label data-sigla="' + e(s) + '"><input type="checkbox" name="setores" value="' + e(s) + '">' + e(s) + '</label>'; }).join('') + '</div><small>Opcional. Se não marcar, consideramos a sua unidade.</small></div>' +
+      campo('responsavelLocal', 'Quem acompanhará o serviço no local', false, inp('responsavelLocal', 'text', '', ' maxlength="120" placeholder="Se ficar em branco, será você"')) +
+      campo('pessoas', 'Pessoas afetadas (aproximado)', false, inp('pessoas', 'number', '', ' min="0" max="100000"')) + '</div>';
+    var s3 = campo('titulo', 'Assunto', true, inp('titulo', 'text', '', ' maxlength="150" placeholder="Ex.: Vazamento na pia da copa"'), null, true) +
+      '<div class="hd-f full"><span class="req">Tipo de problema</span><div class="hd-tiles" role="radiogroup">' + (c.sistemas || L.SISTEMAS).map(function (s) {
+        return '<label class="hd-tile"><input type="radio" name="sistema" value="' + e(s) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (ICONES[s] || '<circle cx="12" cy="12" r="8"/>') + '</svg><span>' + e(s) + '</span></label>';
+      }).join('') + '</div></div>' +
+      campo('descricao', 'Descreva o problema', true, '<textarea class="in" name="descricao" rows="5" maxlength="4000" placeholder="O que acontece, desde quando, se piora em algum horário, o que já foi tentado…"></textarea>', '<span id="hd-cont">0</span> de 4.000 caracteres', true) +
+      '<label class="hd-risco full"><input type="checkbox" name="risco"><span><b>Há risco</b> a pessoas, ao patrimônio, ao meio ambiente ou a algum serviço essencial</span></label>';
+    var s4 = '<div class="hd-f full"><span class="req">Urgência</span><div class="hd-urg" role="radiogroup">' + URGENCIAS.map(function (u, i) {
+        return '<label class="hd-u u' + i + '"><input type="radio" name="criticidade" value="' + u.v + '"' + (u.v === 'Média' ? ' checked' : '') + '><b>' + u.t + '</b><span>' + u.d + '</span></label>';
+      }).join('') + '</div></div>' +
+      '<div class="hd-g2"><div class="hd-f"><span class="req">Natureza do pedido</span><div class="seg hd-seg"><label><input type="radio" name="modalidade" value="Contínuo" checked><span>Corretiva / rotineira</span></label><label><input type="radio" name="modalidade" value="Programado"><span>Melhoria / planejada</span></label></div><small>Corretiva: algo quebrou ou parou. Planejada: reforma, adequação ou melhoria.</small></div>' +
+      '<div class="hd-f"><span class="req">Prazo desejado</span><div class="row" style="flex-wrap:nowrap"><input class="in" name="prazoQtd" type="number" min="1" max="365" value="1" style="max-width:90px"><select class="in" name="prazoUnidade">' + U.opts([{ v: 'dias', l: 'dia(s)' }, { v: 'semanas', l: 'semana(s)' }, { v: 'meses', l: 'mês(es)' }], 'semanas') + '</select></div><small>O prazo final é definido pela equipe de gestão.</small></div></div>';
+    var s5 = '<div class="hd-drop" id="hd-drop" tabindex="0" role="button" aria-label="Adicionar fotos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>' +
+      '<b>Arraste as fotos aqui ou clique para escolher</b><span>JPG, PNG, WEBP, GIF ou HEIC · até 15 MB no total</span><input type="file" id="hd-arq" accept="image/*" multiple hidden></div>' +
+      '<div class="hd-medidor"><div class="track"><i id="hd-uso-b"></i></div><span id="hd-uso-t">0 MB de 15 MB</span></div><div class="hd-fotos" id="hd-fotos"></div>';
+    var s6 = '<div id="hd-resumo" class="hd-resumo"></div><label class="hd-decl"><input type="checkbox" name="declaro"><span>Declaro que as informações são verdadeiras e autorizo o contato da equipe pelo e-mail ou telefone informados.</span></label>' +
+      '<input type="text" name="armadilha" class="hd-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+      '<p class="err" id="hd-erro" role="alert"></p><button class="hd-enviar" id="hd-enviar" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Enviar solicitação</button>';
+    el.innerHTML = '<div class="hd-grid"><form id="hd-form" novalidate>' +
+      secao(1, SECOES[0], s1, 'Para retornarmos sobre o atendimento.') + secao(2, SECOES[1], s2, 'Informe o setor ou a unidade onde está o problema.') +
+      secao(3, SECOES[2], s3, 'Quanto mais detalhes, mais rápido o diagnóstico.') + secao(4, SECOES[3], s4, 'Ajuda a equipe a priorizar o atendimento.') +
+      secao(5, SECOES[4], s5, 'Fotos do problema aceleram a análise (opcional).') + secao(6, SECOES[5], s6, 'Confira o resumo antes de enviar.') + '</form>' +
+      '<aside class="hd-lado"><div class="hd-box"><b>Sua solicitação</b><ol class="hd-passos" id="hd-passos">' + SECOES.map(function (s) { return '<li data-s="' + s.id + '" style="--c:' + s.cor + '"><a href="#' + s.id + '">' + e(s.t) + '</a></li>'; }).join('') + '</ol></div>' +
+      '<div class="hd-box"><b>Como funciona</b><ul class="hd-como"><li>Você recebe o <b>número do pedido</b> na hora.</li><li>A equipe analisa, define o prazo e acompanha a execução.</li><li>Consulte o andamento com o número e o seu e-mail, ou pergunte ao assistente.</li></ul></div>' +
+      (st.cfg.contato ? '<div class="hd-box"><b>Contato</b><p>' + e(st.cfg.contato) + '</p></div>' : '') + '</aside></div>';
+    st.fotos = [];
+    ligarForm();
+  }
+  function ligarForm() {
+    var f = U.$('#hd-form'), arq = U.$('#hd-arq'), drop = U.$('#hd-drop');
+    atualizarPriv();
+    var limpar = function (ev) { if (ev.target.removeAttribute) ev.target.removeAttribute('aria-invalid'); var er = U.$('#hd-erro'); if (er && er.textContent) er.textContent = ''; progresso(); };
+    f.addEventListener('input', limpar); f.addEventListener('change', limpar);
+    f.querySelector('[name=descricao]').addEventListener('input', function (ev) { U.$('#hd-cont').textContent = U.int(ev.target.value.length); });
+    f.querySelector('[name=unidade]').addEventListener('change', function (ev) { var l = f.querySelector('[name=local]'); if (!l.value) l.value = ev.target.value; });
+    U.$('#hd-filtro').addEventListener('input', function (ev) { var q = U.norm(ev.target.value); U.$$('#hd-setores label').forEach(function (l) { l.hidden = q && U.norm(l.dataset.sigla).indexOf(q) < 0; }); });
+    drop.onclick = function () { arq.click(); };
+    drop.onkeydown = function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); arq.click(); } };
+    arq.onchange = function () { adicionarFotos(arq.files); arq.value = ''; };
+    ['dragenter', 'dragover'].forEach(function (t) { drop.addEventListener(t, function (ev) { ev.preventDefault(); drop.classList.add('sobre'); }); });
+    ['dragleave', 'drop'].forEach(function (t) { drop.addEventListener(t, function (ev) { ev.preventDefault(); drop.classList.remove('sobre'); }); });
+    drop.addEventListener('drop', function (ev) { adicionarFotos(ev.dataTransfer.files); });
+    f.onsubmit = function (ev) { ev.preventDefault(); enviar(); };
+    progresso();
+  }
+  function totalFotos() { return st.fotos.reduce(function (s, x) { return s + x.file.size; }, 0); }
+  function mb(b) { return (b / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB'; }
+  function adicionarFotos(lista, destino) {
+    var limite = st.cfg ? st.cfg.limite : L.LIMITE_ANEXOS, alvo = destino || st.fotos, ja = alvo.reduce(function (s, x) { return s + x.file.size; }, 0) + (destino ? (st.pedido ? st.pedido.anexos.reduce(function (s, a) { return s + a.tamanho; }, 0) : 0) : 0);
+    var recusadas = [];
+    Array.prototype.forEach.call(lista, function (file) {
+      if (!/^image\//.test(file.type) && !/\.(heic|heif)$/i.test(file.name)) { recusadas.push(file.name + ' (não é imagem)'); return; }
+      if (ja + file.size > limite) { recusadas.push(file.name + ' (passaria de 15 MB)'); return; }
+      ja += file.size;
+      alvo.push({ file: file, url: URL.createObjectURL(file), id: Math.random().toString(36).slice(2) });
+    });
+    if (recusadas.length) U.toast('Não adicionadas: ' + recusadas.join('; ') + '.', 'erro');
+    if (destino) renderFotosExtras(); else { renderFotos(); progresso(); }
+  }
+  function renderFotos() {
+    var t = totalFotos(), lim = st.cfg.limite;
+    U.$('#hd-uso-b').style.width = Math.min(100, t / lim * 100) + '%';
+    U.$('#hd-uso-b').className = t / lim > 0.85 ? 'alto' : '';
+    U.$('#hd-uso-t').textContent = mb(t) + ' de 15 MB';
+    U.$('#hd-fotos').innerHTML = st.fotos.map(function (x) {
+      return '<figure><img src="' + x.url + '" alt="' + e(x.file.name) + '"><figcaption><span>' + e(x.file.name) + '</span><small>' + mb(x.file.size) + '</small></figcaption><button type="button" data-rm="' + x.id + '" aria-label="Remover ' + e(x.file.name) + '">' + U.icon.x + '</button></figure>';
+    }).join('');
+    U.$$('#hd-fotos [data-rm]').forEach(function (b) { b.onclick = function () { st.fotos = st.fotos.filter(function (x) { if (x.id === b.dataset.rm) URL.revokeObjectURL(x.url); return x.id !== b.dataset.rm; }); renderFotos(); progresso(); }; });
+  }
+  function lerForm() {
+    var f = U.$('#hd-form'), v = function (n) { var el = f.querySelector('[name=' + n + ']'); return el ? el.value.trim() : ''; };
+    var r = function (n) { var el = f.querySelector('[name=' + n + ']:checked'); return el ? el.value : ''; };
+    return {
+      solicitante: v('solicitante'), solicitanteEmail: v('solicitanteEmail').toLowerCase(), solicitanteTelefone: v('solicitanteTelefone'), unidade: v('unidade'),
+      local: v('local'), localInterno: v('localInterno'), setores: U.$$('[name=setores]:checked', f).map(function (i) { return i.value; }),
+      responsavelLocal: v('responsavelLocal'), pessoas: Number(v('pessoas')) || 0, titulo: v('titulo'), sistema: r('sistema'), descricao: v('descricao'),
+      risco: f.querySelector('[name=risco]').checked, criticidade: r('criticidade'), modalidade: r('modalidade'), prazoQtd: Number(v('prazoQtd')) || 0,
+      prazoUnidade: v('prazoUnidade'), declaro: f.querySelector('[name=declaro]').checked, armadilha: v('armadilha')
+    };
+  }
+  function progresso() {
+    var d = lerForm();
+    SECOES.forEach(function (s) {
+      var ok = s.id === 's5' ? st.fotos.length > 0 : s.campos.every(function (k) { return k === 'solicitanteEmail' ? L.emailValido(d[k]) : k === 'declaro' ? d.declaro : !!d[k]; });
+      var sec = U.$('#' + s.id), li = U.$('#hd-passos [data-s="' + s.id + '"]');
+      if (sec) sec.classList.toggle('feita', ok); if (li) li.classList.toggle('feita', ok);
+    });
+    var res = U.$('#hd-resumo');
+    if (res) res.innerHTML = '<dl>' + [['Solicitante', d.solicitante ? d.solicitante + (d.solicitanteEmail ? ' · ' + d.solicitanteEmail : '') : ''], ['Unidade / local', [d.unidade, d.local, d.localInterno].filter(Boolean).join(' · ')],
+      ['Assunto', d.titulo], ['Tipo', d.sistema], ['Urgência', d.criticidade + (d.risco ? ' · com risco declarado' : '')], ['Prazo desejado', L.prazoTexto(d.prazoQtd, d.prazoUnidade)], ['Fotos', st.fotos.length ? st.fotos.length + ' (' + mb(totalFotos()) + ')' : 'nenhuma']]
+      .map(function (x) { return '<dt>' + x[0] + '</dt><dd>' + (x[1] ? e(x[1]) : '<span class="falta">a preencher</span>') + '</dd>'; }).join('') + '</dl>';
+  }
+  function validar(d) {
+    var f = []; U.$$('#hd-form [aria-invalid]').forEach(function (i) { i.removeAttribute('aria-invalid'); });
+    var marca = function (n, m) { f.push(m); var el = U.$('#hd-form [name=' + n + ']'); if (el) el.setAttribute('aria-invalid', 'true'); };
+    if (!d.solicitante) marca('solicitante', 'seu nome');
+    if (!L.emailValido(d.solicitanteEmail)) marca('solicitanteEmail', 'um e-mail válido');
+    if (!d.unidade) marca('unidade', 'sua unidade');
+    if (!d.local) marca('local', 'o local do problema');
+    if (!d.titulo) marca('titulo', 'o assunto');
+    if (!d.sistema) f.push('o tipo de problema');
+    if (!d.descricao || d.descricao.length < 10) marca('descricao', 'a descrição (mínimo de 10 caracteres)');
+    if (!(d.prazoQtd > 0)) marca('prazoQtd', 'o prazo desejado');
+    if (!d.declaro) f.push('a confirmação da declaração');
+    return f;
+  }
+  /* Reduz fotos grandes antes do envio (mantém boa qualidade e acelera o upload) */
+  function prepararFoto(file) {
+    var max = Api.remoto ? 2200 : 900, q = Api.remoto ? 0.86 : 0.7, leve = Api.remoto && file.size <= 1200000 && /^image\/(jpeg|png|webp)$/.test(file.type);
+    var ler = function (blob) { return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(String(r.result).split(',')[1]); }; r.onerror = rej; r.readAsDataURL(blob); }); };
+    if (leve) return ler(file).then(function (b) { return { base64: b, tipo: file.type, nome: file.name }; });
+    return new Promise(function (res) {
+      var img = new Image();
+      img.onload = function () {
+        var esc = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = Math.round(img.width * esc); c.height = Math.round(img.height * esc);
+        var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+        res({ base64: c.toDataURL('image/jpeg', q).split(',')[1], tipo: 'image/jpeg', nome: file.name.replace(/\.[^.]+$/, '') + '.jpg' });
+      };
+      img.onerror = function () { ler(file).then(function (b) { res({ base64: b, tipo: file.type || 'image/heic', nome: file.name }); }); };
+      img.src = URL.createObjectURL(file);
+    });
+  }
+  function enviarFotos(lista, protocolo, email, aoProgresso) {
+    var i = 0, falhas = [];
+    var proximo = function () {
+      if (i >= lista.length) return Promise.resolve(falhas);
+      var x = lista[i++]; if (aoProgresso) aoProgresso(i, lista.length);
+      return prepararFoto(x.file).then(function (p) { return api('helpdeskAnexo', { protocolo: protocolo, email: email, nome: p.nome, tipo: p.tipo, base64: p.base64 }); })
+        .catch(function (er) { falhas.push(x.file.name + ': ' + (er && er.mensagem ? er.mensagem : 'falha no envio')); }).then(proximo);
+    };
+    return proximo();
+  }
+  function enviar() {
+    if (st.enviando) return;
+    var d = lerForm(), faltam = validar(d), erro = U.$('#hd-erro');
+    if (faltam.length) { erro.textContent = 'Para enviar, informe: ' + faltam.join(', ') + '.'; var p = U.$('#hd-form [aria-invalid]'); if (p) p.focus(); return; }
+    erro.textContent = '';
+    st.enviando = true;
+    var bt = U.$('#hd-enviar'); bt.disabled = true; bt.lastChild.textContent = 'Enviando…';
+    guardar({ nome: d.solicitante, email: d.solicitanteEmail, telefone: d.solicitanteTelefone, unidade: d.unidade });
+    api('helpdeskRegistrar', { demanda: d, armadilha: d.armadilha }).then(function (r) {
+      var id = r.id, fotos = st.fotos.slice();
+      lembrarPedido(id, d.solicitanteEmail, d.titulo);
+      var fim = function (falhas) {
+        st.enviando = false; st.fotos.forEach(function (x) { URL.revokeObjectURL(x.url); }); st.fotos = [];
+        st.consulta = { protocolo: id, email: d.solicitanteEmail };
+        sucesso(id, d, falhas || []);
+        consultar(true);
+      };
+      if (!fotos.length) return fim([]);
+      bt.lastChild.textContent = 'Enviando fotos…';
+      return enviarFotos(fotos, id, d.solicitanteEmail, function (n, t) { bt.lastChild.textContent = 'Enviando foto ' + n + ' de ' + t + '…'; }).then(fim);
+    }, function (er) {
+      st.enviando = false; bt.disabled = false; bt.lastChild.textContent = 'Enviar solicitação';
+      erro.textContent = er && er.mensagem ? er.mensagem : 'Não foi possível enviar. Verifique a conexão e tente novamente.';
+    });
+  }
+  function sucesso(id, d, falhas) {
+    U.$('#hd-main').innerHTML = '<div class="hd-ok"><div class="sel">✓</div><h2>Solicitação registrada</h2><p>Guarde o número do seu pedido. Ele e o e-mail <b>' + e(d.solicitanteEmail) + '</b> servem para acompanhar o atendimento.</p>' +
+      '<div class="hd-prot"><span>Número do pedido</span><b id="hd-prot">' + e(id) + '</b><button type="button" id="hd-copiar">Copiar</button></div>' +
+      (falhas.length ? '<div class="hd-aviso">Algumas fotos não foram enviadas: ' + e(falhas.join('; ')) + '. Você pode enviá-las em "Acompanhar solicitação".</div>' : '') +
+      '<p class="calc">Uma confirmação também é enviada para o seu e-mail (quando o envio estiver disponível).</p>' +
+      '<div class="row" style="justify-content:center;margin-top:18px"><button class="btn primary" type="button" data-aba="acompanhar">Acompanhar este pedido</button><button class="btn" type="button" id="hd-imprimir">Imprimir comprovante</button><button class="btn" type="button" data-aba="nova">Nova solicitação</button></div></div>';
+    U.$('#hd-copiar').onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(id) : Promise.reject()).then(function () { U.toast('Número copiado.', 'ok'); }, function () { window.prompt('Copie o número:', id); }); };
+    U.$('#hd-imprimir').onclick = function () {
+      U.imprimirDoc('<article class="doc"><header class="doc-h"><div><div class="org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD · Manutenção Predial</div><h2>Comprovante de solicitação</h2></div><div class="gen">Emitido em<br><b>' + new Date().toLocaleString('pt-BR') + '</b></div></header>' +
+        '<table class="t"><tbody>' + [['Número do pedido', id], ['Solicitante', d.solicitante + ' · ' + d.solicitanteEmail], ['Unidade / local', d.unidade + ' · ' + d.local + (d.localInterno ? ' · ' + d.localInterno : '')], ['Assunto', d.titulo], ['Tipo de problema', d.sistema], ['Urgência', d.criticidade], ['Descrição', d.descricao]]
+          .map(function (x) { return '<tr><th style="width:30%">' + x[0] + '</th><td>' + e(x[1]) + '</td></tr>'; }).join('') + '</tbody></table><p class="muted" style="margin-top:14px">Acompanhe pela Central de Atendimento, com o número do pedido e o e-mail informado.</p></article>');
+    };
+    U.toast('Pedido ' + id + ' registrado.', 'ok');
+    botDiz('Recebi a sua solicitação <b>' + e(id) + '</b>. Vou acompanhar o andamento por aqui: é só perguntar.', chipsPadrao());
+  }
+
+  /* =====================================================================
+     ACOMPANHAR SOLICITAÇÃO
+     ===================================================================== */
+  function renderAcompanhar() {
+    var el = U.$('#hd-main'), sv = dadosSalvos(), c = st.consulta || {};
+    var recentes = (sv.pedidos || []).map(function (p) { return '<button type="button" class="hd-rec" data-p="' + e(p.id) + '" data-e="' + e(p.email) + '"><b>' + e(p.id) + '</b><span>' + e(p.titulo || '') + '</span></button>'; }).join('');
+    el.innerHTML = '<div class="hd-grid hd-grid-ac"><div class="stack">' +
+      '<section class="hd-sec" style="--c:#0E7490"><header><span class="num"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><div><h2>Consultar pedido</h2><p>Informe o número do pedido e o e-mail usado na solicitação.</p></div></header>' +
+      '<div class="hd-sec-b"><form id="hd-cons" class="hd-g3" novalidate>' + campo('protocolo', 'Número do pedido', true, '<input class="in" name="protocolo" value="' + e(c.protocolo || '') + '" placeholder="Ex.: MC-2026-012" autocapitalize="characters" data-ac="off">') +
+      campo('email', 'E-mail da solicitação', true, '<input class="in" name="email" type="email" value="' + e(c.email || sv.email || '') + '" data-ac="email">') +
+      '<div class="hd-f" style="align-self:end"><button class="btn primary" type="submit" style="width:100%;justify-content:center">Consultar</button></div></form>' +
+      (recentes ? '<div class="hd-recentes"><span>Pedidos recentes neste computador</span><div>' + recentes + '</div></div>' : '') +
+      (!Api.remoto ? '<p class="calc" style="margin-top:10px">Modo demonstração: experimente um pedido de exemplo com o e-mail <b>ana.ribeiro@iema.es.gov.br</b>.</p>' : '') + '<p class="err" id="hd-cons-erro" role="alert"></p></div></section>' +
+      '<div id="hd-res"></div></div><aside class="hd-lado"><div class="hd-box"><b>Assistente virtual</b><p>Converse com o assistente para saber a situação, a previsão e as próximas etapas do seu pedido.</p><button type="button" class="btn" data-chat style="margin-top:10px">Abrir o assistente</button></div>' +
+      '<div class="hd-box"><b>Etapas do atendimento</b><ol class="hd-glos"><li><b>Recebida</b>: a equipe analisou o pedido.</li><li><b>Aprovada</b>: serviços planejados aprovados pela diretoria.</li><li><b>Executada</b>: o serviço foi realizado.</li><li><b>Conferida</b>: a fiscalização atestou o serviço.</li><li><b>Encerrada</b>: atendimento concluído.</li></ol></div></aside></div>';
+    atualizarPriv();
+    U.$('#hd-cons').onsubmit = function (ev) { ev.preventDefault(); var f = ev.target; st.consulta = { protocolo: f.protocolo.value.trim().toUpperCase(), email: f.email.value.trim().toLowerCase() }; consultar(); };
+    U.$$('.hd-rec').forEach(function (b) { b.onclick = function () { st.consulta = { protocolo: b.dataset.p, email: b.dataset.e }; renderAcompanhar(); consultar(); }; });
+    if (st.pedido && c.protocolo === st.pedido.id) { renderPedido(); consultar(true); }
+    else if (c.protocolo && c.email) consultar();
+  }
+  function consultar(silencioso) {
+    var c = st.consulta || {}, err = U.$('#hd-cons-erro');
+    if (!c.protocolo || !L.emailValido(c.email)) { if (err && !silencioso) err.textContent = 'Informe o número do pedido e um e-mail válido.'; return Promise.resolve(null); }
+    if (err) err.textContent = '';
+    return api('helpdeskConsultar', { protocolo: c.protocolo, email: c.email }).then(function (r) {
+      var antes = st.pedido;
+      st.pedido = r.pedido;
+      if (!st.privado) { lembrarPedido(r.pedido.id, c.email, r.pedido.titulo); guardar({ email: c.email }); }
+      if (st.aba === 'acompanhar') renderPedido();
+      if (antes && antes.id === r.pedido.id && (antes.situacao.id !== r.pedido.situacao.id || antes.eventos.length !== r.pedido.eventos.length)) {
+        botDiz('Atualização do pedido <b>' + e(r.pedido.id) + '</b>: ' + e(ultimoEvento(r.pedido)) + '. Situação atual: <b>' + e(r.pedido.situacao.nome) + '</b>.');
+        U.toast('Seu pedido foi atualizado: ' + r.pedido.situacao.nome, 'ok');
+      } else if (!antes || antes.id !== r.pedido.id) botDiz('Encontrei o pedido <b>' + e(r.pedido.id) + '</b> (' + e(r.pedido.titulo) + '). Situação: <b>' + e(r.pedido.situacao.nome) + '</b>. O que deseja saber?', chipsPadrao());
+      agendar();
+      return r.pedido;
+    }, function (er) {
+      if (!silencioso && err) err.textContent = er.mensagem || 'Não foi possível consultar.';
+      if (!silencioso) botDiz(e(er.mensagem || 'Não foi possível consultar.'));
+      return null;
+    });
+  }
+  function agendar() {
+    clearInterval(st.timer);
+    st.timer = setInterval(function () { if (!document.hidden && st.consulta && st.pedido) consultar(true); }, 60000);
+  }
+  function ultimoEvento(p) { var ev = p.eventos[p.eventos.length - 1]; return (ev ? ev.texto : p.situacao.nome).replace(/[.\s]+$/, ''); }
+  function renderPedido() {
+    var p = st.pedido, box = U.$('#hd-res'); if (!box || !p) return;
+    var sit = p.situacao, pz = p.prazo;
+    var passos = [{ nome: 'Registrada', ok: true, data: p.dataSolicitacao }].concat(p.etapas.map(function (x) { return x; }));
+    var atual = passos.reduce(function (m, x, i) { return x.ok ? i : m; }, 0);
+    box.innerHTML = '<section class="hd-ped" style="--c:' + sit.cor + '"><header><div><span class="hd-num">' + e(p.id) + '</span><h2>' + e(p.titulo) + '</h2><p>' + e([p.unidade, p.local, p.localInterno].filter(Boolean).join(' · ')) + '</p></div>' +
+      '<div class="hd-sit"><span>Situação</span><b>' + e(sit.nome) + '</b>' + (p.cancelada ? '' : '<em class="tag ' + pz.k + '">' + e(pz.nome) + '</em>') + '</div></header>' +
+      (p.cancelada ? '<div class="hd-aviso">Pedido cancelado: ' + e(p.motivoCancelamento || 'sem motivo informado') + '.</div>' : '') +
+      '<ol class="hd-step">' + passos.map(function (x, i) { return '<li class="' + (x.ok ? 'ok' : '') + (i === atual + 1 && !p.cancelada ? ' prox' : '') + '"><span class="b">' + (x.ok ? '✓' : i + 1) + '</span><b>' + e(x.nome) + '</b><small>' + (x.ok && x.data ? U.fmt(x.data) : (i === atual + 1 && !p.cancelada ? 'próxima etapa' : '')) + '</small></li>'; }).join('') + '</ol>' +
+      '<div class="hd-g3 hd-info">' + [['Registrada em', U.fmt(p.dataSolicitacao)], ['Previsão de término', p.fimPrevisto ? U.fmt(p.fimPrevisto) : 'a definir'], ['Execução iniciada', p.execucaoInicio ? U.fmt(p.execucaoInicio) : 'ainda não'],
+        ['Tipo de problema', p.sistema], ['Urgência', p.criticidade], ['Natureza', p.modalidade === 'Programado' ? 'Melhoria / planejada' : 'Corretiva / rotineira'],
+        ['Nº da Ordem de Serviço', p.osNumero || '—'], ['Nº do Atendimento (Help Desk)', p.atendimentoNumero || '—'], ['Solicitante', p.solicitante]]
+        .map(function (x) { return '<div><span>' + x[0] + '</span><b>' + e(x[1]) + '</b></div>'; }).join('') + '</div>' +
+      '<div class="hd-g2" style="margin-top:6px"><div><h3>Histórico</h3><ul class="hd-tl">' + p.eventos.slice().reverse().map(function (ev) { return '<li><b>' + e(ev.texto) + '</b><small>' + U.fmtDH(ev.em) + '</small></li>'; }).join('') + '</ul></div>' +
+      '<div><h3>Fotos (' + p.anexos.length + ')</h3><div class="hd-thumbs" id="hd-thumbs">' + (p.anexos.map(function (a) { return '<button type="button" class="hd-th" data-anx="' + e(a.id) + '" title="' + e(a.nome) + '"><span>' + e(a.nome) + '</span></button>'; }).join('') || '<p class="calc">Nenhuma foto enviada.</p>') + '</div>' +
+      (!p.cancelada && st.pedido.situacao.id !== 'paga' ? '<div class="hd-mais"><button type="button" class="btn sm" id="hd-mais-b">' + U.icon.plus + 'Enviar mais fotos</button><input type="file" id="hd-mais" accept="image/*" multiple hidden><div class="hd-fotos" id="hd-fotos2"></div></div>' : '') +
+      '<h3>Enviar uma observação à equipe</h3><textarea class="in" id="hd-obs" rows="3" maxlength="1000" placeholder="Ex.: o vazamento aumentou; o acesso é pela porta lateral"></textarea><button type="button" class="btn" id="hd-obs-b" style="margin-top:8px">Enviar observação</button></div></div></section>';
+    U.$$('#hd-thumbs [data-anx]').forEach(carregarThumb);
+    var mais = U.$('#hd-mais-b');
+    if (mais) { st.extras = []; mais.onclick = function () { U.$('#hd-mais').click(); }; U.$('#hd-mais').onchange = function (ev) { adicionarFotos(ev.target.files, st.extras); ev.target.value = ''; }; }
+    U.$('#hd-obs-b').onclick = function () {
+      var t = U.$('#hd-obs').value.trim(); if (!t) { U.toast('Escreva a observação.', 'erro'); return; }
+      api('helpdeskMensagem', { protocolo: p.id, email: st.consulta.email, texto: t }).then(function (r) { st.pedido = r.pedido; renderPedido(); U.toast('Observação enviada à equipe.', 'ok'); botDiz('Sua observação foi entregue à equipe de gestão do pedido <b>' + e(p.id) + '</b>.'); }, UI.erro);
+    };
+  }
+  function renderFotosExtras() {
+    var box = U.$('#hd-fotos2'); if (!box) return;
+    box.innerHTML = st.extras.map(function (x) { return '<figure><img src="' + x.url + '" alt=""><figcaption><span>' + e(x.file.name) + '</span><small>' + mb(x.file.size) + '</small></figcaption></figure>'; }).join('') +
+      (st.extras.length ? '<button type="button" class="btn primary sm" id="hd-mais-env">Enviar ' + st.extras.length + ' foto(s)</button>' : '');
+    var b = U.$('#hd-mais-env');
+    if (b) b.onclick = function () {
+      b.disabled = true;
+      enviarFotos(st.extras, st.pedido.id, st.consulta.email, function (n, t) { b.textContent = 'Enviando ' + n + ' de ' + t + '…'; }).then(function (falhas) {
+        st.extras = []; if (falhas.length) U.toast('Falhas: ' + falhas.join('; '), 'erro'); else U.toast('Fotos enviadas.', 'ok');
+        consultar(true);
+      });
+    };
+  }
+  function carregarThumb(btn) {
+    var id = btn.dataset.anx, pinta = function (src) { btn.style.backgroundImage = 'url("' + src + '")'; btn.classList.add('carregada'); btn.onclick = function () { verImagem(src, btn.title); }; };
+    if (st.thumbs[id]) { pinta(st.thumbs[id]); return; }
+    api('anexoConteudo', { id: id, protocolo: st.pedido.id, email: st.consulta.email }).then(function (r) { var src = 'data:' + r.tipo + ';base64,' + r.base64; if (!st.privado) st.thumbs[id] = src; pinta(src); }, function () { btn.classList.add('erro'); });
+  }
+  function verImagem(src, nome) { UI.modal({ title: nome || 'Imagem', size: 'md', body: '<img src="' + src + '" alt="" style="max-width:100%;display:block;margin:auto;border-radius:8px">', footer: '<button class="btn" data-close>Fechar</button>' }); }
+
+  /* =====================================================================
+     ASSISTENTE VIRTUAL (respostas automáticas)
+     ===================================================================== */
+  function abrirChat(v) {
+    st.chatAberto = v;
+    U.$('#hd-chat').hidden = !v; U.$('#hd-fab').classList.toggle('aberto', v);
+    if (v) { if (!st.msgs.length) boasVindas(); setTimeout(function () { U.$('#hd-chat-in').focus(); }, 50); }
+  }
+  function chipsPadrao() {
+    if (!st.pedido) return ['Consultar meu pedido', 'Como abrir uma solicitação?', 'O que significa cada etapa?', 'Falar com a equipe'];
+    return ['Qual a situação?', 'Quando fica pronto?', 'Em que etapa está?', 'Nº da OS e do atendimento', 'Já foi executado?', 'Como enviar mais fotos?', 'Falar com a equipe', 'Consultar outro pedido'];
+  }
+  function boasVindas() {
+    if (st.msgs.length) return;
+    botDiz('Olá! Sou o assistente da <b>Manutenção Predial</b>. Posso informar a situação, a previsão e as etapas do seu pedido. ' +
+      (st.pedido ? 'Estou acompanhando o pedido <b>' + e(st.pedido.id) + '</b>.' : 'Para começar, digite o <b>número do pedido</b> (ex.: MC-2026-012) e depois o <b>e-mail</b> usado na solicitação.'), chipsPadrao());
+  }
+  function addMsg(quem, html) {
+    st.msgs.push({ quem: quem, html: html });
+    var box = U.$('#hd-msgs'); if (!box) return;
+    var d = document.createElement('div'); d.className = 'm ' + quem; d.innerHTML = html; box.appendChild(d); box.scrollTop = box.scrollHeight;
+  }
+  function botDiz(html, chips) {
+    addMsg('bot', html);
+    var c = U.$('#hd-chips'); if (!c) return;
+    c.innerHTML = (chips || chipsPadrao()).map(function (t) { return '<button type="button">' + e(t) + '</button>'; }).join('');
+    U.$$('button', c).forEach(function (b) { b.onclick = function () { ouvir(b.textContent); }; });
+  }
+  var aguardando = null;
+  function ouvir(texto) {
+    addMsg('eu', e(texto));
+    var t = U.norm(texto), prot = (texto.toUpperCase().match(/M[CP]-\d{4}-\d{1,4}/) || [])[0], email = (texto.match(/[^\s@]+@[^\s@]+\.[^\s@]{2,}/) || [])[0];
+    setTimeout(function () { responder(t, prot, email); }, 280);
+  }
+  function responder(t, prot, email) {
+    var p = st.pedido;
+    if (prot || email) {
+      st.consulta = st.consulta || {};
+      if (prot) { if (prot.split('-')[2].length < 3) prot = prot.replace(/-(\d{1,2})$/, function (m, n) { return '-' + ('00' + n).slice(-3); }); st.consulta.protocolo = prot; }
+      if (email) st.consulta.email = email.toLowerCase();
+      if (!st.consulta.email) { var sv = dadosSalvos(); if (sv.email) st.consulta.email = sv.email; }
+      if (st.consulta.protocolo && st.consulta.email) { botDiz('Consultando o pedido <b>' + e(st.consulta.protocolo) + '</b>…', []); consultar().then(function (r) { if (r && st.aba === 'acompanhar') renderAcompanhar(); }); return; }
+      aguardando = st.consulta.protocolo ? 'email' : 'protocolo';
+      botDiz(aguardando === 'email' ? 'Certo. Agora informe o <b>e-mail</b> usado na solicitação.' : 'Certo. Agora informe o <b>número do pedido</b>.', []);
+      return;
+    }
+    if (/^(oi|ola|bom dia|boa tarde|boa noite)/.test(t)) return botDiz('Olá! Como posso ajudar?', chipsPadrao());
+    if (/obrigad|valeu|agradec/.test(t)) return botDiz('Por nada! Se precisar, estou por aqui.', chipsPadrao());
+    if (/outro pedido|consultar meu|consultar pedido|consultar outro/.test(t)) { st.pedido = null; aguardando = 'protocolo'; return botDiz('Informe o <b>número do pedido</b> e o <b>e-mail</b> da solicitação (pode ser na mesma mensagem).', []); }
+    if (/abrir|nova solicita|registrar|como (abrir|pedir|solicitar)/.test(t)) { trocarAba('nova'); return botDiz('Abri o formulário de <b>Nova solicitação</b>. Preencha os quadros coloridos, anexe fotos (até 15 MB) e clique em <b>Enviar solicitação</b>. Você recebe o número do pedido na hora.', chipsPadrao()); }
+    if (/significa|cada etapa|o que e|explica/.test(t)) return botDiz('As etapas são: <b>Recebida</b> (a equipe analisou), <b>Aprovada</b> (serviços planejados aprovados pela diretoria), <b>Executada</b> (o serviço foi feito), <b>Conferida</b> (a fiscalização atestou) e <b>Encerrada</b> (atendimento concluído).', chipsPadrao());
+    if (/contato|telefone|falar|equipe|subad|atendente|humano/.test(t)) return botDiz('Você pode falar com a equipe: <b>' + e((st.cfg && st.cfg.contato) || 'SUBAD') + '</b>. ' + (p ? 'Também é possível enviar uma observação no quadro do pedido, em "Acompanhar solicitação".' : ''), chipsPadrao());
+    if (!p) { aguardando = 'protocolo'; return botDiz('Para responder sobre o andamento, preciso do <b>número do pedido</b> e do <b>e-mail</b> da solicitação.', chipsPadrao()); }
+    var etapa = function (id) { return p.etapas.filter(function (x) { return x.id === id; })[0]; };
+    if (/situa|status|andamento|como esta|como anda/.test(t)) return botDiz('O pedido <b>' + e(p.id) + '</b> está <b>' + e(p.situacao.nome) + '</b>' + (p.cancelada ? ' (' + e(p.motivoCancelamento) + ')' : '') + '. Último registro: ' + e(ultimoEvento(p)) + '.', chipsPadrao());
+    if (/prazo|quando|previs|termin|demora|pronto/.test(t)) return botDiz(p.fimPrevisto ? 'A previsão de término é <b>' + U.fmt(p.fimPrevisto) + '</b> (' + e(L.prazoTexto(p.prazoQtd, p.prazoUnidade)) + '). Situação do prazo: <b>' + e(p.prazo.nome) + '</b>.' : 'A previsão ainda será definida pela equipe.', chipsPadrao());
+    if (/etapa|fase|passo|onde esta/.test(t)) return botDiz('Etapas do pedido <b>' + e(p.id) + '</b>:<br>' + p.etapas.map(function (x) { return (x.ok ? '✅ ' : '⏳ ') + e(x.nome) + (x.ok && x.data ? ' (' + U.fmt(x.data) + ')' : ''); }).join('<br>'), chipsPadrao());
+    if (/aprov/.test(t)) { var ap = etapa('aprovacao'); return botDiz(ap ? (ap.ok ? 'Sim, o pedido foi aprovado em ' + U.fmt(ap.data) + '.' : 'A aprovação ainda está pendente.') : 'Pedidos corretivos/rotineiros não passam por aprovação: seguem direto para a execução.', chipsPadrao()); }
+    if (/execu|obra|comec|inici|feito|realiz/.test(t)) { var ex = etapa('execucao'); return botDiz(ex.ok ? 'Sim, o serviço foi executado (término em ' + U.fmt(ex.data) + ').' : p.execucaoInicio ? 'O serviço está em execução desde ' + U.fmt(p.execucaoInicio) + '.' : 'O serviço ainda não começou. ' + (p.fimPrevisto ? 'A previsão de término é ' + U.fmt(p.fimPrevisto) + '.' : ''), chipsPadrao()); }
+    if (/\bos\b|ordem de servi|atendimento|numero da|nº/.test(t)) return botDiz('Ordem de Serviço: <b>' + e(p.osNumero || 'ainda não emitida') + '</b>. Atendimento (Help Desk): <b>' + e(p.atendimentoNumero || 'ainda não registrado') + '</b>.', chipsPadrao());
+    if (/foto|imagem|anexo/.test(t)) return botDiz('O pedido tem <b>' + p.anexos.length + '</b> foto(s). Para enviar mais, abra "Acompanhar solicitação" e use <b>Enviar mais fotos</b> (limite de 15 MB por pedido).', chipsPadrao());
+    if (/cancel/.test(t)) return botDiz(p.cancelada ? 'Este pedido foi cancelado: ' + e(p.motivoCancelamento) + '.' : 'O pedido não está cancelado. Se quiser cancelar, envie uma observação à equipe explicando o motivo.', chipsPadrao());
+    botDiz('Não entendi bem. Escolha uma das opções abaixo ou pergunte, por exemplo, "qual a situação?" ou "quando fica pronto?".', chipsPadrao());
+  }
+  return H;
+})(Logica);
+
+/* =========================================================================
    APLICAÇÃO: login, navegação, sincronização com a planilha
    ========================================================================= */
 var App = (function (L) {
@@ -3478,7 +4327,12 @@ var App = (function (L) {
   var TEMA = 'iema-mp-tema';
 
   App.aplicar = function (dados) {
+    var antes = App.D && !App.publico ? App.D.demandas.reduce(function (m, d) { m[d.id] = 1; return m; }, {}) : null;
     App.D = dados;
+    if (antes) {
+      var novas = dados.demandas.filter(function (d) { return d.origem === 'Help Desk' && !antes[d.id]; });
+      if (novas.length) U.toast('Nova solicitação pelo Help Desk: ' + novas.map(function (d) { return d.id + ' (' + d.titulo + ')'; }).join(', '), 'ok');
+    }
     App.P = dados.sessao.perfil;
     App.fin = L.financeiro(dados);
     if (App.publico) { renderPublico(); return; }
@@ -3542,7 +4396,7 @@ var App = (function (L) {
     document.body.innerHTML = '<div class="login"><form class="card" id="flogin" novalidate><div><h1>Manutenção Predial</h1></div><p class="org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</p>' +
       '<label class="f">Login<input class="in" id="lg" autocomplete="username" autocapitalize="none"></label><label class="f">Senha<input class="in" id="ls" type="password" autocomplete="current-password"></label>' +
       '<p class="err" id="lerr" role="alert">' + U.esc(msg || '') + '</p><button class="btn primary" type="submit">Entrar</button>' +
-      '<div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+      '<a class="link-hd" href="?helpdesk">Sou solicitante: abrir a Central de Atendimento</a><div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
     U.$('#lg').focus();
     U.$('#flogin').onsubmit = function (ev) {
       ev.preventDefault();
@@ -3600,7 +4454,7 @@ var App = (function (L) {
     try { if (!registrarAtividade._t || ultima - registrarAtividade._t > 5000) { localStorage.setItem(ATV, String(ultima)); registrarAtividade._t = ultima; } } catch (e) { /* ignora */ }
   }
   function verificarInatividade() {
-    if (!App.D || App.publico) return;
+    if (!App.D || App.publico || App.helpdesk) return;
     var outra = 0; try { outra = Number(localStorage.getItem(ATV)) || 0; } catch (e) { /* ignora */ }
     if (outra > ultima) ultima = outra;
     var parado = Date.now() - ultima;
@@ -3629,6 +4483,7 @@ var App = (function (L) {
   /* ---------------- Inicialização ---------------- */
   var TEMPLATE = '';
   function iniciar() {
+    if (/[?&]helpdesk\b/.test(location.search) || location.hash === '#helpdesk') { Helpdesk.iniciar(); return; }
     var chavePainel = (location.search.match(/[?&]painel=([^&#]+)/) || [])[1];
     if (chavePainel) { iniciarPainel(decodeURIComponent(chavePainel)); return; }
     TEMPLATE = U.$('#tpl-app').innerHTML;

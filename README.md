@@ -7,6 +7,7 @@ Sistema para registrar e acompanhar as demandas de manutenção predial do IEMA,
 | Arquivo | Onde vai | Para que serve |
 |---|---|---|
 | `index.html` | GitHub | O sistema completo (telas, gráficos e relatórios) |
+| `helpdesk.html` | GitHub | Atalho da Central de Atendimento (Help Desk) para os solicitantes |
 | `config.js` | GitHub | Endereço de conexão com a planilha Google |
 | `README.md` | GitHub | Este guia |
 | `apps-script/Codigo.gs` | Planilha Google | Código que transforma a planilha em banco de dados e envia os backups |
@@ -68,7 +69,9 @@ window.IEMA_CONFIG = {
 1. No editor do Apps Script, apague o código antigo, cole o novo `Codigo.gs` e salve.
 2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações, troca a lista antiga de setores pelas siglas e fixa os alertas em 70% quando ainda estiverem vazios.
 3. Vá em **Implantar > Gerenciar implantações**, clique no lápis, escolha **Versão: Nova versão** e **Implantar**. O endereço `/exec` continua o mesmo.
-4. Envie o novo `index.html` ao GitHub, substituindo o anterior. O `config.js` não muda.
+4. Envie o novo `index.html` e o `helpdesk.html` ao GitHub, substituindo os anteriores. O `config.js` não muda.
+
+> Na versão com a Central de Atendimento, execute **instalar** novamente: ela cria a aba **Anexos** e as colunas de e-mail, telefone e origem do solicitante. O Google pode pedir uma nova autorização (Drive, para guardar as fotos).
 
 ### 7. Primeiro acesso
 1. Abra o site e entre com o login `master` e a senha provisória definida no passo 2.
@@ -109,6 +112,16 @@ window.IEMA_CONFIG = {
   - **empenho** (somado aos reforços) executado em **70% ou mais**.
 - Os dois alertas já começam **fixos em 70%**. Para mudar, use **Alterar valores** em Configurações: o sistema pergunta se o gestor realmente deseja alterar e, se sim, pede a senha e o motivo.
 - O valor global da vigência tem o botão **Salvar**; depois de gravado, só muda pelo mesmo botão **Alterar valores**.
+
+### Central de Atendimento (Help Desk)
+- Endereço para os solicitantes: **https://SEU-USUARIO.github.io/SEU-REPOSITORIO/helpdesk.html** (o endereço exato aparece em **Área do Gestor > Configurações > Central de Atendimento**, com o botão **Copiar**). Não exige login.
+- **Nova solicitação:** quadros coloridos para dados do solicitante, local, problema (com ícones por tipo), urgência e prazo, fotos e revisão. As fotos (JPG, PNG, WEBP, GIF ou HEIC) somam até **15 MB**; imagens grandes são reduzidas antes do envio. O solicitante recebe o **número do pedido** na hora e uma confirmação por e-mail.
+- **Acompanhar solicitação:** com o número do pedido e o e-mail usado, o solicitante vê a situação, as etapas, a previsão, o histórico e as fotos, envia mais fotos e manda observações à equipe. A tela se atualiza sozinha a cada minuto.
+- **Assistente virtual:** responde automaticamente sobre situação, prazo, etapas, aprovação, execução, números da OS e do atendimento, fotos, cancelamento e contato. Aceita o número do pedido e o e-mail digitados na conversa e avisa quando o pedido muda de situação.
+- **Não salvar nesta máquina:** botão no topo que apaga e deixa de gravar nome, e-mail e pedidos recentes no computador. **Limpar meus dados** apaga tudo da página e recomeça. Use em computadores compartilhados.
+- **Integração com a Área do Gestor:** a solicitação entra direto em **Demandas** como "Aguardando análise", com a marca **Help Desk**, o contato do solicitante e as fotos no detalhe. Quem estiver com o sistema aberto recebe um aviso. Ao marcar a **Demanda inicial**, o gestor escolhe o lote (e o valor estimado, se a demanda for programada).
+- As fotos ficam na pasta **Anexos - Manutenção Predial IEMA** do Google Drive de quem implantou o script, separadas por pedido, e só são exibidas a quem tem acesso ao pedido.
+- Para pausar o recebimento de pedidos, desmarque **Aceitar novas solicitações** em Configurações. Há limites automáticos contra excesso de envios.
 
 ### Exclusão de demandas
 - Gestores (perfis com permissão de excluir) apagam uma demanda pelo botão **Excluir** no detalhe ou pelo ícone **×** na lista de demandas.
