@@ -795,6 +795,87 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
 .at-card .timeline li:last-child::after { display: none; }
 .at-card .timeline .d { color: #5E7075; font-size: 12px; }
 
+/* =========================================================================
+   PAINEL DO GESTOR: refinamento visual
+   ========================================================================= */
+:root { --side: 264px; }
+.side { background: linear-gradient(180deg, #072F2C 0%, #0A4440 55%, #083B37 100%); padding: 18px 14px 14px; box-shadow: inset -1px 0 0 rgba(255,255,255,.06); }
+.brand { display: flex; align-items: center; gap: 12px; padding: 4px 6px 18px; }
+.brand-logo { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #14B8A6, #0E7490); color: #fff; flex: none; box-shadow: 0 8px 18px -10px rgba(20,184,166,.8); }
+.brand-logo svg { width: 22px; height: 22px; }
+.brand-name { font-size: 16.5px; } .brand-org { font-size: 11.5px; line-height: 1.35; }
+.nav { gap: 3px; }
+.nav-grupo { font-size: 11.5px; font-weight: 700; color: #7FB8AF; padding: 14px 12px 6px; letter-spacing: .02em; }
+.nav a { padding: 10px 12px; border-radius: 10px; position: relative; color: #D3EAE5; }
+.nav a:hover { background: rgba(255,255,255,.07); }
+.nav a[aria-current="page"] { background: rgba(255,255,255,.13); color: #fff; font-weight: 700; }
+.nav a[aria-current="page"]::before { content: ""; position: absolute; left: -14px; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: #5EEAD4; }
+.nav a[aria-current="page"] svg { color: #5EEAD4; }
+.nav .gestor[aria-current="page"] { color: #fff; }
+.nav-badge { margin-left: auto; min-width: 22px; height: 20px; padding: 0 7px; border-radius: 999px; background: #8B5CF6; color: #fff; font-size: 11.5px; font-weight: 800; display: inline-grid; place-items: center; }
+.nav-badge.alerta { background: #EF4444; }
+.user-box { border-top: 1px solid rgba(255,255,255,.1); gap: 8px; }
+.user-id { display: flex; align-items: center; gap: 10px; }
+.user-id div { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+.user-id b { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #8B5CF6, #0EA5E9); color: #fff; font-weight: 800; font-size: 13px; display: grid; place-items: center; flex: none; }
+.user-box .sync { font-size: 11.5px; }
+.main { background: var(--bg); }
+.top { background: color-mix(in srgb, var(--surface) 92%, transparent); padding: 14px 32px; box-shadow: 0 1px 0 var(--line), 0 6px 20px -18px rgba(0,0,0,.4); }
+.top h1 { font-size: 22px; letter-spacing: -0.02em; }
+.live { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; white-space: nowrap; }
+.live i, .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #22C55E; display: inline-block; animation: pulso 2s infinite; }
+@keyframes pulso { 0% { box-shadow: 0 0 0 0 rgba(34,197,94,.55); } 70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); } 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); } }
+.view { padding: 26px 32px 56px; max-width: 1600px; }
+.panel { border-radius: 16px; box-shadow: 0 1px 2px rgba(20,35,42,.05), 0 10px 28px -22px rgba(20,35,42,.35); }
+.panel-h { padding: 14px 18px 12px; border-bottom: 1px solid var(--line); }
+.panel-h h2 { display: flex; align-items: center; gap: 8px; font-size: 15.5px; }
+.panel-b { padding-top: 14px; }
+.kpi { border-radius: 16px; padding: 14px 16px 14px; border-top-width: 4px; box-shadow: 0 1px 2px rgba(20,35,42,.05), 0 10px 26px -22px rgba(20,35,42,.4); }
+.kpi .l { font-size: 12.5px; }
+.tabs { border-bottom: 0; gap: 6px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 6px; }
+.tabs button { border-bottom: 0; border-radius: 10px; padding: 9px 14px; margin: 0; }
+.tabs button[aria-selected="true"] { background: var(--brand); color: #fff; }
+.filters { background: var(--surface-2); border-radius: 16px 16px 0 0; }
+.t th { background: var(--surface-2); }
+.t tbody tr.click:hover td { background: color-mix(in srgb, var(--accent) 6%, var(--surface)); }
+/* Central de Atendimento no painel */
+.painel-central { border-top: 4px solid #6D28D9; }
+.ic-central { width: 12px; height: 12px; border-radius: 4px; background: #6D28D9; display: inline-block; }
+.painel-central .meta { display: inline-flex; align-items: center; gap: 6px; }
+.central-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 10px; }
+.central-item { text-align: left; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px 12px 18px; cursor: pointer; display: flex; flex-direction: column; gap: 4px; position: relative; }
+.central-item::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 4px; border-radius: 0 4px 4px 0; background: var(--u); }
+.central-item:hover { border-color: var(--line-2); transform: translateY(-1px); box-shadow: 0 10px 24px -18px rgba(0,0,0,.45); }
+.central-item.nova { background: color-mix(in srgb, #8B5CF6 7%, var(--surface)); border-color: color-mix(in srgb, #8B5CF6 35%, var(--line)); }
+.central-item .l1 { display: flex; align-items: center; gap: 6px; font-size: 12.5px; } .central-item .l1 span { margin-left: auto; color: var(--muted); }
+.central-item .tt { font-weight: 700; font-size: 14px; line-height: 1.3; }
+.central-item .l3 { font-size: 12.5px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.central-item .l4 { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 2px; }
+.selo-nova, .selo-msg { font-style: normal; font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 999px; margin-left: 6px; vertical-align: middle; white-space: nowrap; }
+.selo-nova { background: #7C3AED; color: #fff; } .selo-msg { background: #EDE9FE; color: #5B21B6; }
+.origens { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; padding: 12px 18px 0; }
+.origens .cnt { display: inline-grid; place-items: center; min-width: 22px; padding: 0 6px; border-radius: 999px; background: var(--surface-3); font-size: 11.5px; margin-left: 4px; }
+.aviso-novas { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; color: #6D28D9; }
+.t tbody tr.nao-visto td { background: color-mix(in srgb, #8B5CF6 6%, var(--surface)); }
+.t tbody tr.nao-visto .tt { font-weight: 800; }
+/* Detalhe da demanda */
+.drawer { width: min(780px, 100%); }
+.drawer-h { border-top: 6px solid var(--sit, var(--brand)); background: linear-gradient(180deg, color-mix(in srgb, var(--sit, #0B4F4A) 8%, var(--surface)), var(--surface)); }
+.drawer-b { background: var(--bg); gap: 14px; }
+.dr-sec { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; border-top: 3px solid var(--c); }
+.dr-sec .sec-t > span:first-child { display: inline-flex; align-items: center; gap: 8px; }
+.dr-sec .sec-t > span:first-child::before { content: ""; width: 9px; height: 9px; border-radius: 3px; background: var(--c); }
+.conversa { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; margin-bottom: 10px; }
+.bolha { max-width: 88%; padding: 8px 12px; border-radius: 12px; font-size: 13.5px; }
+.bolha small { display: block; font-size: 11px; opacity: .8; margin-bottom: 2px; }
+.bolha p { white-space: pre-wrap; }
+.bolha.sol { background: var(--surface-2); border: 1px solid var(--line); align-self: flex-start; border-bottom-left-radius: 4px; }
+.bolha.eq { background: color-mix(in srgb, #6366F1 12%, var(--surface)); border: 1px solid color-mix(in srgb, #6366F1 30%, var(--line)); align-self: flex-end; border-bottom-right-radius: 4px; }
+.resp { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid var(--line); padding-top: 10px; }
+@media (max-width: 900px) { .view { padding: 18px 16px 40px; } .top { padding: 10px 16px; } .live { display: none; } .nav a[aria-current="page"]::before { left: -14px; } }
+.kpis { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+
   </style>
   <script src="config.js"></script>
 </head>
@@ -805,23 +886,22 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
     <div class="app" id="app">
       <aside class="side" aria-label="Navegação principal">
         <div class="brand">
-          <div class="brand-name">Manutenção Predial</div>
-          <div class="brand-org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</div>
+          <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></span>
+          <div><div class="brand-name">Manutenção Predial</div><div class="brand-org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</div></div>
         </div>
         <nav class="nav">
+          <span class="nav-grupo">Operação</span>
           <a href="#painel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 13h8V3H3zM13 21h8V11h-8zM3 21h8v-6H3zM13 3v6h8V3z"/></svg>Painel</a>
-          <a href="#demandas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Demandas</a>
+          <a href="#demandas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Demandas<span id="dem-badge" class="nav-badge" hidden title="Novidades da Central de Atendimento"></span></a>
           <a href="#cronograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M8 12h11M6 18h7"/><path d="M3 3v18h18" stroke-linejoin="round"/></svg>Cronograma de obras</a>
           <a href="#setores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 21h16"/></svg>Setores atendidos</a>
-          <a href="?atendimento" target="_blank" rel="noopener" class="nav-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></svg>Gestão de Solicitações</a>
-          <a href="?helpdesk" target="_blank" rel="noopener" class="nav-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>Central de Atendimento</a>
-          <div class="sep" role="separator"></div>
-          <a href="#gestor" id="nav-gestor" class="gestor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Área do Gestor<span id="gestor-badge" class="tag atrasada" style="margin-left:auto;padding:0 8px" hidden title="Saldo próximo do fim"></span></a>
+          <span class="nav-grupo">Gestão</span>
+          <a href="#gestor" id="nav-gestor" class="gestor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Área do Gestor<span id="gestor-badge" class="nav-badge alerta" hidden title="Execução financeira no limite de alerta"></span></a>
         </nav>
         <div class="user-box">
-          <b id="u-nome"></b><span id="u-perfil"></span>
+          <div class="user-id"><span class="avatar" id="u-avatar">?</span><div><b id="u-nome"></b><span id="u-perfil"></span></div></div>
           <span class="conn" id="conn"><i></i><span id="conn-t"></span></span>
-          <span>Atualizado às <span id="sync-t"></span></span>
+          <span class="sync">Atualizado às <span id="sync-t"></span></span>
           <div class="acts"><button id="btn-sync" type="button">Atualizar</button><button id="btn-senha" type="button">Trocar senha</button><button id="btn-sair" type="button">Sair</button></div>
         </div>
       </aside>
@@ -830,6 +910,7 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
           <button class="btn ghost icon-btn menu-btn" id="menu-btn" aria-label="Abrir menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
           <div><h1 id="page-title">Painel</h1><div class="sub" id="page-sub"></div></div>
           <span class="top-spacer"></span>
+          <span class="live" title="As solicitações da Central de Atendimento chegam automaticamente"><i></i><span id="live-t">Ao vivo</span></span>
           <label class="search"><span class="sr-only">Buscar demandas</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="busca" type="search" placeholder="Buscar demandas ( / )" autocomplete="off"></label>
           <button class="btn ghost icon-btn" id="theme-btn" aria-label="Alternar tema"></button>
           <button class="btn primary" id="btn-nova"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Nova demanda</span></button>
@@ -2479,6 +2560,7 @@ var U = (function (L) {
 /* =========================================================================
    CONEXÃO: Google Apps Script (planilha) ou modo demonstração
    ========================================================================= */
+window.__iemaAba = Math.random().toString(36).slice(2);
 var Api = (function () {
   'use strict';
   var cfg = window.IEMA_CONFIG || {};
@@ -2508,6 +2590,7 @@ var Api = (function () {
       }
       if (r.token) { token = r.token; try { localStorage.setItem(TK, token); } catch (e) { /* ignora */ } }
       if (r.dados && window.App) App.aplicar(r.dados);
+      if (/^(salvar|excluir|responder|helpdesk(Registrar|Arquivos|Mensagem|Anexo))/.test(acao) && window.BroadcastChannel) { try { var bc = new BroadcastChannel('iema-manutencao'); bc.postMessage({ acao: acao, em: Date.now(), aba: window.__iemaAba }); bc.close(); } catch (x) { /* sem canal */ } }
       return r;
     }, function (e) { if (!silencioso) carregando(-1); throw e; });
   };
@@ -2693,6 +2776,21 @@ var T = (function (L) {
   };
   T.kpi = function (l, v, s, c, extra) { return '<div class="kpi" style="--c:' + (c || 'var(--brand)') + '"><div class="l">' + U.esc(l) + '</div><div class="v" title="' + U.esc(v) + '">' + U.esc(v) + '</div><div class="s">' + U.esc(s || '') + '</div>' + (extra || '') + '</div>'; };
   T.painel = function (t, meta, corpo, cls) { return '<section class="panel ' + (cls || '') + '"><div class="panel-h"><h2>' + U.esc(t) + '</h2>' + (meta ? '<span class="meta">' + meta + '</span>' : '') + '</div><div class="panel-b">' + corpo + '</div></section>'; };
+  /* ---------------- Central de Atendimento: novidades por usuário ---------------- */
+  function chaveVistos() { return 'iema-vistos-' + (App.D ? App.D.sessao.login : ''); }
+  T.vistos = function () { try { return JSON.parse(localStorage.getItem(chaveVistos()) || '{}'); } catch (x) { return {}; } };
+  function evHd(id) { return (App.D.historico || []).filter(function (h) { return h.demandaId === id && h.usuario === 'helpdesk'; }).length; }
+  T.marcarVisto = function (id) { var v = T.vistos(); v[id] = evHd(id) + 1; try { localStorage.setItem(chaveVistos(), JSON.stringify(v)); } catch (x) { /* ignora */ } };
+  T.naoVisto = function (d) { if (d.origem !== 'Help Desk' || d.cancelada) return ''; var v = T.vistos()[d.id]; if (!v) return L.situacao(d).id === 'analise' ? 'nova' : ''; return evHd(d.id) + 1 > v ? 'msg' : ''; };
+  T.novasCentral = function () { return App.D.demandas.filter(function (d) { return T.naoVisto(d); }); };
+  T.desde = function (iso) {
+    if (!iso) return '';
+    var t = new Date(String(iso).length > 10 ? iso : iso + 'T12:00:00'), min = Math.round((Date.now() - t) / 60000);
+    if (min < 1) return 'agora'; if (min < 60) return 'há ' + min + ' min';
+    var h = Math.round(min / 60); if (h < 24) return 'há ' + h + ' h';
+    var dd = Math.round(h / 24); return dd === 1 ? 'há 1 dia' : 'há ' + dd + ' dias';
+  };
+  T.seloNovo = function (d) { var n = T.naoVisto(d); return n === 'nova' ? '<em class="selo-nova">Nova</em>' : n === 'msg' ? '<em class="selo-msg" title="Nova mensagem ou foto do solicitante">Mensagem</em>' : ''; };
   T.verFin = function () { var p = App.P; return p.financeiro || p.areaGestor; };
   T.bannerFin = function (fin) {
     if (!fin.alertas.length) return '';
@@ -2719,6 +2817,8 @@ var T = (function (L) {
         T.kpi('Em atraso', U.int(atraso.length), abertas.length ? U.pct(atraso.length / abertas.length * 100) + ' das abertas' : 'nenhuma em aberto', 'var(--bad)') +
         T.kpi('Em execução', U.int(exec.length), 'serviços em andamento', '#0E7490') +
         T.kpi('Aguardando ateste ou pagamento', U.int(aguard.length), U.brlCurto(U.sum(aguard, function (d) { return d.atesteValor || d.valorEstimado; })), '#C2410C');
+      var central = ds.filter(function (d) { return d.origem === 'Help Desk'; }), novasC = T.novasCentral();
+      kp = T.kpi('Central de Atendimento', U.int(novasC.length), novasC.length ? 'novidade(s) para ver' : 'nada pendente', '#6D28D9') + kp;
       if (T.verFin()) kp += T.kpi('Notas fiscais no mês', U.brlCurto(U.sum(nfMes, function (n) { return n.valor; })), nfMes.length + ' nota(s) em ' + U.mesLongo(mes), 'var(--ok)') +
         T.kpi('Saldo global da vigência', U.brlCurto(fin.global.saldo), U.pct(fin.global.pctSaldo) + ' de ' + U.brlCurto(fin.global.total), fin.global.alerta ? 'var(--bad)' : 'var(--brand)');
       var sitRows = L.SITUACOES.map(function (s) { var n = ds.filter(function (d) { return L.situacao(d).id === s.id; }).length; return { label: s.nome, total: n, color: s.cor }; }).filter(function (r) { return r.total; });
@@ -2737,10 +2837,19 @@ var T = (function (L) {
       var hist = (D.historico || []).filter(function (h) { return h.acao !== 'Entrada no sistema'; }).slice(0, 8).map(function (h) {
         return '<div class="li' + (h.demandaId ? ' click" data-open="' + h.demandaId + '" tabindex="0" role="button"' : '"') + '><div class="date"><b>' + h.em.slice(8, 10) + '</b><span>' + U.MESES[+h.em.slice(5, 7) - 1] + '</span></div><div style="min-width:0"><div class="tt">' + U.esc(h.acao) + '</div><div class="sub">' + U.esc((h.demandaId ? h.demandaId + ' · ' : '') + T.nome(h.usuario) + (h.campo ? ' · ' + h.campo : '')) + '</div></div><span></span></div>';
       }).join('') || '<div class="empty">Sem registros.</div>';
-      el.innerHTML = '<div class="stack">' + (T.verFin() ? T.bannerFin(fin) : '') + '<div class="kpis">' + kp + '</div>' +
+      var recentes = central.slice().sort(function (a, b) { var na = T.naoVisto(a) ? 1 : 0, nb = T.naoVisto(b) ? 1 : 0; return (nb - na) || ((a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1); }).slice(0, 6);
+      var cores = { 'Baixa': '#0284C7', 'Média': '#CA8A04', 'Alta': '#EA580C', 'Crítica': '#DC2626' };
+      var centralH = '<section class="panel painel-central"><div class="panel-h"><h2><span class="ic-central"></span>Central de Atendimento · solicitações recebidas</h2><span class="meta"><span class="live-dot"></span>em tempo real · <a href="#demandas" data-central>Ver todas (' + central.length + ')</a></span></div><div class="panel-b">' +
+        (recentes.length ? '<div class="central-grid">' + recentes.map(function (d) {
+          var s = L.situacao(d);
+          return '<button type="button" class="central-item' + (T.naoVisto(d) ? ' nova' : '') + '" data-open="' + d.id + '" style="--u:' + (cores[d.criticidade] || '#94A3B8') + '"><div class="l1"><b>' + U.esc(d.id) + '</b>' + T.seloNovo(d) + '<span>' + T.desde(d.criadoEm || d.dataSolicitacao) + '</span></div>' +
+            '<div class="tt">' + U.esc(d.titulo) + '</div><div class="l3">' + U.esc([d.solicitante, d.unidade, d.local].filter(Boolean).join(' · ')) + '</div><div class="l4">' + T.sit(d) + '<span class="tag" style="color:' + (cores[d.criticidade] || 'inherit') + '">' + U.esc(d.criticidade) + '</span></div></button>';
+        }).join('') + '</div>' : '<div class="empty"><b>Nenhuma solicitação recebida pela Central</b>As solicitações abertas pelos servidores na Central de Atendimento aparecem aqui assim que são enviadas.</div>') + '</div></section>';
+      el.innerHTML = '<div class="stack">' + (T.verFin() ? T.bannerFin(fin) : '') + '<div class="kpis">' + kp + '</div>' + centralH +
         '<div class="grid g-main">' + T.painel('Próximos términos previstos', '<a href="#cronograma">Ver cronograma</a>', '<div class="list">' + proxH + '</div>') +
         T.painel('Pontos de atenção', aten.length + ' no total', '<div class="stack" style="gap:8px">' + atH + '</div>') + '</div>' +
         '<div class="grid g2">' + T.painel('Situação das demandas', ds.length + ' registradas', Ch.hbars(sitRows)) + T.painel('Últimos registros', '', '<div class="list">' + hist + '</div>') + '</div></div>';
+      el.onclick = function (ev) { if (ev.target.closest('[data-central]')) { ev.preventDefault(); st.filtros = { origem: 'Help Desk' }; location.hash = '#demandas'; } };
     }
   };
 
@@ -2750,6 +2859,7 @@ var T = (function (L) {
   function filtrar(lista, f) {
     var q = U.norm(f.q);
     return lista.filter(function (d) {
+      if (f.origem && d.origem !== f.origem) return false;
       if (f.modalidade && d.modalidade !== f.modalidade) return false;
       if (f.situacao && L.situacao(d).id !== f.situacao) return false;
       if (f.prazo && L.prazo(d).k !== f.prazo) return false;
@@ -2790,7 +2900,7 @@ var T = (function (L) {
       var podeExcluir = App.P.excluir;
       var th = cols.map(function (c) { return '<th' + (c[0] === 'valorEstimado' ? ' class="right"' : '') + ' aria-sort="' + (st.sort.k === c[0] ? (st.sort.dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button data-sort="' + c[0] + '">' + c[1] + (st.sort.k === c[0] ? (st.sort.dir > 0 ? ' ▲' : ' ▼') : '') + '</button></th>'; }).join('');
       var rows = lista.map(function (d) {
-        return '<tr class="click" data-open="' + d.id + '" tabindex="0"><td class="id">' + U.esc(d.id) + '</td>' +
+        return '<tr class="click' + (T.naoVisto(d) ? ' nao-visto' : '') + '" data-open="' + d.id + '" tabindex="0"><td class="id">' + U.esc(d.id) + T.seloNovo(d) + '</td>' +
           '<td><div class="tt">' + U.esc(d.titulo) + (d.origem === 'Help Desk' ? ' <span class="tag hd-tag">Help Desk</span>' : '') + '</div><div class="sub">' + U.esc(d.local + ' · ' + (d.loteId ? T.loteCurto(d.loteId) : 'sem lote')) + '</div></td>' +
           '<td><span class="tag mod">' + U.esc(d.modalidade) + '</span></td>' +
           '<td>' + T.sit(d) + '<div style="margin-top:4px">' + T.marks(d) + '</div></td>' +
@@ -2803,12 +2913,15 @@ var T = (function (L) {
         sel('prazo', 'Prazo', [{ v: 'atrasada', l: 'Em atraso' }, { v: 'atencao', l: 'Vence em até 7 dias' }, { v: 'ok', l: 'No prazo' }, { v: 'concluida', l: 'Executada no prazo' }, { v: 'concluida-atraso', l: 'Executada com atraso' }]) +
         sel('lote', 'Lote', D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero }; })) + sel('local', 'Local', T.locais()) + sel('setor', 'Setor atendido', cfg.setores) +
         sel('sistema', 'Sistema', L.SISTEMAS) + sel('criticidade', 'Criticidade', L.CRITICIDADES) + sel('ano', 'Ano', anos) + '</div>' +
+        '<div class="origens"><div class="seg" role="tablist">' + [['', 'Todas as demandas', D.demandas.length], ['Help Desk', 'Central de Atendimento', D.demandas.filter(function (d) { return d.origem === 'Help Desk'; }).length]].map(function (o) { return '<button type="button" data-origem="' + o[0] + '" aria-pressed="' + ((f.origem || '') === o[0]) + '">' + o[1] + ' <span class="cnt">' + o[2] + '</span></button>'; }).join('') + '</div>' +
+        (T.novasCentral().length ? '<span class="aviso-novas"><span class="live-dot"></span>' + T.novasCentral().length + ' novidade(s) da Central de Atendimento</span>' : '') + '</div>' +
         '<div class="count"><span>' + lista.length + ' demanda(s) · ' + U.brl(U.sum(lista, function (d) { return d.valorEstimado; })) + ' estimados</span><span class="row">' +
         '<button class="btn sm ghost" data-act="limpar">Limpar filtros</button><button class="btn sm" data-act="xls">' + U.icon.down + 'Excel</button><button class="btn sm" data-act="csv">' + U.icon.down + 'CSV</button></span></div>' +
         '<div class="table-wrap"><table class="t"><thead><tr>' + th + (podeExcluir ? '<th></th>' : '') + '</tr></thead><tbody>' + (rows || '<tr><td colspan="8"><div class="empty"><b>Nenhuma demanda encontrada</b>Ajuste os filtros' + (App.P.criar ? ' ou registre uma nova demanda' : '') + '.</div></td></tr>') + '</tbody></table></div></section>';
       el.oninput = function (e) { if (e.target.dataset.f === 'q') { st.filtros.q = e.target.value; clearTimeout(T._t); T._t = setTimeout(function () { App.render(); var i = U.$('[data-f="q"]'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 250); } };
       el.onchange = function (e) { var t = e.target; if (t.dataset.f && t.dataset.f !== 'q') { st.filtros[t.dataset.f] = t.value; App.render(); } };
       el.onclick = function (e) {
+        var og = e.target.closest('[data-origem]'); if (og) { st.filtros.origem = og.dataset.origem; App.render(); return; }
         var ex = e.target.closest('[data-excluir]'); if (ex) { e.stopPropagation(); T.excluir(T.dem(ex.dataset.excluir)); return; }
         var s = e.target.closest('[data-sort]'); if (s) { st.sort = { k: s.dataset.sort, dir: st.sort.k === s.dataset.sort ? -st.sort.dir : 1 }; App.render(); return; }
         var a = e.target.closest('[data-act]'); if (!a) return;
@@ -2826,12 +2939,14 @@ var T = (function (L) {
   var aberta = null;
   T.abrir = function (id) {
     aberta = id;
+    if (App.D && T.dem(id)) T.marcarVisto(id);
     var dr = U.$('#drawer'), sc = U.$('#d-scrim');
     if (!dr) {
       sc = document.createElement('div'); sc.id = 'd-scrim'; sc.className = 'scrim';
       dr = document.createElement('aside'); dr.id = 'drawer'; dr.className = 'drawer'; dr.setAttribute('role', 'dialog'); dr.setAttribute('aria-modal', 'true'); dr.setAttribute('aria-labelledby', 'dr-t');
       document.body.appendChild(sc); document.body.appendChild(dr);
       sc.onclick = T.fechar; dr.onclick = cliqueDetalhe; dr.onchange = mudancaDetalhe;
+      dr.oninput = function (ev) { if (ev.target.hasAttribute('data-resp')) rascunhos[aberta] = ev.target.value; };
     }
     T.renderDetalhe();
     requestAnimationFrame(function () { sc.classList.add('on'); dr.classList.add('on'); var b = dr.querySelector('[data-a="fechar"]'); if (b) b.focus(); });
@@ -2843,7 +2958,11 @@ var T = (function (L) {
     setTimeout(function () { if (!aberta) { if (dr) dr.remove(); if (sc) sc.remove(); } }, 230);
   };
   T.aberta = function () { return aberta; };
-  T.refreshDetalhe = function () { if (aberta && U.$('#drawer')) { var b = U.$('.drawer-b'), top = b ? b.scrollTop : 0; T.renderDetalhe(); if (U.$('.drawer-b')) U.$('.drawer-b').scrollTop = top; } };
+  T.refreshDetalhe = function () {
+    var ae = document.activeElement;
+    if (ae && U.$('#drawer') && U.$('#drawer').contains(ae) && /^(TEXTAREA|INPUT|SELECT)$/.test(ae.tagName) && ae.type !== 'checkbox') return;
+    if (aberta && T.dem(aberta) && T.naoVisto(T.dem(aberta))) T.marcarVisto(aberta);
+    if (aberta && U.$('#drawer')) { var b = U.$('.drawer-b'), top = b ? b.scrollTop : 0; T.renderDetalhe(); if (U.$('.drawer-b')) U.$('.drawer-b').scrollTop = top; } };
   function dem(id) { return App.D.demandas.filter(function (d) { return d.id === id; })[0]; }
   T.dem = dem;
   function nfsDe(id) { return (App.D.nfs || []).filter(function (n) { return n.demandaId === id; }).sort(function (a, b) { return a.data < b.data ? -1 : 1; }); }
@@ -2885,7 +3004,7 @@ var T = (function (L) {
     }).join('');
     var nfH = '';
     if (d.atesteOk || nfs.length) {
-      nfH = '<section><div class="sec-t"><span>Notas fiscais</span>' + (p.financeiro && d.atesteOk && !d.cancelada ? '<button class="btn sm" data-a="novaNF">' + U.icon.plus + 'Registrar Nota Fiscal</button>' : '') + '</div>' +
+      nfH = '<section class="dr-sec" style="--c:#C2410C"><div class="sec-t"><span>Notas fiscais</span>' + (p.financeiro && d.atesteOk && !d.cancelada ? '<button class="btn sm" data-a="novaNF">' + U.icon.plus + 'Registrar Nota Fiscal</button>' : '') + '</div>' +
         (nfs.length ? '<div class="table-wrap"><table class="t"><thead><tr><th>Nº da NF</th><th>Emissão</th><th>Empenho</th><th class="right">Valor do serviço</th>' + (p.financeiro ? '<th></th>' : '') + '</tr></thead><tbody>' +
           nfs.map(function (n) { return '<tr><td><b>' + U.esc(n.numero) + '</b>' + (n.obs ? '<div class="sub">' + U.esc(n.obs) + '</div>' : '') + '</td><td>' + U.fmt(n.data) + '</td><td>' + U.esc(T.empenho(n.empenhoId)) + '</td><td class="right nowrap">' + U.brl(n.valor) + '</td>' +
             (p.financeiro ? '<td class="right nowrap"><button class="btn sm ghost" data-a="editarNF" data-id="' + n.id + '">Editar</button><button class="btn sm ghost" data-a="excluirNF" data-id="' + n.id + '">Excluir</button></td>' : '') + '</tr>'; }).join('') +
@@ -2913,13 +3032,14 @@ var T = (function (L) {
     if (p.excluir && d.cancelada) acoes += '<button class="btn" data-a="reativar">Reativar</button>';
     acoes += '<span style="flex:1"></span><button class="btn" data-a="imprimir" title="Baixar a ficha da demanda em PDF">' + U.icon.down + 'Ficha (PDF)</button>';
     if (p.excluir) acoes += '<button class="btn danger" data-a="excluir">Excluir</button>';
+    dr.style.setProperty('--sit', s.cor);
     dr.innerHTML = '<div class="drawer-h"><div class="row1"><div><div class="row small"><b>' + U.esc(d.id) + '</b>' + T.sit(d) + T.prazoTag(d) + '</div><h2 id="dr-t">' + U.esc(d.titulo) + '</h2>' +
       (d.cancelada ? '<div class="notice" style="margin-top:8px">Cancelada: ' + U.esc(d.motivoCancelamento) + '</div>' : '') + '</div>' +
       '<button class="btn ghost icon-btn" data-a="fechar" aria-label="Fechar">' + U.icon.x + '</button></div></div>' +
-      '<div class="drawer-b"><section><div class="sec-t"><span>Andamento</span>' + (p.etapas ? '<span class="muted small">Etapas já marcadas só são alteradas com senha</span>' : '') + '</div><div class="etapas">' + et + '</div></section>' +
-      fotosH(d) + nfH + '<section><div class="sec-t"><span>Dados da demanda</span></div><dl class="kv">' + kv + '</dl>' +
+      '<div class="drawer-b"><section class="dr-sec" style="--c:#15803D"><div class="sec-t"><span>Andamento</span>' + (p.etapas ? '<span class="muted small">Etapas já marcadas só são alteradas com senha</span>' : '') + '</div><div class="etapas">' + et + '</div></section>' +
+      conversaH(d) + fotosH(d) + nfH + '<section class="dr-sec" style="--c:#1D4ED8"><div class="sec-t"><span>Dados da demanda</span></div><dl class="kv">' + kv + '</dl>' +
       (d.descricao ? '<p style="margin-top:12px">' + U.esc(d.descricao) + '</p>' : '') + (d.obs ? '<p class="muted small" style="margin-top:8px">Observações: ' + U.esc(d.obs) + '</p>' : '') + '</section>' +
-      '<section><div class="sec-t"><span>Histórico de alterações</span><span class="muted small">' + hist.length + ' registro(s)</span></div>' + histH + '</section></div>' +
+      '<section class="dr-sec" style="--c:#475569"><div class="sec-t"><span>Histórico de alterações</span><span class="muted small">' + hist.length + ' registro(s)</span></div>' + histH + '</section></div>' +
       '<div class="drawer-f">' + acoes + '</div>';
   };
 
@@ -2949,12 +3069,31 @@ var T = (function (L) {
     U.$$('[data-pdf]', box).forEach(function (b) { b.onclick = function () { T.baixarAnexo(b.dataset.pdf, b.dataset.nome); }; });
     U.$$('[data-foto]', box).forEach(function (b) { b.onclick = function () { if (b.dataset.src) T.verMiniatura(b.dataset.src, b.title); else T.baixarAnexo(b.dataset.foto, b.title); }; });
   };
+  var rascunhos = {};
+  var MODELOS = [['', 'Respostas prontas…'],
+    ['Recebemos a sua solicitação e ela está em análise pela equipe de manutenção. Em breve informaremos a previsão de atendimento.', 'Solicitação recebida'],
+    ['O serviço foi programado. A equipe da empresa contratada comparecerá ao local; pedimos que o responsável local esteja disponível para o acompanhamento.', 'Serviço programado'],
+    ['O serviço foi concluído. Caso o problema persista, responda por esta central informando o número do pedido.', 'Serviço concluído'],
+    ['Para darmos andamento, precisamos de mais informações: descreva o local exato e envie fotos do problema em "Acompanhar solicitação".', 'Pedir mais informações'],
+    ['Esta solicitação caracteriza obra (e não manutenção) e não pode ser atendida por este canal, nos termos da Lei Federal nº 14.133/2021, art. 6º, inciso XII. Procure a SUBAD para orientação.', 'Fora do escopo (obra)']];
+  function conversaH(d) {
+    if (d.origem !== 'Help Desk' && !d.solicitanteEmail) return '';
+    var p = App.P, msgs = (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && (h.acao.indexOf('Mensagem do solicitante') === 0 || h.acao.indexOf('Resposta da equipe') === 0); }).slice().reverse();
+    var pode = p.etapas || p.areaGestor;
+    return '<section class="dr-sec" style="--c:#4338CA"><div class="sec-t"><span>Conversa com o solicitante</span><span class="muted small">' + (d.origem === 'Help Desk' ? 'aparece na Central de Atendimento' : 'por e-mail') + '</span></div>' +
+      '<div class="conversa">' + (msgs.length ? msgs.map(function (h) { var eq = h.acao.indexOf('Resposta da equipe') === 0; return '<div class="bolha ' + (eq ? 'eq' : 'sol') + '"><small>' + (eq ? U.esc(T.nome(h.usuario)) + ' · equipe' : U.esc(d.solicitante || 'Solicitante')) + ' · ' + U.fmtDH(h.em) + (h.motivo ? ' · ' + U.esc(h.motivo) : '') + '</small><p>' + U.esc(h.novo) + '</p></div>'; }).join('') :
+        '<p class="muted small">Nenhuma mensagem ainda. A resposta enviada aqui aparece para o solicitante na Central de Atendimento e no assistente virtual.</p>') + '</div>' +
+      (pode ? '<div class="resp"><select class="in" data-modelo>' + MODELOS.map(function (m) { return '<option value="' + U.esc(m[0]) + '">' + U.esc(m[1]) + '</option>'; }).join('') + '</select>' +
+        '<textarea class="in" data-resp rows="3" maxlength="2000" placeholder="Escreva a resposta ao solicitante">' + U.esc(rascunhos[d.id] || '') + '</textarea>' +
+        '<div class="row" style="justify-content:space-between"><label class="check"><input type="checkbox" data-resp-email' + (d.solicitanteEmail ? ' checked' : ' disabled') + '><span>Enviar também por e-mail' + (d.solicitanteEmail ? '' : ' (sem e-mail)') + '</span></label>' +
+        '<button class="btn primary" type="button" data-a="responder">Enviar resposta</button></div></div>' : '') + '</section>';
+  }
   function fotosH(d) {
     var l = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id; });
     if (!l.length) return '';
     setTimeout(function () { var box = U.$('#drawer #anexos-' + d.id); if (!box) return; T.anexosDe(d.id).then(function (lista) { if (U.$('#drawer #anexos-' + d.id)) { box.innerHTML = T.htmlAnexos(lista); T.ligarAnexos(box); } }); }, 30);
     var nf = l.filter(function (a) { return /^image\//.test(a.tipo); }).length;
-    return '<section><div class="sec-t"><span>Fotos e PDF da solicitação</span><span class="muted small">' + nf + ' foto(s) · enviadas pelo solicitante</span></div><div id="anexos-' + U.esc(d.id) + '"><p class="muted small">Carregando…</p></div></section>';
+    return '<section class="dr-sec" style="--c:#6D28D9"><div class="sec-t"><span>Fotos e PDF da solicitação</span><span class="muted small">' + nf + ' foto(s) · enviadas pelo solicitante</span></div><div id="anexos-' + U.esc(d.id) + '"><p class="muted small">Carregando…</p></div></section>';
   }
 
   /* ---------------- Gravação com senha quando exigido ---------------- */
@@ -3061,6 +3200,12 @@ var T = (function (L) {
     if (a === 'reativar') { var n3 = copia(d); n3.cancelada = false; n3.motivoCancelamento = ''; T.salvar(n3, d).catch(UI.erro); }
     if (a === 'excluir') T.excluir(d);
     if (a === 'imprimir') G.fichaPdf(d.id);
+    if (a === 'responder') {
+      var ta = U.$('#drawer [data-resp]'), txt = ta ? ta.value.trim() : '';
+      if (!txt) { U.toast('Escreva a resposta.', 'erro'); return; }
+      b.disabled = true;
+      Api.chamar('responderSolicitante', { id: d.id, texto: txt, porEmail: !!(U.$('#drawer [data-resp-email]') || {}).checked }).then(function (r) { delete rascunhos[d.id]; if (ta) ta.blur(); T.refreshDetalhe(); U.toast(r.emailEnviado ? 'Resposta enviada e copiada por e-mail.' : 'Resposta enviada ao solicitante.', 'ok'); }, function (er) { b.disabled = false; UI.erro(er); });
+    }
   }
   T.etapasVisiveis = etapasVisiveis; T.anterioresOk = anterioresOk; T.posteriorMarcada = posteriorMarcada; T.infoEtapa = infoEtapa; T.nfsDe = nfsDe;
   T.inicioExec = function (d) { modalInicioExec(d); };
@@ -3088,7 +3233,9 @@ var T = (function (L) {
       .then(function (au) { if (au) Api.chamar('excluirDemanda', { id: d.id, senha: au.senha, motivo: au.motivo }).then(function (r) { T.fechar(); U.toast('Demanda ' + d.id + ' excluída' + (r.notasExcluidas ? ' com ' + r.notasExcluidas + ' nota(s) fiscal(is)' : '') + '.', 'ok'); }, UI.erro); });
   };
   function mudancaDetalhe(ev) {
-    var t = ev.target; if (!t.dataset.etapa) return;
+    var t = ev.target;
+    if (t.hasAttribute && t.hasAttribute('data-modelo')) { var ta = U.$('#drawer [data-resp]'); if (t.value && ta) { ta.value = t.value; rascunhos[aberta] = t.value; ta.focus(); } t.value = ''; return; }
+    if (!t.dataset.etapa) return;
     var d = dem(aberta), e = L.ETAPAS.filter(function (x) { return x.id === t.dataset.etapa; })[0];
     t.checked = !!d[e.id + 'Ok'];
     if (!d[e.id + 'Ok']) { modalEtapa(d, e, false); return; }
@@ -3615,7 +3762,7 @@ var G = (function (L) {
   /* =====================================================================
      HISTÓRICO
      ===================================================================== */
-  var TIPOS_H = [{ v: 'helpdesk', l: 'Help Desk: observações e fotos' }, { v: 'senha', l: 'Alterações com senha' }, { v: 'etapa', l: 'Marcação de etapas' }, { v: 'nf', l: 'Notas fiscais' }, { v: 'registro', l: 'Novas demandas' }, { v: 'fin', l: 'Empenhos e lotes' }, { v: 'config', l: 'Configurações, usuários e backup' }, { v: 'acesso', l: 'Entradas no sistema' }];
+  var TIPOS_H = [{ v: 'helpdesk', l: 'Central de Atendimento: mensagens, respostas e fotos' }, { v: 'senha', l: 'Alterações com senha' }, { v: 'etapa', l: 'Marcação de etapas' }, { v: 'nf', l: 'Notas fiscais' }, { v: 'registro', l: 'Novas demandas' }, { v: 'fin', l: 'Empenhos e lotes' }, { v: 'config', l: 'Configurações, usuários e backup' }, { v: 'acesso', l: 'Entradas no sistema' }];
   function tipoH(h) {
     var a = h.acao;
     if (a === 'Entrada no sistema') return 'acesso';
@@ -3623,7 +3770,7 @@ var G = (function (L) {
     if (a.indexOf('Etapa') === 0) return 'etapa';
     if (a.indexOf('Nota Fiscal') >= 0) return 'nf';
     if (a.indexOf('Demanda registrada') === 0) return 'registro';
-    if (a.indexOf('Mensagem do solicitante') === 0 || a.indexOf('Anexo enviado') === 0) return 'helpdesk';
+    if (a.indexOf('Mensagem do solicitante') === 0 || a.indexOf('Anexo enviado') === 0 || a.indexOf('Resposta da equipe') === 0 || a.indexOf('PDF da solicitação') === 0) return 'helpdesk';
     if (a.indexOf('Empenho') === 0 || a.indexOf('Lote') === 0) return 'fin';
     if (/Configura|Usuário|Perfil|Backup|Senha|Estrutura/.test(a)) return 'config';
     return 'outro';
@@ -3675,7 +3822,7 @@ var G = (function (L) {
         '<span class="calc">A planilha pode ter a coluna "Sigla" ou as siglas na primeira coluna.</span></div>' +
         '<label class="f">Setores e unidades<span class="calc">Uma sigla por linha. Usada em unidade demandante, local e setores atendidos. Edite aqui e clique em Salvar configurações, ou use os botões acima, que já salvam.</span><textarea class="in" name="setores" rows="10">' + e(c.setores.join('\n')) + '</textarea></label>') +
       T.painel('Central de Atendimento (Help Desk)', '', '<div class="fgrid"><div class="f full"><span>Endereço da Central para os solicitantes</span><div class="row" style="flex-wrap:nowrap"><input class="in" id="hd-link" readonly value="' + e(location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '') + 'helpdesk.html') + '">' +
-        '<button class="btn" type="button" data-act="copiarHd">Copiar</button><a class="btn" href="?helpdesk" target="_blank" rel="noopener">Abrir</a></div><span class="calc">A equipe gerencia as solicitações pela página <a href="?atendimento" target="_blank" rel="noopener">Gestão de Solicitações</a> (atendimento.html). Divulgue este endereço aos servidores. As solicitações chegam em Demandas, na situação "Aguardando análise", com as fotos e o contato do solicitante.</span></div>' +
+        '<button class="btn" type="button" data-act="copiarHd">Copiar</button><a class="btn" href="?helpdesk" target="_blank" rel="noopener">Abrir</a></div><span class="calc">As solicitações chegam em tempo real ao Painel e a Demandas (filtro "Central de Atendimento"), onde a equipe faz a triagem, marca as etapas e responde ao solicitante. Divulgue este endereço aos servidores. As solicitações chegam em Demandas, na situação "Aguardando análise", com as fotos e o contato do solicitante.</span></div>' +
         '<label class="f full">Contato exibido aos solicitantes<input class="in" name="helpdeskContato" value="' + e(c.helpdeskContato || '') + '"></label>' +
         '<label class="check full"><input type="checkbox" name="helpdeskAtivo"' + (c.helpdeskAtivo !== false ? ' checked' : '') + '><span>Aceitar novas solicitações pela Central de Atendimento</span></label></div>') +
       T.painel('Google Looker Studio', '', '<label class="f">Endereço do relatório salvo no Looker Studio<span class="calc">Opcional. Depois de salvar o relatório criado pelo botão do Dashboard, cole aqui o endereço para abri-lo direto.</span><input class="in" name="lookerRelatorio" value="' + e(c.lookerRelatorio || '') + '" placeholder="https://lookerstudio.google.com/reporting/..."></label>') +
@@ -4113,6 +4260,7 @@ var Helpdesk = (function (L) {
     U.$('#hd-limpar').onclick = limparDados;
     U.$('#hd-fab').onclick = function () { abrirChat(!st.chatAberto); };
     U.$('#hd-chat-x').onclick = function () { abrirChat(false); };
+    if (window.BroadcastChannel) { try { new BroadcastChannel('iema-manutencao').onmessage = function (ev) { if (ev.data && ev.data.aba === window.__iemaAba) return; if (st.consulta && st.pedido) consultar(true); }; } catch (x) { /* sem canal */ } }
     U.$('#hd-chat-f').onsubmit = function (ev) { ev.preventDefault(); var i = U.$('#hd-chat-in'), t = i.value.trim(); if (!t) return; i.value = ''; ouvir(t); };
     document.addEventListener('click', function (ev) {
       var a = ev.target.closest('[data-aba]'); if (a) { trocarAba(a.dataset.aba); window.scrollTo({ top: U.$('.hd-abas').offsetTop - 8, behavior: 'smooth' }); }
@@ -4456,7 +4604,7 @@ var Helpdesk = (function (L) {
   }
   function agendar() {
     clearInterval(st.timer);
-    st.timer = setInterval(function () { if (!document.hidden && st.consulta && st.pedido) consultar(true); }, 60000);
+    st.timer = setInterval(function () { if (!document.hidden && st.consulta && st.pedido) consultar(true); }, 15000);
   }
   function ultimoEvento(p) { var ev = p.eventos[p.eventos.length - 1]; return (ev ? ev.texto : p.situacao.nome).replace(/[.\s]+$/, ''); }
   function renderPedido() {
@@ -4599,277 +4747,6 @@ var Helpdesk = (function (L) {
 })(Logica);
 
 /* =========================================================================
-   GESTÃO DE SOLICITAÇÕES (página própria do gestor)
-   Fila de atendimento em tempo real: triagem, etapas, fotos/PDF, conversa
-   com o solicitante e histórico. Usa a mesma planilha e as mesmas regras.
-   ========================================================================= */
-var Atend = (function (L) {
-  'use strict';
-  var A = {}, e = U.esc;
-  var st = { sel: null, filtro: 'novas', origem: 'Help Desk', ordem: 'recentes', q: '', rascunho: {}, som: false, timer: null, primeira: true };
-  var CORES_URG = { 'Baixa': '#0284C7', 'Média': '#CA8A04', 'Alta': '#EA580C', 'Crítica': '#DC2626' };
-  var MODELOS = [
-    ['', 'Respostas prontas…'],
-    ['Recebemos a sua solicitação e ela está em análise pela equipe de manutenção. Em breve informaremos a previsão de atendimento.', 'Solicitação recebida'],
-    ['O serviço foi programado. A equipe da empresa contratada comparecerá ao local; pedimos que o responsável local esteja disponível para o acompanhamento.', 'Serviço programado'],
-    ['O serviço foi concluído. Caso o problema persista, responda por esta central informando o número do pedido.', 'Serviço concluído'],
-    ['Para darmos andamento, precisamos de mais informações: descreva o local exato e envie fotos do problema em "Acompanhar solicitação".', 'Pedir mais informações'],
-    ['Esta solicitação caracteriza obra (e não manutenção) e não pode ser atendida por este canal, nos termos da Lei Federal nº 14.133/2021, art. 6º, inciso XII. Procure a SUBAD para orientação.', 'Fora do escopo (obra)']
-  ];
-
-  /* ---------------- Acesso ---------------- */
-  A.iniciar = function () {
-    App.atendimento = true;
-    document.documentElement.setAttribute('data-theme', 'light');
-    document.title = 'Gestão de Solicitações | Manutenção Predial IEMA - SUBAD';
-    try { st.som = localStorage.getItem('iema-at-som') === '1'; } catch (x) { /* ignora */ }
-    if (!Api.token()) { A.login(); return; }
-    document.body.className = 'modo-at';
-    document.body.innerHTML = '<div class="at-carregando"><div class="hd-logo"></div><p>Carregando a fila de atendimento…</p></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
-    Api.chamar('dados').then(function () { /* App.aplicar chama A.render */ }, function (er) { A.login(er && er.codigo === 'SESSAO' ? '' : er && er.mensagem); });
-  };
-  A.login = function (msg) {
-    clearInterval(st.timer);
-    document.body.className = 'modo-at';
-    document.body.innerHTML = '<div class="at-login"><section class="at-login-arte"><div class="hd-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div>' +
-      '<h1>Gestão de Solicitações</h1><p>Central de Atendimento · Manutenção Predial<br>Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</p>' +
-      '<ul><li>Fila de solicitações em tempo real</li><li>Triagem, prazo, OS e lote em um só lugar</li><li>Fotos e PDF enviados pelo solicitante</li><li>Respostas que chegam ao solicitante na hora</li></ul></section>' +
-      '<form class="at-login-card" id="at-flogin" novalidate><h2>Acesso da equipe</h2><p class="muted small">Use o mesmo login e senha do sistema de Manutenção Predial.</p>' +
-      '<label class="f">Login<input class="in" id="at-lg" autocomplete="username" autocapitalize="none"></label><label class="f">Senha<input class="in" id="at-ls" type="password" autocomplete="current-password"></label>' +
-      '<p class="err" id="at-lerr" role="alert">' + e(msg || '') + '</p><button class="btn primary" type="submit">Entrar</button>' +
-      '<div class="at-login-links"><a href="index.html">Sistema completo</a><a href="?helpdesk">Central do solicitante</a></div>' +
-      (!Api.remoto ? '<p class="calc">Modo demonstração: use <b>gestor</b> e a senha <b>iema123</b>.</p>' : '') + '</form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
-    U.$('#at-lg').focus();
-    U.$('#at-flogin').onsubmit = function (ev) {
-      ev.preventDefault();
-      var b = ev.target.querySelector('button'); b.disabled = true; U.$('#at-lerr').textContent = '';
-      Api.chamar('login', { login: U.$('#at-lg').value, senha: U.$('#at-ls').value }).then(function () { /* render via App.aplicar */ }, function (er) { b.disabled = false; U.$('#at-lerr').textContent = er.mensagem || 'Não foi possível entrar.'; U.$('#at-ls').value = ''; });
-    };
-  };
-
-  /* ---------------- Utilidades ---------------- */
-  function vistosKey() { return 'iema-at-vistos-' + (App.D ? App.D.sessao.login : ''); }
-  function vistos() { try { return JSON.parse(localStorage.getItem(vistosKey()) || '{}'); } catch (x) { return {}; } }
-  function marcarVisto(id) { var v = vistos(); v[id] = eventosHd(id).length + 1; try { localStorage.setItem(vistosKey(), JSON.stringify(v)); } catch (x) { /* ignora */ } }
-  function eventosHd(id) { return (App.D.historico || []).filter(function (h) { return h.demandaId === id && h.usuario === 'helpdesk'; }); }
-  function naoVisto(d) { var v = vistos()[d.id]; return !v ? 'nova' : eventosHd(d.id).length + 1 > v ? 'msg' : ''; }
-  function desde(iso) {
-    if (!iso) return '';
-    var t = new Date(String(iso).length > 10 ? iso : iso + 'T12:00:00'), min = Math.round((Date.now() - t) / 60000);
-    if (min < 1) return 'agora'; if (min < 60) return 'há ' + min + ' min';
-    var h = Math.round(min / 60); if (h < 24) return 'há ' + h + ' h';
-    var dd = Math.round(h / 24); return dd === 1 ? 'há 1 dia' : 'há ' + dd + ' dias';
-  }
-  function grupo(d) {
-    var s = L.situacao(d).id;
-    if (s === 'paga' || s === 'cancelada') return 'encerradas';
-    if (s === 'analise') return 'novas';
-    return 'andamento';
-  }
-  function lista() {
-    var q = U.norm(st.q);
-    var l = App.D.demandas.filter(function (d) {
-      if (st.origem && d.origem !== st.origem) return false;
-      if (st.filtro === 'atrasadas') { if (L.prazo(d).k !== 'atrasada') return false; }
-      else if (st.filtro === 'ateste') { if (['ateste', 'pagamento'].indexOf(L.situacao(d).id) < 0) return false; }
-      else if (st.filtro !== 'todas' && grupo(d) !== st.filtro) return false;
-      if (q && U.norm([d.id, d.titulo, d.solicitante, d.solicitanteEmail, d.unidade, d.local, d.localInterno, d.sistema].join(' ')).indexOf(q) < 0) return false;
-      return true;
-    });
-    var urg = { 'Crítica': 0, 'Alta': 1, 'Média': 2, 'Baixa': 3 };
-    return l.sort(function (a, b) {
-      if (st.ordem === 'urgencia') return (urg[a.criticidade] - urg[b.criticidade]) || (a.criadoEm < b.criadoEm ? 1 : -1);
-      if (st.ordem === 'prazo') return ((a.fimPrevisto || '9') < (b.fimPrevisto || '9') ? -1 : 1);
-      return (a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1;
-    });
-  }
-
-  /* ---------------- Estrutura ---------------- */
-  function montar() {
-    document.body.className = 'modo-at';
-    document.body.innerHTML = '<div class="at">' +
-      '<header class="at-top"><div class="at-marca"><span class="hd-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></span>' +
-      '<div><div class="at-nome">Gestão de Solicitações</div><div class="at-sub">Central de Atendimento · Manutenção Predial · IEMA - SUBAD</div></div></div>' +
-      '<div class="at-live" title="A fila é atualizada automaticamente"><i></i>Ao vivo · <span id="at-sync">—</span></div>' +
-      '<div class="at-user"><button type="button" class="at-ic" id="at-som" title="Aviso sonoro de novas solicitações"></button><a class="at-lnk" href="?helpdesk" target="_blank" rel="noopener">Central do solicitante</a><a class="at-lnk" href="index.html" target="_blank" rel="noopener">Sistema completo</a>' +
-      '<span class="at-quem"><b id="at-unome"></b><small id="at-uperfil"></small></span><button type="button" class="at-lnk" id="at-sair">Sair</button></div></header>' +
-      '<section class="at-kpis" id="at-kpis"></section>' +
-      '<div class="at-body"><aside class="at-fila"><div class="at-fila-h"><div class="at-busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="at-q" type="search" placeholder="Buscar nº, assunto, solicitante, local"></div>' +
-      '<div class="at-filtros" id="at-filtros"></div><div class="row" style="gap:8px"><select class="in" id="at-origem"><option value="Help Desk">Origem: Central de Atendimento</option><option value="">Origem: todas</option></select>' +
-      '<select class="in" id="at-ordem"><option value="recentes">Mais recentes</option><option value="urgencia">Maior urgência</option><option value="prazo">Prazo mais próximo</option></select></div></div>' +
-      '<div class="at-lista" id="at-lista" role="listbox" aria-label="Solicitações"></div></aside>' +
-      '<main class="at-ws" id="at-ws" tabindex="-1"></main></div></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
-    U.$('#at-sair').onclick = function () { Api.chamar('sair', {}, true).catch(function () {}); Api.limparToken(); App.D = null; A.login(''); };
-    U.$('#at-som').onclick = function () { st.som = !st.som; try { localStorage.setItem('iema-at-som', st.som ? '1' : '0'); } catch (x) { /* ignora */ } somIcone(); if (st.som) bip(); };
-    U.$('#at-q').oninput = function (ev) { st.q = ev.target.value; renderLista(); };
-    U.$('#at-origem').onchange = function (ev) { st.origem = ev.target.value; renderTudo(); };
-    U.$('#at-ordem').onchange = function (ev) { st.ordem = ev.target.value; renderLista(); };
-    somIcone();
-    clearInterval(st.timer);
-    st.timer = setInterval(function () {
-      if (!App.D || document.hidden || U.$('.modal')) return;
-      Api.chamar('versao', {}, true).then(function (r) { if (App.D && r.versao !== App.D.versao) return Api.chamar('dados', {}, true); }).catch(function () { /* próximo ciclo */ });
-    }, 15000);
-  }
-  function somIcone() { var b = U.$('#at-som'); if (!b) return; b.innerHTML = st.som ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 9.5-4.9M18 8c0 7 3 9 3 9H7M10 21h4M3 3l18 18"/></svg>'; b.setAttribute('aria-pressed', String(st.som)); }
-  function bip() { try { var C = window.AudioContext || window.webkitAudioContext, c = new C(), o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; g.gain.value = 0.06; o.connect(g); g.connect(c.destination); o.start(); setTimeout(function () { o.frequency.value = 1180; }, 120); setTimeout(function () { o.stop(); c.close(); }, 260); } catch (x) { /* sem áudio */ } }
-
-  /* ---------------- Renderização (chamada a cada atualização de dados) ---------------- */
-  var idsAntes = null;
-  A.render = function () {
-    if (!App.D) return;
-    var p = App.P;
-    if (!(p.etapas || p.areaGestor)) {
-      document.body.innerHTML = '<div class="at-login"><form class="at-login-card"><h2>Sem acesso</h2><p>Seu perfil (' + e(p.nome) + ') não tem acesso à gestão de solicitações. Procure o gestor master.</p><button class="btn" type="button" id="at-volta">Sair</button></form></div>';
-      U.$('#at-volta').onclick = function () { Api.limparToken(); App.D = null; A.login(''); };
-      return;
-    }
-    if (!U.$('.at')) montar();
-    var hd = App.D.demandas.filter(function (d) { return d.origem === 'Help Desk'; });
-    if (idsAntes) { var novas = hd.filter(function (d) { return !idsAntes[d.id]; }); if (novas.length && st.som) bip(); }
-    idsAntes = hd.reduce(function (m, d) { m[d.id] = 1; return m; }, {});
-    if (st.primeira) { st.primeira = false; var l0 = lista(); if (!st.sel && l0.length) st.sel = null; }
-    renderTudo();
-  };
-  function renderTudo() {
-    U.$('#at-unome').textContent = App.D.sessao.nome; U.$('#at-uperfil').textContent = App.D.sessao.perfil.nome;
-    U.$('#at-sync').textContent = 'atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    renderKpis(); renderLista(); renderWs();
-  }
-  function renderKpis() {
-    var base = App.D.demandas.filter(function (d) { return !st.origem || d.origem === st.origem; }), hoje = L.hoje();
-    var c = { novas: base.filter(function (d) { return grupo(d) === 'novas'; }), andamento: base.filter(function (d) { return grupo(d) === 'andamento'; }), atrasadas: base.filter(function (d) { return L.prazo(d).k === 'atrasada'; }),
-      ateste: base.filter(function (d) { return ['ateste', 'pagamento'].indexOf(L.situacao(d).id) >= 0; }), encerradas: base.filter(function (d) { return grupo(d) === 'encerradas'; }) };
-    var naoVistas = c.novas.filter(function (d) { return naoVisto(d) === 'nova'; }).length;
-    var tempos = base.filter(function (d) { return d.inicialOk && d.inicialData; }).map(function (d) { return Math.max(0, L.diff(d.dataSolicitacao, d.inicialData)); });
-    var media = tempos.length ? U.sum(tempos, function (x) { return x; }) / tempos.length : 0;
-    document.title = (naoVistas ? '(' + naoVistas + ') ' : '') + 'Gestão de Solicitações | Manutenção Predial IEMA';
-    var tile = function (k, rot, n, sub, cor) { return '<button type="button" class="at-kpi' + (st.filtro === k ? ' on' : '') + '" data-f="' + k + '" style="--c:' + cor + '"><span>' + rot + '</span><b>' + n + '</b><small>' + sub + '</small></button>'; };
-    U.$('#at-kpis').innerHTML = tile('novas', 'Novas', c.novas.length, naoVistas ? naoVistas + ' ainda não abertas' : 'aguardando análise', '#1D4ED8') +
-      tile('andamento', 'Em andamento', c.andamento.length, 'recebidas pela equipe', '#0E7490') + tile('atrasadas', 'Em atraso', c.atrasadas.length, 'prazo vencido', '#DC2626') +
-      tile('ateste', 'Ateste e pagamento', c.ateste.length, 'executadas, a conferir', '#B45309') + tile('encerradas', 'Encerradas', c.encerradas.length, 'pagas ou canceladas', '#15803D') +
-      '<div class="at-kpi info" style="--c:#6D28D9"><span>Tempo médio de recebimento</span><b>' + (tempos.length ? media.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' d' : '—') + '</b><small>da abertura à demanda inicial</small></div>';
-    U.$$('#at-kpis [data-f]').forEach(function (b) { b.onclick = function () { st.filtro = b.dataset.f; renderTudo(); }; });
-    var F = [['novas', 'Novas'], ['andamento', 'Em andamento'], ['atrasadas', 'Atrasadas'], ['ateste', 'Ateste'], ['encerradas', 'Encerradas'], ['todas', 'Todas']];
-    U.$('#at-filtros').innerHTML = F.map(function (f) { return '<button type="button" data-f="' + f[0] + '" aria-pressed="' + (st.filtro === f[0]) + '">' + f[1] + '</button>'; }).join('');
-    U.$$('#at-filtros [data-f]').forEach(function (b) { b.onclick = function () { st.filtro = b.dataset.f; renderTudo(); }; });
-  }
-  function renderLista() {
-    var box = U.$('#at-lista'), top = box.scrollTop, l = lista();
-    box.innerHTML = l.length ? l.map(function (d) {
-      var s = L.situacao(d), nv = naoVisto(d), nf = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id && /^image\//.test(a.tipo); }).length, pz = L.prazo(d);
-      return '<button type="button" role="option" class="at-item' + (st.sel === d.id ? ' ativo' : '') + (nv === 'nova' ? ' nao-visto' : '') + '" data-id="' + e(d.id) + '" aria-selected="' + (st.sel === d.id) + '" style="--u:' + (CORES_URG[d.criticidade] || '#94A3B8') + '">' +
-        '<div class="l1"><b>' + e(d.id) + '</b>' + (nv === 'nova' ? '<em class="at-nova">Nova</em>' : nv === 'msg' ? '<em class="at-msg" title="Novidade do solicitante">●</em>' : '') + '<span>' + desde(d.criadoEm || d.dataSolicitacao) + '</span></div>' +
-        '<div class="tt">' + e(d.titulo) + '</div><div class="l3">' + e([d.solicitante, d.unidade].filter(Boolean).join(' · ')) + '</div>' +
-        '<div class="l4"><span class="sit" style="--c:' + s.cor + '"><i></i>' + e(s.nome) + '</span>' + (pz.k === 'atrasada' ? '<span class="tag atrasada">Em atraso</span>' : '') + (d.risco ? '<span class="tag alerta">Risco</span>' : '') + (nf ? '<span class="at-cam">📷 ' + nf + '</span>' : '') + '</div></button>';
-    }).join('') : '<div class="at-vazio"><b>Nenhuma solicitação aqui</b><span>Mude o filtro ou a origem para ver outras solicitações.</span></div>';
-    box.scrollTop = top;
-    U.$$('.at-item', box).forEach(function (b) { b.onclick = function () { st.sel = b.dataset.id; marcarVisto(st.sel); renderTudo(); var ws = U.$('#at-ws'); ws.scrollTop = 0; if (window.innerWidth < 1000) ws.scrollIntoView({ behavior: 'smooth' }); }; });
-  }
-
-  /* ---------------- Área de trabalho da solicitação ---------------- */
-  function card(t, cor, corpo, extra) { return '<section class="at-card" style="--c:' + cor + '"><header><h3>' + t + '</h3>' + (extra || '') + '</header><div class="at-card-b">' + corpo + '</div></section>'; }
-  function kv(pares) { return '<dl class="at-kv">' + pares.map(function (x) { return '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>'; }).join('') + '</dl>'; }
-  function renderWs() {
-    var ws = U.$('#at-ws'), top = ws.scrollTop, d = st.sel ? T.dem(st.sel) : null;
-    if (!d) {
-      ws.innerHTML = '<div class="at-vazio grande"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg><b>Selecione uma solicitação na fila</b><span>A fila se atualiza sozinha. As novas solicitações da Central de Atendimento aparecem marcadas como <em class="at-nova">Nova</em>.</span></div>';
-      return;
-    }
-    var p = App.P, s = L.situacao(d), pz = L.prazo(d), rasc = st.rascunho[d.id] || '';
-    var temPdf = (App.D.anexos || []).some(function (a) { return a.demandaId === d.id && a.tipo === 'application/pdf'; });
-    var passos = [{ nome: 'Registrada', ok: true, data: d.dataSolicitacao }].concat(T.etapasVisiveis(d).map(function (x) { return { nome: x.nome, ok: !!d[x.id + 'Ok'], data: x.id === 'execucao' ? d.execucaoFim : d[x.id + 'Data'] }; }));
-    var conversa = (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && (h.acao.indexOf('Mensagem do solicitante') === 0 || h.acao.indexOf('Resposta da equipe') === 0); }).slice().reverse();
-    var etapasH = T.etapasVisiveis(d).map(function (x) {
-      var ok = d[x.id + 'Ok'], pode = p.etapas && !d.cancelada, hab = pode && (ok ? !T.posteriorMarcada(d, x) : T.anterioresOk(d, x));
-      var extra = '';
-      if (pode && ok) extra = '<button class="btn sm ghost" data-ed="' + x.id + '">' + U.icon.edit + 'Editar</button>';
-      if (pode && !ok && x.id === 'execucao' && d.inicialOk) extra = '<button class="btn sm ghost" data-ini="1">' + (d.execucaoInicio ? 'Alterar início' : 'Informar início') + '</button>';
-      if (x.id === 'pagamento' && p.financeiro && d.atesteOk && !d.cancelada) extra += '<button class="btn sm ghost" data-nf="1">' + U.icon.plus + 'Nota Fiscal</button>';
-      return '<div class="etapa' + (ok ? ' feita' : '') + '"><input type="checkbox" data-et="' + x.id + '"' + (ok ? ' checked' : '') + (hab ? '' : ' disabled') + ' aria-label="' + e(x.nome) + '"><div><div class="nm">' + e(x.nome) + (x.opcional ? '<small>opcional</small>' : '') + '</div><div class="info">' + T.infoEtapa(d, x) + '</div></div><div class="row" style="gap:4px;justify-content:flex-end">' + extra + '</div></div>';
-    }).join('');
-    var lotes = App.D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero + ' · ' + l.descricao }; });
-    var pd = function (k) { return L.podeEditarCampo(p, k, d, App.D.sessao.login) && !d.cancelada ? '' : ' disabled'; };
-    var triagem = '<form id="at-tri" class="at-tri" novalidate><div class="fgrid">' +
-      '<label class="f full"><span class="req">Lote</span><select class="in" name="loteId"' + pd('loteId') + '>' + U.opts(lotes, d.loteId, 'Selecione o lote') + '</select></label>' +
-      '<label class="f"><span class="req">Modalidade</span><select class="in" name="modalidade"' + pd('modalidade') + '>' + U.opts(L.MODALIDADES, d.modalidade) + '</select></label>' +
-      '<label class="f"><span class="req">Urgência</span><select class="in" name="criticidade"' + pd('criticidade') + '>' + U.opts(L.CRITICIDADES, d.criticidade) + '</select></label>' +
-      '<div class="f"><span class="req">Prazo de atendimento</span><div class="row" style="flex-wrap:nowrap"><input class="in" name="prazoQtd" type="number" min="1" style="max-width:80px" value="' + e(d.prazoQtd || 1) + '"' + pd('prazoQtd') + '><select class="in" name="prazoUnidade"' + pd('prazoUnidade') + '>' + U.opts([{ v: 'dias', l: 'dia(s)' }, { v: 'semanas', l: 'semana(s)' }, { v: 'meses', l: 'mês(es)' }], d.prazoUnidade === 'quinzenas' ? 'dias' : d.prazoUnidade) + '</select></div></div>' +
-      '<label class="f"><span>Início previsto</span><input class="in" type="date" name="inicioPrevisto" value="' + e(d.inicioPrevisto) + '"' + pd('inicioPrevisto') + '></label>' +
-      '<p class="calc full" id="at-fim"></p>' +
-      '<label class="f"><span>Nº da Ordem de Serviço</span><input class="in" name="osNumero" value="' + e(d.osNumero) + '"' + pd('osNumero') + '></label>' +
-      '<label class="f"><span>Nº do Atendimento (Help Desk)</span><input class="in" name="atendimentoNumero" value="' + e(d.atendimentoNumero) + '"' + pd('atendimentoNumero') + '></label>' +
-      '<label class="f"><span id="at-rv">Valor estimado</span>' + U.inputMoeda('valorEstimado', d.valorEstimado, pd('valorEstimado')) + '</label>' +
-      '<label class="f"><span>Responsável local</span><input class="in" name="responsavelLocal" value="' + e(d.responsavelLocal) + '"' + pd('responsavelLocal') + '></label>' +
-      '<label class="f full"><span>Observações internas</span><textarea class="in" name="obs" rows="2"' + pd('obs') + '>' + e(d.obs) + '</textarea></label></div>' +
-      '<p class="err" id="at-tri-err" role="alert"></p><div class="row" style="justify-content:flex-end"><button class="btn primary" type="submit"' + (d.cancelada ? ' disabled' : '') + '>Salvar triagem</button></div></form>';
-    ws.innerHTML = '<div class="at-ws-h" style="--c:' + s.cor + '"><div><div class="row small" style="gap:8px"><b class="at-prot">' + e(d.id) + '</b>' + (d.origem === 'Help Desk' ? '<span class="tag hd-tag">Central de Atendimento</span>' : '<span class="tag mod">' + e(d.origem || 'Sistema') + '</span>') + '<span class="muted">aberta ' + desde(d.criadoEm || d.dataSolicitacao) + ' · ' + U.fmt(d.dataSolicitacao) + '</span></div>' +
-      '<h2>' + e(d.titulo) + '</h2><div class="row" style="gap:8px;margin-top:6px"><span class="at-pill" style="--c:' + s.cor + '">' + e(s.nome) + '</span>' + T.prazoTag(d) + '<span class="at-pill" style="--c:' + (CORES_URG[d.criticidade] || '#64748B') + '">Urgência ' + e(d.criticidade) + '</span>' + (d.risco ? '<span class="tag atrasada">Risco declarado</span>' : '') + '</div></div>' +
-      '<div class="at-acoes">' + (temPdf ? '<button class="btn" type="button" data-act="pdfSol">' + U.icon.down + 'PDF da solicitação</button>' : '') + '<button class="btn" type="button" data-act="ficha">' + U.icon.down + 'Ficha (PDF)</button><a class="btn" href="index.html?abrir=' + encodeURIComponent(d.id) + '" target="_blank" rel="noopener">Abrir no sistema</a></div></div>' +
-      (d.cancelada ? '<div class="notice" style="margin:0 0 14px">Cancelada: ' + e(d.motivoCancelamento) + '</div>' : '') +
-      '<ol class="hd-step at-step">' + passos.map(function (x, i) { var at = passos.reduce(function (m, y, k) { return y.ok ? k : m; }, 0); return '<li class="' + (x.ok ? 'ok' : '') + (i === at + 1 && !d.cancelada ? ' prox' : '') + '"><span class="b">' + (x.ok ? '✓' : i + 1) + '</span><b>' + e(x.nome) + '</b><small>' + (x.ok && x.data ? U.fmt(x.data) : '') + '</small></li>'; }).join('') + '</ol>' +
-      '<div class="at-grid"><div class="at-col">' +
-      card('Solicitante', '#1D4ED8', kv([['Nome', e(d.solicitante || '—')], ['E-mail', d.solicitanteEmail ? '<a href="mailto:' + e(d.solicitanteEmail) + '">' + e(d.solicitanteEmail) + '</a>' : '—'], ['Telefone', d.solicitanteTelefone ? '<a href="tel:' + e(d.solicitanteTelefone.replace(/[^\d+]/g, '')) + '">' + e(d.solicitanteTelefone) + '</a>' : '—'], ['Unidade (setor)', e(d.unidade || '—')]])) +
-      card('Local', '#0E7490', kv([['Local do problema', e(d.local || '—')], ['Localização exata', e(d.localInterno || '—')], ['Pessoas afetadas', d.pessoas ? U.int(d.pessoas) : '—'], ['Responsável local', e(d.responsavelLocal || '—')]])) +
-      card('Problema', '#B45309', kv([['Tipo de problema', e(d.sistema || '—')], ['Urgência', e(d.criticidade)], ['Risco', d.risco ? '<b style="color:var(--bad)">Sim, declarado pelo solicitante</b>' : 'Não informado']]) + '<p class="at-desc">' + e(d.descricao || '') + '</p>') +
-      card('Fotos e PDF da solicitação', '#6D28D9', '<div id="at-anexos"><p class="muted small">Carregando…</p></div>') +
-      card('Conversa com o solicitante', '#4338CA', '<div class="at-chat">' + (conversa.length ? conversa.map(function (h) { var eq = h.acao.indexOf('Resposta da equipe') === 0; return '<div class="at-bolha ' + (eq ? 'eq' : 'sol') + '"><small>' + (eq ? e(T.nome(h.usuario)) + ' · equipe' : e(d.solicitante || 'Solicitante')) + ' · ' + U.fmtDH(h.em) + (h.motivo ? ' · ' + e(h.motivo) : '') + '</small><p>' + e(h.novo) + '</p></div>'; }).join('') : '<p class="muted small">Nenhuma mensagem ainda. A resposta enviada aqui aparece para o solicitante na Central de Atendimento e no assistente virtual.</p>') + '</div>' +
-        '<div class="at-resp"><select class="in" id="at-modelo">' + MODELOS.map(function (m) { return '<option value="' + e(m[0]) + '">' + e(m[1]) + '</option>'; }).join('') + '</select><textarea class="in" id="at-texto" rows="3" maxlength="2000" placeholder="Escreva a resposta ao solicitante">' + e(rasc) + '</textarea>' +
-        '<div class="row" style="justify-content:space-between"><label class="check"><input type="checkbox" id="at-email"' + (d.solicitanteEmail ? ' checked' : ' disabled') + '><span>Enviar também por e-mail' + (d.solicitanteEmail ? '' : ' (sem e-mail cadastrado)') + '</span></label><button class="btn primary" type="button" id="at-enviar">Enviar resposta</button></div></div>') +
-      '</div><div class="at-col">' +
-      card('Triagem e atendimento', '#BE123C', triagem) +
-      card('Andamento', '#15803D', '<div class="etapas">' + etapasH + '</div>' + (p.etapas ? '<p class="calc" style="margin-top:8px">Etapas já marcadas só são alteradas com senha. Ao marcar a demanda inicial, o prazo passa a aparecer para o solicitante.</p>' : '')) +
-      card('Histórico', '#475569', '<ul class="timeline">' + (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && h.acao !== 'Entrada no sistema'; }).slice(0, 14).map(function (h) { return '<li style="--c:' + (h.usuario === 'helpdesk' ? '#6D28D9' : '#0F766E') + '"><b>' + e(h.acao) + '</b> <span class="d">' + U.fmtDH(h.em) + ' · ' + e(T.nome(h.usuario)) + '</span>' + (h.campo || h.novo ? '<div class="muted small">' + e([h.campo, h.novo].filter(Boolean).join(': ')) + '</div>' : '') + '</li>'; }).join('') + '</ul>') +
-      ((p.excluir) ? '<div class="row" style="justify-content:flex-end;gap:8px">' + (d.cancelada ? '' : '<button class="btn" type="button" data-act="cancelar">Cancelar solicitação</button>') + '<button class="btn danger" type="button" data-act="excluir">Excluir</button></div>' : '') +
-      '</div></div>';
-    ws.scrollTop = top;
-    ligarWs(d);
-  }
-  function ligarWs(d) {
-    var ws = U.$('#at-ws');
-    T.anexosDe(d.id).then(function (lst) { var box = U.$('#at-anexos'); if (box && st.sel === d.id) { box.innerHTML = T.htmlAnexos(lst); T.ligarAnexos(box); } }, function () { var box = U.$('#at-anexos'); if (box) box.innerHTML = '<p class="muted small">Não foi possível carregar os anexos.</p>'; });
-    U.$$('[data-et]', ws).forEach(function (c) { c.onchange = function () { c.checked = !!d[c.dataset.et + 'Ok']; T.alternarEtapa(d, c.dataset.et); }; });
-    U.$$('[data-ed]', ws).forEach(function (b) { b.onclick = function () { T.editarEtapa(d, b.dataset.ed); }; });
-    U.$$('[data-ini]', ws).forEach(function (b) { b.onclick = function () { T.inicioExec(d); }; });
-    U.$$('[data-nf]', ws).forEach(function (b) { b.onclick = function () { T.novaNF(d); }; });
-    var acao = function (k, fn) { var b = ws.querySelector('[data-act="' + k + '"]'); if (b) b.onclick = fn; };
-    acao('ficha', function () { G.fichaPdf(d.id); });
-    acao('pdfSol', function () { T.anexosDe(d.id).then(function (l) { var pdf = l.filter(function (a) { return a.tipo === 'application/pdf'; })[0]; if (pdf) T.baixarAnexo(pdf.id, pdf.nome); }); });
-    acao('excluir', function () { T.excluir(d); });
-    acao('cancelar', function () {
-      UI.modal({ title: 'Cancelar ' + d.id, size: 'sm', ok: 'Cancelar solicitação', danger: true, cancel: 'Voltar', body: '<label class="f"><span class="req">Motivo do cancelamento</span><textarea class="in" id="at-mc" rows="3"></textarea><span class="calc">O motivo aparece para o solicitante.</span></label>',
-        onOk: function (w) { var m = w.querySelector('#at-mc').value.trim(); if (!m) { w.erro('Informe o motivo.'); return false; } var n = JSON.parse(JSON.stringify(d)); n.cancelada = true; n.motivoCancelamento = m; return T.salvar(n, d).then(function (r) { return !!r; }); } });
-    });
-    var txt = U.$('#at-texto'), mod = U.$('#at-modelo');
-    txt.oninput = function () { st.rascunho[d.id] = txt.value; };
-    mod.onchange = function () { if (mod.value) { txt.value = mod.value; st.rascunho[d.id] = txt.value; } mod.value = ''; txt.focus(); };
-    U.$('#at-enviar').onclick = function () {
-      var t = txt.value.trim(); if (!t) { U.toast('Escreva a resposta.', 'erro'); return; }
-      var b = U.$('#at-enviar'); b.disabled = true;
-      Api.chamar('responderSolicitante', { id: d.id, texto: t, porEmail: U.$('#at-email').checked }).then(function (r) { delete st.rascunho[d.id]; U.toast(r.emailEnviado ? 'Resposta enviada e copiada por e-mail.' : 'Resposta enviada ao solicitante.', 'ok'); }, function (er) { b.disabled = false; UI.erro(er); });
-    };
-    var f = U.$('#at-tri');
-    var calc = function () {
-      var ini = f.inicioPrevisto.value || d.dataSolicitacao, fim = L.fimPrevisto(ini, f.prazoQtd.value, f.prazoUnidade.value);
-      U.$('#at-fim').innerHTML = fim ? 'Término previsto: <b>' + U.fmt(fim) + '</b> (' + e(L.prazoTexto(f.prazoQtd.value, f.prazoUnidade.value)) + ' a partir de ' + U.fmt(ini) + ')' + (d.inicialOk ? '' : '. O solicitante passa a ver o prazo quando a demanda inicial for marcada.') : '';
-      U.$('#at-rv').className = f.modalidade.value === 'Programado' ? 'req' : '';
-    };
-    ['prazoQtd', 'prazoUnidade', 'inicioPrevisto', 'modalidade'].forEach(function (k) { f[k].addEventListener('input', calc); f[k].addEventListener('change', calc); });
-    calc();
-    f.onsubmit = function (ev) {
-      ev.preventDefault();
-      var n = JSON.parse(JSON.stringify(d));
-      U.$$('[name]', f).forEach(function (i) { if (i.disabled) return; n[i.name] = i.hasAttribute('data-moeda') ? U.lerMoeda(i.value) : i.type === 'number' ? Number(i.value) || 0 : i.value.trim(); });
-      var falt = L.validarObrigatorios(n);
-      if (falt.length) { U.$('#at-tri-err').textContent = 'Preencha: ' + falt.join(', ') + '.'; return; }
-      U.$('#at-tri-err').textContent = '';
-      T.salvar(n, d).catch(function (er) { U.$('#at-tri-err').textContent = er && er.mensagem ? er.mensagem : 'Não foi possível salvar.'; });
-    };
-  }
-  return A;
-})(Logica);
-
-/* =========================================================================
    APLICAÇÃO: login, navegação, sincronização com a planilha
    ========================================================================= */
 var App = (function (L) {
@@ -4888,7 +4765,6 @@ var App = (function (L) {
     App.P = dados.sessao.perfil;
     App.fin = L.financeiro(dados);
     if (App.publico) { renderPublico(); return; }
-    if (App.atendimento) { Atend.render(); return; }
     if (U.$('#app')) App.render();
   };
 
@@ -4930,11 +4806,15 @@ var App = (function (L) {
     U.$('#btn-nova').hidden = !App.P.criar;
     U.$('#page-title').textContent = v.title;
     U.$('#page-sub').textContent = v.sub();
-    document.title = v.title + ' | Manutenção Predial IEMA';
     el.onclick = el.onchange = el.oninput = null;
     v.render(el);
     var D = App.D;
     U.$('#u-nome').textContent = D.sessao.nome;
+    var ini = String(D.sessao.nome || '?').split(/\s+/).filter(Boolean); U.$('#u-avatar').textContent = ((ini[0] || '?')[0] + (ini.length > 1 ? ini[ini.length - 1][0] : '')).toUpperCase();
+    var novasHd = T.novasCentral ? T.novasCentral() : [];
+    var bd = U.$('#dem-badge'); bd.hidden = !novasHd.length; bd.textContent = novasHd.length;
+    document.title = (novasHd.length ? '(' + novasHd.length + ') ' : '') + v.title + ' | Manutenção Predial IEMA';
+    U.$('#live-t').textContent = 'Ao vivo · ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     U.$('#u-perfil').textContent = D.sessao.perfil.nome;
     U.$('#conn').className = 'conn' + (Api.remoto ? ' on' : '');
     U.$('#conn-t').textContent = Api.remoto ? 'Planilha Google conectada' : 'Modo demonstração (navegador)';
@@ -4949,7 +4829,7 @@ var App = (function (L) {
     document.body.innerHTML = '<div class="login"><form class="card" id="flogin" novalidate><div><h1>Manutenção Predial</h1></div><p class="org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</p>' +
       '<label class="f">Login<input class="in" id="lg" autocomplete="username" autocapitalize="none"></label><label class="f">Senha<input class="in" id="ls" type="password" autocomplete="current-password"></label>' +
       '<p class="err" id="lerr" role="alert">' + U.esc(msg || '') + '</p><button class="btn primary" type="submit">Entrar</button>' +
-      '<a class="link-hd" href="?helpdesk">Sou solicitante: abrir a Central de Atendimento</a><a class="link-hd" href="?atendimento">Equipe: abrir a Gestão de Solicitações</a><div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+      '<a class="link-hd" href="?helpdesk">Sou solicitante: abrir a Central de Atendimento</a><div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
     U.$('#lg').focus();
     U.$('#flogin').onsubmit = function (ev) {
       ev.preventDefault();
@@ -4998,7 +4878,6 @@ var App = (function (L) {
   }
   App.sair = function (motivo) {
     Api.limparToken(); App.D = null; T.fechar(); if (G.limparAutorizacoes) G.limparAutorizacoes();
-    if (App.atendimento) { U.$$('.modal').forEach(function (m) { m.remove(); }); Atend.login(motivo === true ? 'Sua sessão expirou. Entre novamente.' : (typeof motivo === 'string' ? motivo : '')); return; }
     telaLogin(motivo === true ? 'Sua sessão expirou. Entre novamente.' : (typeof motivo === 'string' ? motivo : ''));
   };
 
@@ -5040,7 +4919,7 @@ var App = (function (L) {
   var TEMPLATE = '';
   function iniciar() {
     if (/[?&]helpdesk\b/.test(location.search) || location.hash === '#helpdesk') { Helpdesk.iniciar(); return; }
-    if (/[?&]atendimento\b/.test(location.search)) { Atend.iniciar(); return; }
+    if (/[?&]atendimento\b/.test(location.search)) { location.replace(location.pathname + '#demandas'); return; }
     var chavePainel = (location.search.match(/[?&]painel=([^&#]+)/) || [])[1];
     if (chavePainel) { iniciarPainel(decodeURIComponent(chavePainel)); return; }
     TEMPLATE = U.$('#tpl-app').innerHTML;
@@ -5060,7 +4939,8 @@ var App = (function (L) {
     });
     window.addEventListener('hashchange', function () { var s = U.$('.side'); if (s) s.classList.remove('open'); T.fechar(); window.scrollTo(0, 0); App.render(); });
     document.addEventListener('visibilitychange', sincronizar);
-    setInterval(sincronizar, 45000);
+    setInterval(sincronizar, 10000);
+    if (window.BroadcastChannel) { try { new BroadcastChannel('iema-manutencao').onmessage = function (ev) { if (ev.data && ev.data.aba === window.__iemaAba) return; if (App.D && !App.publico) Api.chamar('dados', {}, true).catch(function () {}); }; } catch (x) { /* sem canal */ } }
     if (!Api.token()) { telaLogin(); return; }
     var ult = 0; try { ult = Number(localStorage.getItem(ATV)) || 0; } catch (e) { /* ignora */ }
     if (ult && Date.now() - ult >= LIMITE_INATIVO) { Api.chamar('sair', {}, true).catch(function () {}); Api.limparToken(); telaLogin('Por segurança, a sessão foi encerrada após 10 minutos sem atividade. Entre novamente.'); return; }

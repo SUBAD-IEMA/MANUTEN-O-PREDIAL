@@ -8,7 +8,6 @@ Sistema para registrar e acompanhar as demandas de manutenção predial do IEMA,
 |---|---|---|
 | `index.html` | GitHub | O sistema completo (telas, gráficos e relatórios) |
 | `helpdesk.html` | GitHub | Atalho da Central de Atendimento (Help Desk) para os solicitantes |
-| `atendimento.html` | GitHub | Atalho da página de Gestão de Solicitações, da equipe |
 | `config.js` | GitHub | Endereço de conexão com a planilha Google |
 | `README.md` | GitHub | Este guia |
 | `apps-script/Codigo.gs` | Planilha Google | Código que transforma a planilha em banco de dados e envia os backups |
@@ -70,7 +69,7 @@ window.IEMA_CONFIG = {
 1. No editor do Apps Script, apague o código antigo, cole o novo `Codigo.gs` e salve.
 2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações, troca a lista antiga de setores pelas siglas e fixa os alertas em 70% quando ainda estiverem vazios.
 3. Vá em **Implantar > Gerenciar implantações**, clique no lápis, escolha **Versão: Nova versão** e **Implantar**. O endereço `/exec` continua o mesmo.
-4. Envie o novo `index.html`, o `helpdesk.html` e o `atendimento.html` ao GitHub, substituindo os anteriores. O `config.js` não muda.
+4. Envie o novo `index.html` e o `helpdesk.html` ao GitHub, substituindo os anteriores. Se existir, apague o `atendimento.html` antigo. O `config.js` não muda.
 
 > Na versão com a Central de Atendimento, execute **instalar** novamente: ela cria a aba **Anexos** e as colunas de e-mail, telefone e origem do solicitante. O Google pode pedir uma nova autorização (Drive, para guardar as fotos).
 
@@ -130,18 +129,22 @@ window.IEMA_CONFIG = {
 - O **assistente virtual** responde sobre situação, prazo, etapas, respostas da equipe, OS, atendimento, fotos, cancelamento e contato.
 - **Não salvar nesta máquina** e **Limpar meus dados** protegem computadores compartilhados.
 
-### Gestão de Solicitações, página própria da equipe
-- Endereço: **https://SEU-USUARIO.github.io/SEU-REPOSITORIO/atendimento.html**. Usa o mesmo login e senha do sistema; é preciso perfil que marque etapas ou acesse a Área do Gestor.
-- **Indicadores clicáveis:** novas, em andamento, em atraso, ateste e pagamento, encerradas e tempo médio de recebimento.
-- **Fila ao vivo:** atualizada a cada 15 segundos, com filtros, busca, ordenação, cor por urgência, selo **Nova** e aviso sonoro opcional para novas solicitações.
-- **Para cada solicitação**, a página mostra:
-  - os dados do solicitante, do local e do problema, exatamente como foram preenchidos na Central;
-  - as fotos e o PDF da solicitação;
-  - a triagem: lote, modalidade, urgência, prazo, OS, atendimento, valor estimado e observações internas;
-  - o andamento por etapas, com as mesmas regras e senhas do sistema;
-  - o histórico.
-- **Conversa com o solicitante:** a equipe responde por respostas prontas ou texto livre, com opção de envio por e-mail. A resposta aparece na hora para o solicitante, na Central e no assistente virtual.
-- As duas páginas são independentes, mas trabalham sobre a mesma planilha: o que o solicitante envia aparece na Gestão, e o que a equipe registra aparece para o solicitante, em tempo real.
+### Integração em tempo real com a página do gestor
+- As solicitações da Central de Atendimento chegam direto à página do gestor (`index.html`). Não há página separada de atendimento.
+- O que o gestor vê:
+  - no **Painel**, o quadro **Central de Atendimento · solicitações recebidas**, com selo **Nova**, urgência e tempo desde a abertura;
+  - na barra lateral, um contador em **Demandas**;
+  - no título da aba do navegador, o número de novidades;
+  - em **Demandas**, a aba **Central de Atendimento**, que filtra só essas solicitações e destaca as ainda não abertas.
+- No detalhe de cada solicitação, o gestor:
+  - faz a triagem (botão Editar dados);
+  - marca as etapas (ao marcar a demanda inicial, escolhe o lote);
+  - vê as fotos e o PDF da solicitação;
+  - usa a **Conversa com o solicitante**: as respostas prontas ou escritas, com opção de envio por e-mail, aparecem na hora para o solicitante, na Central e no assistente virtual. As observações e as novas fotos do solicitante voltam marcadas como **Mensagem**.
+- **Tempo de atualização:**
+  - a página do gestor consulta a planilha a cada **10 segundos** e a Central, a cada **15 segundos**, enquanto um pedido está aberto;
+  - quando as duas páginas estão abertas no mesmo navegador, a atualização é imediata;
+  - entre computadores diferentes, o tempo é o da consulta. O Google Apps Script não envia avisos de forma ativa.
 
 ### Exclusão de demandas
 - Gestores (perfis com permissão de excluir) apagam uma demanda pelo botão **Excluir** no detalhe ou pelo ícone **×** na lista de demandas.
