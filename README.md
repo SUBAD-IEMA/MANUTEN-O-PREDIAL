@@ -8,6 +8,7 @@ Sistema para registrar e acompanhar as demandas de manutenção predial do IEMA,
 |---|---|---|
 | `index.html` | GitHub | O sistema completo (telas, gráficos e relatórios) |
 | `helpdesk.html` | GitHub | Atalho da Central de Atendimento (Help Desk) para os solicitantes |
+| `atendimento.html` | GitHub | Atalho da página de Gestão de Solicitações, da equipe |
 | `config.js` | GitHub | Endereço de conexão com a planilha Google |
 | `README.md` | GitHub | Este guia |
 | `apps-script/Codigo.gs` | Planilha Google | Código que transforma a planilha em banco de dados e envia os backups |
@@ -69,7 +70,7 @@ window.IEMA_CONFIG = {
 1. No editor do Apps Script, apague o código antigo, cole o novo `Codigo.gs` e salve.
 2. Execute a função **instalar** de novo. Ela não apaga dados: cria as abas do Looker Studio, acrescenta os novos campos em Configurações, troca a lista antiga de setores pelas siglas e fixa os alertas em 70% quando ainda estiverem vazios.
 3. Vá em **Implantar > Gerenciar implantações**, clique no lápis, escolha **Versão: Nova versão** e **Implantar**. O endereço `/exec` continua o mesmo.
-4. Envie o novo `index.html` e o `helpdesk.html` ao GitHub, substituindo os anteriores. O `config.js` não muda.
+4. Envie o novo `index.html`, o `helpdesk.html` e o `atendimento.html` ao GitHub, substituindo os anteriores. O `config.js` não muda.
 
 > Na versão com a Central de Atendimento, execute **instalar** novamente: ela cria a aba **Anexos** e as colunas de e-mail, telefone e origem do solicitante. O Google pode pedir uma nova autorização (Drive, para guardar as fotos).
 
@@ -113,15 +114,34 @@ window.IEMA_CONFIG = {
 - Os dois alertas já começam **fixos em 70%**. Para mudar, use **Alterar valores** em Configurações: o sistema pergunta se o gestor realmente deseja alterar e, se sim, pede a senha e o motivo.
 - O valor global da vigência tem o botão **Salvar**; depois de gravado, só muda pelo mesmo botão **Alterar valores**.
 
-### Central de Atendimento (Help Desk)
-- Endereço para os solicitantes: **https://SEU-USUARIO.github.io/SEU-REPOSITORIO/helpdesk.html** (o endereço exato aparece em **Área do Gestor > Configurações > Central de Atendimento**, com o botão **Copiar**). Não exige login.
-- **Nova solicitação:** quadros coloridos para dados do solicitante, local, problema (com ícones por tipo), urgência e prazo, fotos e revisão. As fotos (JPG, PNG, WEBP, GIF ou HEIC) somam até **15 MB**; imagens grandes são reduzidas antes do envio. O solicitante recebe o **número do pedido** na hora e uma confirmação por e-mail.
-- **Acompanhar solicitação:** com o número do pedido e o e-mail usado, o solicitante vê a situação, as etapas, a previsão, o histórico e as fotos, envia mais fotos e manda observações à equipe. A tela se atualiza sozinha a cada minuto.
-- **Assistente virtual:** responde automaticamente sobre situação, prazo, etapas, aprovação, execução, números da OS e do atendimento, fotos, cancelamento e contato. Aceita o número do pedido e o e-mail digitados na conversa e avisa quando o pedido muda de situação.
-- **Não salvar nesta máquina:** botão no topo que apaga e deixa de gravar nome, e-mail e pedidos recentes no computador. **Limpar meus dados** apaga tudo da página e recomeça. Use em computadores compartilhados.
-- **Integração com a Área do Gestor:** a solicitação entra direto em **Demandas** como "Aguardando análise", com a marca **Help Desk**, o contato do solicitante e as fotos no detalhe. Quem estiver com o sistema aberto recebe um aviso. Ao marcar a **Demanda inicial**, o gestor escolhe o lote (e o valor estimado, se a demanda for programada).
-- As fotos ficam na pasta **Anexos - Manutenção Predial IEMA** do Google Drive de quem implantou o script, separadas por pedido, e só são exibidas a quem tem acesso ao pedido.
-- Para pausar o recebimento de pedidos, desmarque **Aceitar novas solicitações** em Configurações. Há limites automáticos contra excesso de envios.
+### Central de Atendimento (Help Desk), página do solicitante
+- Endereço: **https://SEU-USUARIO.github.io/SEU-REPOSITORIO/helpdesk.html**. Não exige login. O endereço exato aparece em **Área do Gestor > Configurações > Central de Atendimento**.
+- O cabeçalho informa que o canal é **exclusivo para manutenção predial** e que é vedado pedir serviços que configurem **obra**. A base é a Lei Federal nº 14.133/2021, art. 6º, incisos XII (obra) e XXI, alínea "a" (serviço comum de engenharia, que inclui a manutenção), aplicada no Espírito Santo pelos Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023.
+- **Nova solicitação**, em quadros coloridos:
+  - seus dados;
+  - local, com a quantidade de pessoas afetadas;
+  - problema, com o assunto convertido automaticamente em maiúsculas;
+  - urgência;
+  - fotos;
+  - revisão.
+- O prazo é definido pela equipe e só aparece para o solicitante depois que a demanda inicial é marcada.
+- **Fotos convertidas em PDF:** ao enviar, as fotos (até 15 MB no total) são reduzidas e embutidas no **PDF da solicitação**, junto com todos os dados preenchidos. No Google Drive fica apenas esse PDF (pasta **Anexos - Manutenção Predial IEMA**). A planilha guarda miniaturas leves para a visualização rápida. O solicitante pode baixar o PDF na hora.
+- **Acompanhar solicitação** (número do pedido + e-mail): mostra a situação, as etapas, a previsão, o histórico, as respostas da equipe, o PDF e as miniaturas. O solicitante pode enviar mais fotos (em um PDF complementar) e observações.
+- O **assistente virtual** responde sobre situação, prazo, etapas, respostas da equipe, OS, atendimento, fotos, cancelamento e contato.
+- **Não salvar nesta máquina** e **Limpar meus dados** protegem computadores compartilhados.
+
+### Gestão de Solicitações, página própria da equipe
+- Endereço: **https://SEU-USUARIO.github.io/SEU-REPOSITORIO/atendimento.html**. Usa o mesmo login e senha do sistema; é preciso perfil que marque etapas ou acesse a Área do Gestor.
+- **Indicadores clicáveis:** novas, em andamento, em atraso, ateste e pagamento, encerradas e tempo médio de recebimento.
+- **Fila ao vivo:** atualizada a cada 15 segundos, com filtros, busca, ordenação, cor por urgência, selo **Nova** e aviso sonoro opcional para novas solicitações.
+- **Para cada solicitação**, a página mostra:
+  - os dados do solicitante, do local e do problema, exatamente como foram preenchidos na Central;
+  - as fotos e o PDF da solicitação;
+  - a triagem: lote, modalidade, urgência, prazo, OS, atendimento, valor estimado e observações internas;
+  - o andamento por etapas, com as mesmas regras e senhas do sistema;
+  - o histórico.
+- **Conversa com o solicitante:** a equipe responde por respostas prontas ou texto livre, com opção de envio por e-mail. A resposta aparece na hora para o solicitante, na Central e no assistente virtual.
+- As duas páginas são independentes, mas trabalham sobre a mesma planilha: o que o solicitante envia aparece na Gestão, e o que a equipe registra aparece para o solicitante, em tempo real.
 
 ### Exclusão de demandas
 - Gestores (perfis com permissão de excluir) apagam uma demanda pelo botão **Excluir** no detalhe ou pelo ícone **×** na lista de demandas.

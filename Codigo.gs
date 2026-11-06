@@ -458,7 +458,8 @@ var Logica = (function () {
     ] },
     Anexos: { chave: 'id', colunas: [
       ['id', 'Código interno', 'texto'], ['demandaId', 'Demanda', 'texto'], ['nome', 'Nome do arquivo', 'texto'], ['tipo', 'Tipo', 'texto'],
-      ['tamanho', 'Tamanho (bytes)', 'int'], ['arquivoId', 'Arquivo no Google Drive', 'texto'], ['enviadoPor', 'Enviado por', 'texto'], ['enviadoEm', 'Enviado em', 'datahora']
+      ['tamanho', 'Tamanho (bytes)', 'int'], ['arquivoId', 'Arquivo no Google Drive', 'texto'], ['enviadoPor', 'Enviado por', 'texto'], ['enviadoEm', 'Enviado em', 'datahora'],
+      ['miniatura', 'Miniatura (imagem reduzida)', 'texto']
     ] },
     Historico: { chave: null, colunas: [
       ['em', 'Data e hora', 'datahora'], ['usuario', 'Usuário', 'texto'], ['perfil', 'Perfil', 'texto'], ['acao', 'Ação', 'texto'],
@@ -521,6 +522,7 @@ var Logica = (function () {
   L.emailValido = function (e) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(e || '').trim()); };
   /* Nomes das etapas como o solicitante as vê no Help Desk */
   L.ETAPAS_SOLICITANTE = { inicial: 'Recebida pela equipe', aprovacao: 'Aprovada', execucao: 'Serviço executado', ateste: 'Serviço conferido (ateste)', pagamento: 'Encerrada' };
+  L.AVISO_LEGAL = 'Este canal destina-se exclusivamente a solicitações de manutenção predial (conservação, reparo e adequação com preservação das características originais do imóvel), caracterizadas como serviço comum de engenharia (Lei Federal nº 14.133/2021, art. 6º, inciso XXI, alínea "a"). É vedado solicitar por aqui qualquer serviço que configure obra, como construção, ampliação ou reforma que inove o espaço físico ou altere substancialmente as características originais do imóvel (Lei Federal nº 14.133/2021, art. 6º, inciso XII), conforme aplicada no Estado do Espírito Santo pelos Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023.';
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -846,7 +848,7 @@ var Servico = (function (L) {
     return {
       versao: repo.versao(), config: cfg, lotes: repo.listar('Lotes'), empenhos: verFin ? repo.listar('Empenhos') : [],
       demandas: demandas, nfs: nfs, perfis: repo.listar('Perfis'), nomes: nomes,
-      anexos: repo.listar('Anexos').filter(function (a) { return ids[a.demandaId]; }),
+      anexos: repo.listar('Anexos').filter(function (a) { return ids[a.demandaId]; }).map(function (a) { a.temMiniatura = !!a.miniatura; delete a.miniatura; return a; }),
       usuarios: p.usuarios ? usuarios.map(publico) : [], historico: historico.reverse(),
       sessao: { login: ses.login, nome: ses.nome, perfil: p, trocarSenha: ses.usuario.trocarSenha }
     };
@@ -1271,7 +1273,7 @@ var Servico = (function (L) {
   function visaoPublica(repo, d) {
     var anexos = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
     var eventos = repo.listar('Historico').filter(function (h) {
-      return h.demandaId === d.id && /^(Demanda registrada|Etapa marcada|Etapa desmarcada|Situação alterada|Mensagem do solicitante|Anexo enviado|Demanda alterada)/.test(h.acao) &&
+      return h.demandaId === d.id && /^(Demanda registrada|Etapa marcada|Etapa desmarcada|Situação alterada|Mensagem do solicitante|Resposta da equipe|Anexo enviado|PDF da solicitação|Demanda alterada)/.test(h.acao) &&
         (h.acao.indexOf('Demanda alterada') < 0 || h.campo === 'Execução: início');
     }).map(function (h) {
       var t = h.acao;
@@ -1279,17 +1281,19 @@ var Servico = (function (L) {
       else if (h.acao.indexOf('Etapa desmarcada') === 0) t = 'Etapa reaberta pela equipe';
       else if (h.acao.indexOf('Demanda alterada') === 0) t = 'Execução iniciada';
       else if (h.acao.indexOf('Mensagem do solicitante') === 0) t = 'Sua observação: ' + h.novo;
+      else if (h.acao.indexOf('Resposta da equipe') === 0) t = 'Resposta da equipe: ' + h.novo;
+      else if (h.acao.indexOf('PDF da solicitação') === 0) t = 'Fotos convertidas para o PDF da solicitação';
       else if (h.acao.indexOf('Demanda registrada') === 0) t = 'Solicitação registrada';
       return { em: h.em, texto: t };
     });
     return {
       id: d.id, titulo: d.titulo, modalidade: d.modalidade, unidade: d.unidade, local: d.local, localInterno: d.localInterno, sistema: d.sistema,
       criticidade: d.criticidade, risco: d.risco, descricao: d.descricao, solicitante: d.solicitante, dataSolicitacao: d.dataSolicitacao,
-      prazoQtd: d.prazoQtd, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicioPrevisto, fimPrevisto: d.fimPrevisto, execucaoInicio: d.execucaoInicio,
+      prazoQtd: d.inicialOk ? d.prazoQtd : 0, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicialOk ? d.inicioPrevisto : '', fimPrevisto: d.inicialOk ? d.fimPrevisto : '', execucaoInicio: d.execucaoInicio, pessoas: d.pessoas,
       osNumero: d.osNumero, atendimentoNumero: d.atendimentoNumero, cancelada: d.cancelada, motivoCancelamento: d.motivoCancelamento,
-      situacao: L.situacao(d), prazo: L.prazo(d),
+      situacao: L.situacao(d), prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
       etapas: L.ETAPAS.filter(function (e) { return !e.soProgramado || d.modalidade === 'Programado'; }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
-      anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tamanho: a.tamanho, enviadoEm: a.enviadoEm }; }),
+      anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, temMiniatura: !!a.miniatura }; }),
       eventos: eventos
     };
   }
@@ -1311,6 +1315,7 @@ var Servico = (function (L) {
       'criticidade', 'risco', 'pessoas', 'prazoQtd', 'prazoUnidade'].forEach(function (k) { if (e[k] !== undefined) d[k] = e[k]; });
     d = L.normalizar('Demandas', d);
     d.solicitanteEmail = email;
+    d.titulo = String(d.titulo || '').toUpperCase();
     if (L.MODALIDADES.indexOf(d.modalidade) < 0) d.modalidade = 'Contínuo';
     if (L.CRITICIDADES.indexOf(d.criticidade) < 0) d.criticidade = 'Média';
     if (!d.responsavelLocal) d.responsavelLocal = d.solicitante;
@@ -1357,6 +1362,51 @@ var Servico = (function (L) {
     repo.historico([{ em: repo.agora(), usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'Anexo enviado pelo solicitante', demandaId: d.id, campo: nome, anterior: '', novo: Math.round(tamanho / 1024) + ' KB', motivo: '' }]);
     return { anexo: { id: a.id, nome: a.nome, tamanho: a.tamanho } };
   };
+  /* PDF da solicitação (fotos convertidas) + miniaturas na planilha: um único arquivo no Drive por envio */
+  A.helpdeskArquivos = function (repo, req) {
+    var d = demandaDoSolicitante(repo, req.protocolo, req.email);
+    if (d.cancelada || d.pagamentoOk) falha('VALIDACAO', 'Este pedido já foi encerrado e não recebe novos anexos.');
+    var pdf = req.pdf || {}, minis = Array.isArray(req.miniaturas) ? req.miniaturas : [];
+    var b64 = String(pdf.base64 || '');
+    if (!b64 || b64.slice(0, 6) !== 'JVBERi') falha('VALIDACAO', 'O PDF da solicitação é inválido.');
+    var tamanho = Math.floor(b64.length * 3 / 4);
+    var atuais = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
+    if (atuais.reduce(function (s, a) { return s + (a.tamanho || 0); }, 0) + tamanho > L.LIMITE_ANEXOS) falha('LIMITE', 'O total de arquivos deste pedido passaria de 15 MB.');
+    if (minis.length > 30 || atuais.filter(function (a) { return a.miniatura; }).length + minis.length > 60) falha('LIMITE', 'Número máximo de fotos atingido para este pedido.');
+    minis.forEach(function (m) { if (!/^data:image\/jpeg;base64,/.test(String(m.dataUrl || '')) || String(m.dataUrl).length > 48000) falha('VALIDACAO', 'Miniatura de foto inválida.'); });
+    var nome = String(pdf.nome || ('solicitacao-' + d.id + '.pdf')).replace(/[\\/:*?"<>|]+/g, '_').slice(0, 120);
+    var arq = repo.salvarArquivo(d.id, nome, 'application/pdf', b64);
+    var agora = repo.agora(), quem = req.origem === 'gestor' ? 'gestor' : 'helpdesk';
+    repo.salvar('Anexos', L.normalizar('Anexos', { id: 'ANX' + repo.uuid().slice(0, 10).toUpperCase(), demandaId: d.id, nome: nome, tipo: 'application/pdf', tamanho: tamanho, arquivoId: arq.arquivoId, enviadoPor: quem, enviadoEm: agora }));
+    minis.forEach(function (m) {
+      repo.salvar('Anexos', L.normalizar('Anexos', { id: 'ANX' + repo.uuid().slice(0, 10).toUpperCase(), demandaId: d.id, nome: String(m.nome || 'foto').slice(0, 120), tipo: 'image/jpeg', tamanho: Number(m.tamanhoOriginal) || 0, arquivoId: '', enviadoPor: quem, enviadoEm: agora, miniatura: m.dataUrl }));
+    });
+    repo.historico([{ em: agora, usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'PDF da solicitação gerado com as fotos', demandaId: d.id, campo: nome, anterior: '', novo: minis.length + ' foto(s) · ' + Math.round(tamanho / 1024) + ' KB', motivo: '' }]);
+    return { ok: true };
+  };
+  A.anexosDemanda = function (repo, req) {
+    var id = req.id;
+    if (req.token) {
+      var ses = sessao(repo, req.token);
+      var d = repo.listar('Demandas').filter(function (x) { return x.id === id; })[0];
+      exigir(d && (ses.perfil.verTodas || d.criadoPor === ses.login), 'Você não tem acesso a esta demanda.');
+    } else id = demandaDoSolicitante(repo, req.protocolo, req.email).id;
+    return { anexos: repo.listar('Anexos').filter(function (a) { return a.demandaId === id; }).map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, enviadoPor: a.enviadoPor, miniatura: a.miniatura, temArquivo: !!a.arquivoId }; }) };
+  };
+  A.responderSolicitante = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.etapas || ses.perfil.areaGestor, 'Seu perfil não responde aos solicitantes.');
+    var d = repo.listar('Demandas').filter(function (x) { return x.id === req.id; })[0];
+    if (!d) falha('VALIDACAO', 'Demanda não encontrada.');
+    var texto = String(req.texto || '').trim().slice(0, 2000);
+    if (!texto) falha('VALIDACAO', 'Escreva a resposta.');
+    var enviado = false;
+    if (req.porEmail && d.solicitanteEmail && repo.emailSolicitante) {
+      try { repo.emailSolicitante(d.solicitanteEmail, 'Pedido ' + d.id + ': resposta da equipe de Manutenção Predial', '<p>Olá, ' + (d.solicitante || '') + '.</p><p>' + texto.replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }).replace(/\n/g, '<br>') + '</p><p>Pedido <b>' + d.id + '</b>: ' + d.titulo + '. Acompanhe pela Central de Atendimento com o número do pedido e o seu e-mail.</p>'); enviado = true; } catch (e) { enviado = false; }
+    }
+    repo.historico([hist(repo, ses, 'Resposta da equipe (Help Desk)', d.id, ses.nome, '', texto, enviado ? 'também enviada por e-mail' : '')]);
+    return { emailEnviado: enviado, dados: montarDados(repo, ses) };
+  };
   A.helpdeskMensagem = function (repo, req) {
     var d = demandaDoSolicitante(repo, req.protocolo, req.email);
     var texto = String(req.texto || '').trim().slice(0, 1000);
@@ -1391,7 +1441,7 @@ var Servico = (function (L) {
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
-  var GRAVAM = { helpdeskRegistrar: 1, helpdeskAnexo: 1, helpdeskMensagem: 1, gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
+  var GRAVAM = { helpdeskArquivos: 1, responderSolicitante: 1, helpdeskRegistrar: 1, helpdeskAnexo: 1, helpdeskMensagem: 1, gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
   S.executar = function (repo, req) {
     try {
       var fn = A[req && req.acao];

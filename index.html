@@ -689,6 +689,112 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
 }
 @media print { .modo-hd .hd, .modo-hd .hd-fab, .modo-hd .hd-chat { display: none !important; } }
 
+/* ---------------- Aviso legal e anexos em PDF ---------------- */
+.hd-legal { margin-top: 18px; max-width: 980px; padding: 12px 16px; border-radius: 12px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.28); color: #F0FDFA; font-size: 13px; line-height: 1.5; }
+.hd-legal b { color: #FDE68A; margin-right: 4px; }
+.hd-pdfs { display: flex; flex-direction: column; gap: 8px; margin-bottom: 10px; }
+.hd-pdf { display: flex; align-items: center; gap: 10px; text-align: left; border: 1px solid #DDD6FE; background: #FAF8FF; border-radius: 10px; padding: 8px 12px; cursor: pointer; color: #3B0764; }
+.hd-pdf:hover { background: #F3EEFF; }
+.hd-pdf svg { width: 26px; height: 26px; color: #B91C1C; flex: none; }
+.hd-pdf span { display: flex; flex-direction: column; min-width: 0; }
+.hd-pdf b { font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hd-pdf small { font-size: 11.5px; color: #6B5B95; }
+
+/* =========================================================================
+   GESTÃO DE SOLICITAÇÕES (página do gestor)
+   ========================================================================= */
+.modo-at { background: #EEF2F4; }
+.at-carregando { min-height: 100vh; display: grid; place-content: center; justify-items: center; gap: 12px; color: #33464C; }
+.at-carregando .hd-logo { animation: ld 1s linear infinite; }
+.at-login { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(320px, 460px); background: #fff; }
+.at-login-arte { background: linear-gradient(160deg, #083B37, #0E7490 70%, #1D4ED8 140%); color: #E6F4F1; padding: clamp(28px, 6vw, 72px); display: flex; flex-direction: column; justify-content: center; gap: 14px; }
+.at-login-arte h1 { font-size: clamp(28px, 3.4vw, 40px); color: #fff; letter-spacing: -0.02em; }
+.at-login-arte p { color: #CDEDE8; }
+.at-login-arte ul { margin: 10px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+.at-login-card { display: flex; flex-direction: column; justify-content: center; gap: 14px; padding: clamp(24px, 5vw, 56px); }
+.at-login-card h2 { font-size: 24px; }
+.at-login-links { display: flex; gap: 16px; font-size: 13.5px; }
+.at { min-height: 100vh; display: flex; flex-direction: column; }
+.at-top { display: flex; align-items: center; gap: 12px 20px; flex-wrap: wrap; padding: 12px 24px; background: #083B37; color: #E6F4F1; position: sticky; top: 0; z-index: 30; }
+.at-marca { display: flex; align-items: center; gap: 12px; margin-right: auto; }
+.at-nome { font-size: 18px; font-weight: 800; color: #fff; } .at-sub { font-size: 12px; color: #9CCFC7; }
+.at-live { display: inline-flex; align-items: center; gap: 8px; font-size: 12.5px; color: #CFE6E1; background: rgba(255,255,255,.08); padding: 6px 12px; border-radius: 999px; }
+.at-live i { width: 8px; height: 8px; border-radius: 50%; background: #4ADE80; box-shadow: 0 0 0 0 rgba(74,222,128,.6); animation: pulso 2s infinite; }
+@keyframes pulso { 0% { box-shadow: 0 0 0 0 rgba(74,222,128,.6); } 70% { box-shadow: 0 0 0 8px rgba(74,222,128,0); } 100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); } }
+.at-user { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.at-lnk { border: 1px solid rgba(255,255,255,.22); background: transparent; color: #E6F4F1; border-radius: 999px; padding: 6px 12px; font-size: 12.5px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.at-lnk:hover { background: rgba(255,255,255,.1); }
+.at-ic { width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,255,255,.22); background: transparent; color: #E6F4F1; display: grid; place-items: center; cursor: pointer; }
+.at-ic svg { width: 17px; height: 17px; } .at-ic[aria-pressed="true"] { background: #FDE68A; color: #713F12; border-color: #FDE68A; }
+.at-quem { display: flex; flex-direction: column; line-height: 1.2; padding: 0 6px; } .at-quem b { color: #fff; font-size: 13px; } .at-quem small { color: #9CCFC7; font-size: 11.5px; }
+.at-kpis { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; padding: 16px 24px 4px; }
+.at-kpi { text-align: left; border: 1px solid #DDE5E3; background: #fff; border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; cursor: pointer; border-top: 4px solid var(--c); font: inherit; color: #14232A; }
+.at-kpi span { font-size: 12.5px; color: #5E7075; font-weight: 600; } .at-kpi b { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; } .at-kpi small { font-size: 11.5px; color: #5E7075; }
+.at-kpi.on { box-shadow: 0 0 0 2px var(--c); } .at-kpi.info { cursor: default; }
+.at-body { flex: 1; display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 16px; padding: 12px 24px 24px; min-height: 0; }
+.at-fila { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; display: flex; flex-direction: column; overflow: hidden; height: calc(100vh - 210px); position: sticky; top: 76px; }
+.at-fila-h { padding: 12px; display: flex; flex-direction: column; gap: 10px; border-bottom: 1px solid #E6ECEA; }
+.at-busca { position: relative; } .at-busca svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: #5E7075; }
+.at-busca input { width: 100%; padding: 9px 12px 9px 34px; border-radius: 10px; border: 1px solid #C3CFCB; font-size: 14px; }
+.at-filtros { display: flex; gap: 4px; flex-wrap: wrap; }
+.at-filtros button { border: 1px solid #DDE5E3; background: #fff; border-radius: 999px; padding: 4px 10px; font-size: 12.5px; font-weight: 600; color: #5E7075; cursor: pointer; }
+.at-filtros button[aria-pressed="true"] { background: #0B4F4A; border-color: #0B4F4A; color: #fff; }
+.at-fila-h .in { padding: 6px 8px; font-size: 12.5px; }
+.at-lista { overflow-y: auto; flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 6px; }
+.at-item { text-align: left; border: 1px solid #E6ECEA; background: #fff; border-radius: 12px; padding: 10px 12px 10px 16px; cursor: pointer; display: flex; flex-direction: column; gap: 3px; position: relative; font: inherit; color: #14232A; }
+.at-item::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 4px; border-radius: 0 4px 4px 0; background: var(--u); }
+.at-item:hover { border-color: #C3CFCB; background: #FAFCFB; }
+.at-item.ativo { border-color: #0B4F4A; box-shadow: 0 0 0 2px rgba(11,79,74,.18); background: #F2FAF8; }
+.at-item.nao-visto .tt { font-weight: 800; }
+.at-item .l1 { display: flex; align-items: center; gap: 6px; font-size: 12px; } .at-item .l1 b { color: #33464C; } .at-item .l1 span { margin-left: auto; color: #5E7075; }
+.at-item .tt { font-size: 13.5px; font-weight: 600; line-height: 1.3; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.at-item .l3 { font-size: 12px; color: #5E7075; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.at-item .l4 { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-top: 2px; } .at-item .sit { font-size: 12px; }
+.at-nova { font-style: normal; background: #1D4ED8; color: #fff; font-size: 10.5px; font-weight: 800; padding: 1px 7px; border-radius: 999px; letter-spacing: .02em; }
+.at-msg { font-style: normal; color: #6D28D9; font-size: 14px; line-height: 1; }
+.at-cam { font-size: 11.5px; color: #5B21B6; }
+.at-vazio { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; padding: 36px 16px; color: #5E7075; font-size: 13.5px; }
+.at-vazio b { color: #14232A; font-size: 15px; }
+.at-vazio.grande { min-height: 60vh; justify-content: center; } .at-vazio svg { width: 48px; height: 48px; color: #94A3B8; }
+.at-ws { min-width: 0; outline: none; }
+.at-ws-h { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; padding: 16px 20px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 5px solid var(--c); margin-bottom: 14px; }
+.at-ws-h h2 { font-size: 20px; margin-top: 6px; letter-spacing: -0.01em; }
+.at-prot { font-size: 13px; letter-spacing: .03em; color: #0B4F4A; }
+.at-pill { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 700; color: var(--c); background: #fff; border: 1.5px solid var(--c); }
+.at-acoes { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-start; }
+.at-step { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; margin-bottom: 14px; padding: 18px 16px 12px; --c: #15803D; }
+.at-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.at-col { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.at-card { background: #fff; border: 1px solid #DDE5E3; border-radius: 16px; overflow: hidden; }
+.at-card > header { padding: 11px 16px; border-top: 4px solid var(--c); border-bottom: 1px solid #E6ECEA; background: linear-gradient(90deg, rgba(0,0,0,.025), transparent); display: flex; justify-content: space-between; align-items: center; }
+.at-card h3 { font-size: 14.5px; color: #14232A; display: flex; align-items: center; gap: 8px; }
+.at-card h3::before { content: ""; width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+.at-card-b { padding: 14px 16px 16px; }
+.at-kv { display: grid; grid-template-columns: 150px 1fr; gap: 6px 12px; margin: 0; font-size: 13.5px; }
+.at-kv dt { color: #5E7075; } .at-kv dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.at-desc { margin-top: 10px; padding: 10px 12px; background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 10px; font-size: 14px; white-space: pre-wrap; }
+.at-chat { display: flex; flex-direction: column; gap: 8px; max-height: 320px; overflow-y: auto; padding: 2px; margin-bottom: 10px; }
+.at-bolha { max-width: 88%; padding: 8px 12px; border-radius: 12px; font-size: 13.5px; }
+.at-bolha small { display: block; font-size: 11px; opacity: .8; margin-bottom: 2px; }
+.at-bolha p { white-space: pre-wrap; }
+.at-bolha.sol { background: #F3F4F6; border: 1px solid #E5E7EB; align-self: flex-start; border-bottom-left-radius: 4px; }
+.at-bolha.eq { background: #EEF2FF; border: 1px solid #C7D2FE; align-self: flex-end; border-bottom-right-radius: 4px; color: #1E1B4B; }
+.at-resp { display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #E6ECEA; padding-top: 10px; }
+.at-tri .fgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1280px) { .at-kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); } .at-grid { grid-template-columns: 1fr; } }
+@media (max-width: 1000px) {
+  .at-body { grid-template-columns: 1fr; } .at-fila { height: 60vh; position: static; }
+  .at-login { grid-template-columns: 1fr; } .at-login-arte { padding: 28px; }
+}
+@media (max-width: 640px) { .at-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 12px; } .at-body { padding: 8px 12px 16px; } .at-top { padding: 10px 12px; } .at-kv { grid-template-columns: 1fr; } .at-tri .fgrid { grid-template-columns: 1fr; } }
+
+.at-card .timeline { list-style: none; margin: 0; padding: 0; }
+.at-card .timeline li { position: relative; padding: 0 0 12px 20px; font-size: 13px; }
+.at-card .timeline li::before { content: ""; position: absolute; left: 3px; top: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--c); }
+.at-card .timeline li::after { content: ""; position: absolute; left: 7px; top: 16px; bottom: 0; width: 1px; background: #DDE5E3; }
+.at-card .timeline li:last-child::after { display: none; }
+.at-card .timeline .d { color: #5E7075; font-size: 12px; }
+
   </style>
   <script src="config.js"></script>
 </head>
@@ -707,6 +813,7 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
           <a href="#demandas"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>Demandas</a>
           <a href="#cronograma"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h9M8 12h11M6 18h7"/><path d="M3 3v18h18" stroke-linejoin="round"/></svg>Cronograma de obras</a>
           <a href="#setores"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-6h6v6M4 21h16"/></svg>Setores atendidos</a>
+          <a href="?atendimento" target="_blank" rel="noopener" class="nav-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h4"/></svg>Gestão de Solicitações</a>
           <a href="?helpdesk" target="_blank" rel="noopener" class="nav-hd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg>Central de Atendimento</a>
           <div class="sep" role="separator"></div>
           <a href="#gestor" id="nav-gestor" class="gestor"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>Área do Gestor<span id="gestor-badge" class="tag atrasada" style="margin-left:auto;padding:0 8px" hidden title="Saldo próximo do fim"></span></a>
@@ -791,7 +898,8 @@ var Logica = (function () {
     ] },
     Anexos: { chave: 'id', colunas: [
       ['id', 'Código interno', 'texto'], ['demandaId', 'Demanda', 'texto'], ['nome', 'Nome do arquivo', 'texto'], ['tipo', 'Tipo', 'texto'],
-      ['tamanho', 'Tamanho (bytes)', 'int'], ['arquivoId', 'Arquivo no Google Drive', 'texto'], ['enviadoPor', 'Enviado por', 'texto'], ['enviadoEm', 'Enviado em', 'datahora']
+      ['tamanho', 'Tamanho (bytes)', 'int'], ['arquivoId', 'Arquivo no Google Drive', 'texto'], ['enviadoPor', 'Enviado por', 'texto'], ['enviadoEm', 'Enviado em', 'datahora'],
+      ['miniatura', 'Miniatura (imagem reduzida)', 'texto']
     ] },
     Historico: { chave: null, colunas: [
       ['em', 'Data e hora', 'datahora'], ['usuario', 'Usuário', 'texto'], ['perfil', 'Perfil', 'texto'], ['acao', 'Ação', 'texto'],
@@ -854,6 +962,7 @@ var Logica = (function () {
   L.emailValido = function (e) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(e || '').trim()); };
   /* Nomes das etapas como o solicitante as vê no Help Desk */
   L.ETAPAS_SOLICITANTE = { inicial: 'Recebida pela equipe', aprovacao: 'Aprovada', execucao: 'Serviço executado', ateste: 'Serviço conferido (ateste)', pagamento: 'Encerrada' };
+  L.AVISO_LEGAL = 'Este canal destina-se exclusivamente a solicitações de manutenção predial (conservação, reparo e adequação com preservação das características originais do imóvel), caracterizadas como serviço comum de engenharia (Lei Federal nº 14.133/2021, art. 6º, inciso XXI, alínea "a"). É vedado solicitar por aqui qualquer serviço que configure obra, como construção, ampliação ou reforma que inove o espaço físico ou altere substancialmente as características originais do imóvel (Lei Federal nº 14.133/2021, art. 6º, inciso XII), conforme aplicada no Estado do Espírito Santo pelos Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023.';
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -1178,7 +1287,7 @@ var Servico = (function (L) {
     return {
       versao: repo.versao(), config: cfg, lotes: repo.listar('Lotes'), empenhos: verFin ? repo.listar('Empenhos') : [],
       demandas: demandas, nfs: nfs, perfis: repo.listar('Perfis'), nomes: nomes,
-      anexos: repo.listar('Anexos').filter(function (a) { return ids[a.demandaId]; }),
+      anexos: repo.listar('Anexos').filter(function (a) { return ids[a.demandaId]; }).map(function (a) { a.temMiniatura = !!a.miniatura; delete a.miniatura; return a; }),
       usuarios: p.usuarios ? usuarios.map(publico) : [], historico: historico.reverse(),
       sessao: { login: ses.login, nome: ses.nome, perfil: p, trocarSenha: ses.usuario.trocarSenha }
     };
@@ -1603,7 +1712,7 @@ var Servico = (function (L) {
   function visaoPublica(repo, d) {
     var anexos = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
     var eventos = repo.listar('Historico').filter(function (h) {
-      return h.demandaId === d.id && /^(Demanda registrada|Etapa marcada|Etapa desmarcada|Situação alterada|Mensagem do solicitante|Anexo enviado|Demanda alterada)/.test(h.acao) &&
+      return h.demandaId === d.id && /^(Demanda registrada|Etapa marcada|Etapa desmarcada|Situação alterada|Mensagem do solicitante|Resposta da equipe|Anexo enviado|PDF da solicitação|Demanda alterada)/.test(h.acao) &&
         (h.acao.indexOf('Demanda alterada') < 0 || h.campo === 'Execução: início');
     }).map(function (h) {
       var t = h.acao;
@@ -1611,17 +1720,19 @@ var Servico = (function (L) {
       else if (h.acao.indexOf('Etapa desmarcada') === 0) t = 'Etapa reaberta pela equipe';
       else if (h.acao.indexOf('Demanda alterada') === 0) t = 'Execução iniciada';
       else if (h.acao.indexOf('Mensagem do solicitante') === 0) t = 'Sua observação: ' + h.novo;
+      else if (h.acao.indexOf('Resposta da equipe') === 0) t = 'Resposta da equipe: ' + h.novo;
+      else if (h.acao.indexOf('PDF da solicitação') === 0) t = 'Fotos convertidas para o PDF da solicitação';
       else if (h.acao.indexOf('Demanda registrada') === 0) t = 'Solicitação registrada';
       return { em: h.em, texto: t };
     });
     return {
       id: d.id, titulo: d.titulo, modalidade: d.modalidade, unidade: d.unidade, local: d.local, localInterno: d.localInterno, sistema: d.sistema,
       criticidade: d.criticidade, risco: d.risco, descricao: d.descricao, solicitante: d.solicitante, dataSolicitacao: d.dataSolicitacao,
-      prazoQtd: d.prazoQtd, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicioPrevisto, fimPrevisto: d.fimPrevisto, execucaoInicio: d.execucaoInicio,
+      prazoQtd: d.inicialOk ? d.prazoQtd : 0, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicialOk ? d.inicioPrevisto : '', fimPrevisto: d.inicialOk ? d.fimPrevisto : '', execucaoInicio: d.execucaoInicio, pessoas: d.pessoas,
       osNumero: d.osNumero, atendimentoNumero: d.atendimentoNumero, cancelada: d.cancelada, motivoCancelamento: d.motivoCancelamento,
-      situacao: L.situacao(d), prazo: L.prazo(d),
+      situacao: L.situacao(d), prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
       etapas: L.ETAPAS.filter(function (e) { return !e.soProgramado || d.modalidade === 'Programado'; }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
-      anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tamanho: a.tamanho, enviadoEm: a.enviadoEm }; }),
+      anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, temMiniatura: !!a.miniatura }; }),
       eventos: eventos
     };
   }
@@ -1643,6 +1754,7 @@ var Servico = (function (L) {
       'criticidade', 'risco', 'pessoas', 'prazoQtd', 'prazoUnidade'].forEach(function (k) { if (e[k] !== undefined) d[k] = e[k]; });
     d = L.normalizar('Demandas', d);
     d.solicitanteEmail = email;
+    d.titulo = String(d.titulo || '').toUpperCase();
     if (L.MODALIDADES.indexOf(d.modalidade) < 0) d.modalidade = 'Contínuo';
     if (L.CRITICIDADES.indexOf(d.criticidade) < 0) d.criticidade = 'Média';
     if (!d.responsavelLocal) d.responsavelLocal = d.solicitante;
@@ -1689,6 +1801,51 @@ var Servico = (function (L) {
     repo.historico([{ em: repo.agora(), usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'Anexo enviado pelo solicitante', demandaId: d.id, campo: nome, anterior: '', novo: Math.round(tamanho / 1024) + ' KB', motivo: '' }]);
     return { anexo: { id: a.id, nome: a.nome, tamanho: a.tamanho } };
   };
+  /* PDF da solicitação (fotos convertidas) + miniaturas na planilha: um único arquivo no Drive por envio */
+  A.helpdeskArquivos = function (repo, req) {
+    var d = demandaDoSolicitante(repo, req.protocolo, req.email);
+    if (d.cancelada || d.pagamentoOk) falha('VALIDACAO', 'Este pedido já foi encerrado e não recebe novos anexos.');
+    var pdf = req.pdf || {}, minis = Array.isArray(req.miniaturas) ? req.miniaturas : [];
+    var b64 = String(pdf.base64 || '');
+    if (!b64 || b64.slice(0, 6) !== 'JVBERi') falha('VALIDACAO', 'O PDF da solicitação é inválido.');
+    var tamanho = Math.floor(b64.length * 3 / 4);
+    var atuais = repo.listar('Anexos').filter(function (a) { return a.demandaId === d.id; });
+    if (atuais.reduce(function (s, a) { return s + (a.tamanho || 0); }, 0) + tamanho > L.LIMITE_ANEXOS) falha('LIMITE', 'O total de arquivos deste pedido passaria de 15 MB.');
+    if (minis.length > 30 || atuais.filter(function (a) { return a.miniatura; }).length + minis.length > 60) falha('LIMITE', 'Número máximo de fotos atingido para este pedido.');
+    minis.forEach(function (m) { if (!/^data:image\/jpeg;base64,/.test(String(m.dataUrl || '')) || String(m.dataUrl).length > 48000) falha('VALIDACAO', 'Miniatura de foto inválida.'); });
+    var nome = String(pdf.nome || ('solicitacao-' + d.id + '.pdf')).replace(/[\\/:*?"<>|]+/g, '_').slice(0, 120);
+    var arq = repo.salvarArquivo(d.id, nome, 'application/pdf', b64);
+    var agora = repo.agora(), quem = req.origem === 'gestor' ? 'gestor' : 'helpdesk';
+    repo.salvar('Anexos', L.normalizar('Anexos', { id: 'ANX' + repo.uuid().slice(0, 10).toUpperCase(), demandaId: d.id, nome: nome, tipo: 'application/pdf', tamanho: tamanho, arquivoId: arq.arquivoId, enviadoPor: quem, enviadoEm: agora }));
+    minis.forEach(function (m) {
+      repo.salvar('Anexos', L.normalizar('Anexos', { id: 'ANX' + repo.uuid().slice(0, 10).toUpperCase(), demandaId: d.id, nome: String(m.nome || 'foto').slice(0, 120), tipo: 'image/jpeg', tamanho: Number(m.tamanhoOriginal) || 0, arquivoId: '', enviadoPor: quem, enviadoEm: agora, miniatura: m.dataUrl }));
+    });
+    repo.historico([{ em: agora, usuario: 'helpdesk', perfil: 'Solicitante (Help Desk)', acao: 'PDF da solicitação gerado com as fotos', demandaId: d.id, campo: nome, anterior: '', novo: minis.length + ' foto(s) · ' + Math.round(tamanho / 1024) + ' KB', motivo: '' }]);
+    return { ok: true };
+  };
+  A.anexosDemanda = function (repo, req) {
+    var id = req.id;
+    if (req.token) {
+      var ses = sessao(repo, req.token);
+      var d = repo.listar('Demandas').filter(function (x) { return x.id === id; })[0];
+      exigir(d && (ses.perfil.verTodas || d.criadoPor === ses.login), 'Você não tem acesso a esta demanda.');
+    } else id = demandaDoSolicitante(repo, req.protocolo, req.email).id;
+    return { anexos: repo.listar('Anexos').filter(function (a) { return a.demandaId === id; }).map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, enviadoPor: a.enviadoPor, miniatura: a.miniatura, temArquivo: !!a.arquivoId }; }) };
+  };
+  A.responderSolicitante = function (repo, req) {
+    var ses = sessao(repo, req.token);
+    exigir(ses.perfil.etapas || ses.perfil.areaGestor, 'Seu perfil não responde aos solicitantes.');
+    var d = repo.listar('Demandas').filter(function (x) { return x.id === req.id; })[0];
+    if (!d) falha('VALIDACAO', 'Demanda não encontrada.');
+    var texto = String(req.texto || '').trim().slice(0, 2000);
+    if (!texto) falha('VALIDACAO', 'Escreva a resposta.');
+    var enviado = false;
+    if (req.porEmail && d.solicitanteEmail && repo.emailSolicitante) {
+      try { repo.emailSolicitante(d.solicitanteEmail, 'Pedido ' + d.id + ': resposta da equipe de Manutenção Predial', '<p>Olá, ' + (d.solicitante || '') + '.</p><p>' + texto.replace(/[<>&]/g, function (c) { return { '<': '&lt;', '>': '&gt;', '&': '&amp;' }[c]; }).replace(/\n/g, '<br>') + '</p><p>Pedido <b>' + d.id + '</b>: ' + d.titulo + '. Acompanhe pela Central de Atendimento com o número do pedido e o seu e-mail.</p>'); enviado = true; } catch (e) { enviado = false; }
+    }
+    repo.historico([hist(repo, ses, 'Resposta da equipe (Help Desk)', d.id, ses.nome, '', texto, enviado ? 'também enviada por e-mail' : '')]);
+    return { emailEnviado: enviado, dados: montarDados(repo, ses) };
+  };
   A.helpdeskMensagem = function (repo, req) {
     var d = demandaDoSolicitante(repo, req.protocolo, req.email);
     var texto = String(req.texto || '').trim().slice(0, 1000);
@@ -1723,7 +1880,7 @@ var Servico = (function (L) {
   /* =====================================================================
      Ponto de entrada
      ===================================================================== */
-  var GRAVAM = { helpdeskRegistrar: 1, helpdeskAnexo: 1, helpdeskMensagem: 1, gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
+  var GRAVAM = { helpdeskArquivos: 1, responderSolicitante: 1, helpdeskRegistrar: 1, helpdeskAnexo: 1, helpdeskMensagem: 1, gerarChavePainel: 1, revogarChavePainel: 1, trocarSenha: 1, salvarDemanda: 1, excluirDemanda: 1, salvarNF: 1, excluirNF: 1, salvarEmpenho: 1, excluirEmpenho: 1, salvarLote: 1, excluirLote: 1, salvarConfig: 1, salvarUsuario: 1, salvarPerfil: 1, excluirPerfil: 1, importar: 1, backupAgora: 1 };
   S.executar = function (repo, req) {
     try {
       var fn = A[req && req.acao];
@@ -2766,20 +2923,38 @@ var T = (function (L) {
       '<div class="drawer-f">' + acoes + '</div>';
   };
 
-  /* ---------------- Fotos enviadas pelo Help Desk ---------------- */
-  var cacheFotos = {};
+  /* ---------------- Fotos e PDF enviados pelo Help Desk ---------------- */
+  var cacheAnexos = {};
+  T.anexosDe = function (id) {
+    if (cacheAnexos[id] && cacheAnexos[id].qtd === (App.D.anexos || []).filter(function (a) { return a.demandaId === id; }).length) return Promise.resolve(cacheAnexos[id].lista);
+    return Api.chamar('anexosDemanda', { id: id }, true).then(function (r) { cacheAnexos[id] = { qtd: r.anexos.length, lista: r.anexos }; return r.anexos; });
+  };
+  T.baixarAnexo = function (id, nome) {
+    U.toast('Baixando o arquivo…');
+    Api.chamar('anexoConteudo', { id: id }).then(function (r) {
+      var bin = atob(r.base64), arr = new Uint8Array(bin.length); for (var k = 0; k < bin.length; k++) arr[k] = bin.charCodeAt(k);
+      var url = URL.createObjectURL(new Blob([arr], { type: r.tipo })), a = document.createElement('a');
+      if (r.tipo === 'application/pdf') { window.open(url, '_blank'); } else { a.href = url; a.download = nome || r.nome; document.body.appendChild(a); a.click(); a.remove(); }
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+    }, UI.erro);
+  };
+  T.verMiniatura = function (src, titulo) { UI.modal({ title: titulo, size: 'md', body: '<img src="' + src + '" alt="" style="max-width:100%;display:block;margin:auto;border-radius:8px"><p class="calc" style="margin-top:8px">Miniatura para consulta rápida. A foto completa está no PDF da solicitação.</p>', footer: '<button class="btn primary" data-close>Fechar</button>' }); };
+  T.htmlAnexos = function (lista, alvoId) {
+    var fotos = lista.filter(function (a) { return /^image\//.test(a.tipo); }), pdfs = lista.filter(function (a) { return a.tipo === 'application/pdf'; });
+    return (pdfs.length ? '<div class="hd-pdfs">' + pdfs.map(function (a) { return '<button type="button" class="hd-pdf" data-pdf="' + U.esc(a.id) + '" data-nome="' + U.esc(a.nome) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg><span><b>' + U.esc(a.nome) + '</b><small>' + (a.tamanho >= 1048576 ? (a.tamanho / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB' : Math.max(1, Math.round(a.tamanho / 1024)) + ' KB') + ' · ' + U.fmtDH(a.enviadoEm) + '</small></span></button>'; }).join('') + '</div>' : '') +
+      (fotos.length ? '<div class="hd-thumbs">' + fotos.map(function (a) { return '<button type="button" class="hd-th' + (a.miniatura ? ' carregada' : '') + '" data-foto="' + U.esc(a.id) + '" title="' + U.esc(a.nome) + '"' + (a.miniatura ? ' data-src="' + U.esc(a.miniatura) + '" style="background-image:url(\'' + a.miniatura + '\')"' : '') + '><span>' + U.esc(a.nome) + '</span></button>'; }).join('') + '</div>' : '') +
+      (!fotos.length && !pdfs.length ? '<p class="muted small">Nenhum anexo.</p>' : '');
+  };
+  T.ligarAnexos = function (box) {
+    U.$$('[data-pdf]', box).forEach(function (b) { b.onclick = function () { T.baixarAnexo(b.dataset.pdf, b.dataset.nome); }; });
+    U.$$('[data-foto]', box).forEach(function (b) { b.onclick = function () { if (b.dataset.src) T.verMiniatura(b.dataset.src, b.title); else T.baixarAnexo(b.dataset.foto, b.title); }; });
+  };
   function fotosH(d) {
     var l = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id; });
     if (!l.length) return '';
-    var tot = l.reduce(function (s, a) { return s + (a.tamanho || 0); }, 0);
-    setTimeout(function () { U.$$('#drawer [data-foto]').forEach(carregarFoto); }, 30);
-    return '<section><div class="sec-t"><span>Fotos anexadas (' + l.length + ')</span><span class="muted small">' + (tot / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB · enviadas pelo solicitante</span></div><div class="hd-thumbs">' +
-      l.map(function (a) { return '<button type="button" class="hd-th" data-foto="' + U.esc(a.id) + '" title="' + U.esc(a.nome + ' · ' + U.fmtDH(a.enviadoEm)) + '"><span>' + U.esc(a.nome) + '</span></button>'; }).join('') + '</div></section>';
-  }
-  function carregarFoto(btn) {
-    var id = btn.dataset.foto, pinta = function (src) { btn.style.backgroundImage = 'url("' + src + '")'; btn.classList.add('carregada'); btn.onclick = function () { UI.modal({ title: btn.title, size: 'md', body: '<img src="' + src + '" alt="" style="max-width:100%;display:block;margin:auto;border-radius:8px">', footer: '<a class="btn" download="' + U.esc(btn.querySelector('span').textContent) + '" href="' + src + '">Baixar</a><button class="btn primary" data-close>Fechar</button>' }); }; };
-    if (cacheFotos[id]) { pinta(cacheFotos[id]); return; }
-    Api.chamar('anexoConteudo', { id: id }, true).then(function (r) { cacheFotos[id] = 'data:' + r.tipo + ';base64,' + r.base64; pinta(cacheFotos[id]); }, function () { btn.classList.add('erro'); });
+    setTimeout(function () { var box = U.$('#drawer #anexos-' + d.id); if (!box) return; T.anexosDe(d.id).then(function (lista) { if (U.$('#drawer #anexos-' + d.id)) { box.innerHTML = T.htmlAnexos(lista); T.ligarAnexos(box); } }); }, 30);
+    var nf = l.filter(function (a) { return /^image\//.test(a.tipo); }).length;
+    return '<section><div class="sec-t"><span>Fotos e PDF da solicitação</span><span class="muted small">' + nf + ' foto(s) · enviadas pelo solicitante</span></div><div id="anexos-' + U.esc(d.id) + '"><p class="muted small">Carregando…</p></div></section>';
   }
 
   /* ---------------- Gravação com senha quando exigido ---------------- */
@@ -2887,6 +3062,23 @@ var T = (function (L) {
     if (a === 'excluir') T.excluir(d);
     if (a === 'imprimir') G.fichaPdf(d.id);
   }
+  T.etapasVisiveis = etapasVisiveis; T.anterioresOk = anterioresOk; T.posteriorMarcada = posteriorMarcada; T.infoEtapa = infoEtapa; T.nfsDe = nfsDe;
+  T.inicioExec = function (d) { modalInicioExec(d); };
+  T.novaNF = function (d) { modalNF(d); };
+  T.editarEtapa = function (d, id) {
+    var e = L.ETAPAS.filter(function (x) { return x.id === id; })[0];
+    UI.autorizar('A etapa "' + e.nome + '" já foi marcada. A alteração exige a sua senha e fica registrada no histórico.').then(function (au) { if (au) modalEtapa(d, e, true, au); });
+  };
+  T.alternarEtapa = function (d, id) {
+    var e = L.ETAPAS.filter(function (x) { return x.id === id; })[0];
+    if (!d[e.id + 'Ok']) { modalEtapa(d, e, false); return; }
+    UI.autorizar('Desmarcar a etapa "' + e.nome + '" reabre esta fase da demanda. A alteração exige a sua senha e fica registrada no histórico.').then(function (au) {
+      if (!au) return;
+      var n = copia(d); n[e.id + 'Ok'] = false;
+      e.campos.forEach(function (c) { if (c !== e.id + 'Ok' && c !== 'execucaoInicio') n[c] = c === 'atesteValor' ? 0 : ''; });
+      T.salvar(n, d, au).catch(UI.erro);
+    });
+  };
   T.excluir = function (d) {
     var nfs = nfsDe(d.id);
     UI.confirmar('Excluir demanda', 'Deseja realmente excluir a demanda <b>' + U.esc(d.id) + '</b> (' + U.esc(d.titulo) + ')?' +
@@ -3483,7 +3675,7 @@ var G = (function (L) {
         '<span class="calc">A planilha pode ter a coluna "Sigla" ou as siglas na primeira coluna.</span></div>' +
         '<label class="f">Setores e unidades<span class="calc">Uma sigla por linha. Usada em unidade demandante, local e setores atendidos. Edite aqui e clique em Salvar configurações, ou use os botões acima, que já salvam.</span><textarea class="in" name="setores" rows="10">' + e(c.setores.join('\n')) + '</textarea></label>') +
       T.painel('Central de Atendimento (Help Desk)', '', '<div class="fgrid"><div class="f full"><span>Endereço da Central para os solicitantes</span><div class="row" style="flex-wrap:nowrap"><input class="in" id="hd-link" readonly value="' + e(location.href.split('#')[0].split('?')[0].replace(/index\.html$/, '') + 'helpdesk.html') + '">' +
-        '<button class="btn" type="button" data-act="copiarHd">Copiar</button><a class="btn" href="?helpdesk" target="_blank" rel="noopener">Abrir</a></div><span class="calc">Divulgue este endereço aos servidores. As solicitações chegam em Demandas, na situação "Aguardando análise", com as fotos e o contato do solicitante.</span></div>' +
+        '<button class="btn" type="button" data-act="copiarHd">Copiar</button><a class="btn" href="?helpdesk" target="_blank" rel="noopener">Abrir</a></div><span class="calc">A equipe gerencia as solicitações pela página <a href="?atendimento" target="_blank" rel="noopener">Gestão de Solicitações</a> (atendimento.html). Divulgue este endereço aos servidores. As solicitações chegam em Demandas, na situação "Aguardando análise", com as fotos e o contato do solicitante.</span></div>' +
         '<label class="f full">Contato exibido aos solicitantes<input class="in" name="helpdeskContato" value="' + e(c.helpdeskContato || '') + '"></label>' +
         '<label class="check full"><input type="checkbox" name="helpdeskAtivo"' + (c.helpdeskAtivo !== false ? ' checked' : '') + '><span>Aceitar novas solicitações pela Central de Atendimento</span></label></div>') +
       T.painel('Google Looker Studio', '', '<label class="f">Endereço do relatório salvo no Looker Studio<span class="calc">Opcional. Depois de salvar o relatório criado pelo botão do Dashboard, cole aqui o endereço para abri-lo direto.</span><input class="in" name="lookerRelatorio" value="' + e(c.lookerRelatorio || '') + '" placeholder="https://lookerstudio.google.com/reporting/..."></label>') +
@@ -3866,7 +4058,7 @@ var Helpdesk = (function (L) {
     { id: 's1', t: 'Seus dados', cor: '#1D4ED8', campos: ['solicitante', 'solicitanteEmail', 'unidade'] },
     { id: 's2', t: 'Onde é o problema', cor: '#0E7490', campos: ['local'] },
     { id: 's3', t: 'O que está acontecendo', cor: '#B45309', campos: ['titulo', 'sistema', 'descricao'] },
-    { id: 's4', t: 'Urgência e prazo', cor: '#BE123C', campos: ['criticidade', 'prazoQtd'] },
+    { id: 's4', t: 'Urgência', cor: '#BE123C', campos: ['criticidade'] },
     { id: 's5', t: 'Fotos', cor: '#6D28D9', campos: [] },
     { id: 's6', t: 'Revisão e envio', cor: '#15803D', campos: ['declaro'] }
   ];
@@ -3905,7 +4097,7 @@ var Helpdesk = (function (L) {
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="hd-priv-t"></span></button>' +
       '<button class="hd-limpar" id="hd-limpar" type="button">Limpar meus dados</button><a class="hd-equipe" href="index.html">Acesso da equipe</a></div></header>' +
       '<section class="hd-hero"><div class="hd-hero-in"><h1>Como podemos ajudar?</h1><p>Registre uma solicitação de manutenção predial ou acompanhe um pedido já aberto. O atendimento é direcionado automaticamente à equipe de gestão da SUBAD.</p>' +
-      '<div class="hd-cards"><button class="hd-card" data-aba="nova" type="button"><span class="ic" style="--c:#1D4ED8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Nova solicitação</b><span>Descreva o problema e envie fotos</span></button>' +
+      '<div class="hd-legal" role="note"><b>Somente manutenção predial.</b> ' + e(L.AVISO_LEGAL) + '</div><div class="hd-cards"><button class="hd-card" data-aba="nova" type="button"><span class="ic" style="--c:#1D4ED8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Nova solicitação</b><span>Descreva o problema e envie fotos</span></button>' +
       '<button class="hd-card" data-aba="acompanhar" type="button"><span class="ic" style="--c:#0E7490"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><b>Acompanhar solicitação</b><span>Use o número do pedido e o seu e-mail</span></button>' +
       '<button class="hd-card" data-chat type="button"><span class="ic" style="--c:#6D28D9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></span><b>Assistente virtual</b><span>Tire dúvidas sobre o andamento</span></button></div></div></section>' +
       '<nav class="hd-abas" role="tablist"><button role="tab" data-aba="nova">Nova solicitação</button><button role="tab" data-aba="acompanhar">Acompanhar solicitação</button></nav>' +
@@ -3981,11 +4173,9 @@ var Helpdesk = (function (L) {
       campo('unidade', 'Sua unidade (setor)', true, sel('unidade', sv.unidade)) + '</div>';
     var s2 = '<div class="hd-g2">' + campo('local', 'Local do problema (setor ou unidade)', true, sel('local', sv.unidade)) +
       campo('localInterno', 'Localização exata', false, inp('localInterno', 'text', '', ' maxlength="120" placeholder="Ex.: Bloco B, 2º andar, sala 204"')) +
-      '<div class="hd-f full"><span>Setores atendidos pelo serviço</span><input class="in" type="search" id="hd-filtro" placeholder="Filtrar siglas" style="max-width:240px"><div class="chips hd-setores" id="hd-setores">' +
-      setores.map(function (s) { return '<label data-sigla="' + e(s) + '"><input type="checkbox" name="setores" value="' + e(s) + '">' + e(s) + '</label>'; }).join('') + '</div><small>Opcional. Se não marcar, consideramos a sua unidade.</small></div>' +
       campo('responsavelLocal', 'Quem acompanhará o serviço no local', false, inp('responsavelLocal', 'text', '', ' maxlength="120" placeholder="Se ficar em branco, será você"')) +
-      campo('pessoas', 'Pessoas afetadas (aproximado)', false, inp('pessoas', 'number', '', ' min="0" max="100000"')) + '</div>';
-    var s3 = campo('titulo', 'Assunto', true, inp('titulo', 'text', '', ' maxlength="150" placeholder="Ex.: Vazamento na pia da copa"'), null, true) +
+      campo('pessoas', 'Quantidade de pessoas afetadas', false, inp('pessoas', 'number', '', ' min="0" max="100000"')) + '</div>';
+    var s3 = campo('titulo', 'Assunto', true, inp('titulo', 'text', '', ' maxlength="150" autocapitalize="characters" style="text-transform:uppercase" placeholder="EX.: VAZAMENTO NA PIA DA COPA"'), 'Digitado automaticamente em letras maiúsculas.', true) +
       '<div class="hd-f full"><span class="req">Tipo de problema</span><div class="hd-tiles" role="radiogroup">' + (c.sistemas || L.SISTEMAS).map(function (s) {
         return '<label class="hd-tile"><input type="radio" name="sistema" value="' + e(s) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">' + (ICONES[s] || '<circle cx="12" cy="12" r="8"/>') + '</svg><span>' + e(s) + '</span></label>';
       }).join('') + '</div></div>' +
@@ -3993,19 +4183,17 @@ var Helpdesk = (function (L) {
       '<label class="hd-risco full"><input type="checkbox" name="risco"><span><b>Há risco</b> a pessoas, ao patrimônio, ao meio ambiente ou a algum serviço essencial</span></label>';
     var s4 = '<div class="hd-f full"><span class="req">Urgência</span><div class="hd-urg" role="radiogroup">' + URGENCIAS.map(function (u, i) {
         return '<label class="hd-u u' + i + '"><input type="radio" name="criticidade" value="' + u.v + '"' + (u.v === 'Média' ? ' checked' : '') + '><b>' + u.t + '</b><span>' + u.d + '</span></label>';
-      }).join('') + '</div></div>' +
-      '<div class="hd-g2"><div class="hd-f"><span class="req">Natureza do pedido</span><div class="seg hd-seg"><label><input type="radio" name="modalidade" value="Contínuo" checked><span>Corretiva / rotineira</span></label><label><input type="radio" name="modalidade" value="Programado"><span>Melhoria / planejada</span></label></div><small>Corretiva: algo quebrou ou parou. Planejada: reforma, adequação ou melhoria.</small></div>' +
-      '<div class="hd-f"><span class="req">Prazo desejado</span><div class="row" style="flex-wrap:nowrap"><input class="in" name="prazoQtd" type="number" min="1" max="365" value="1" style="max-width:90px"><select class="in" name="prazoUnidade">' + U.opts([{ v: 'dias', l: 'dia(s)' }, { v: 'semanas', l: 'semana(s)' }, { v: 'meses', l: 'mês(es)' }], 'semanas') + '</select></div><small>O prazo final é definido pela equipe de gestão.</small></div></div>';
+      }).join('') + '</div><small>O prazo de atendimento é definido pela equipe de gestão após a análise.</small></div>';
     var s5 = '<div class="hd-drop" id="hd-drop" tabindex="0" role="button" aria-label="Adicionar fotos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>' +
-      '<b>Arraste as fotos aqui ou clique para escolher</b><span>JPG, PNG, WEBP, GIF ou HEIC · até 15 MB no total</span><input type="file" id="hd-arq" accept="image/*" multiple hidden></div>' +
+      '<b>Arraste as fotos aqui ou clique para escolher</b><span>JPG, PNG, WEBP ou GIF · até 15 MB no total · convertidas para PDF ao enviar</span><input type="file" id="hd-arq" accept="image/*" multiple hidden></div>' +
       '<div class="hd-medidor"><div class="track"><i id="hd-uso-b"></i></div><span id="hd-uso-t">0 MB de 15 MB</span></div><div class="hd-fotos" id="hd-fotos"></div>';
-    var s6 = '<div id="hd-resumo" class="hd-resumo"></div><label class="hd-decl"><input type="checkbox" name="declaro"><span>Declaro que as informações são verdadeiras e autorizo o contato da equipe pelo e-mail ou telefone informados.</span></label>' +
+    var s6 = '<div id="hd-resumo" class="hd-resumo"></div><label class="hd-decl"><input type="checkbox" name="declaro"><span>Declaro que a solicitação trata de <b>manutenção</b>, e não de obra, que as informações são verdadeiras e autorizo o contato da equipe pelo e-mail ou telefone informados.</span></label>' +
       '<input type="text" name="armadilha" class="hd-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<p class="err" id="hd-erro" role="alert"></p><button class="hd-enviar" id="hd-enviar" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Enviar solicitação</button>';
     el.innerHTML = '<div class="hd-grid"><form id="hd-form" novalidate>' +
       secao(1, SECOES[0], s1, 'Para retornarmos sobre o atendimento.') + secao(2, SECOES[1], s2, 'Informe o setor ou a unidade onde está o problema.') +
       secao(3, SECOES[2], s3, 'Quanto mais detalhes, mais rápido o diagnóstico.') + secao(4, SECOES[3], s4, 'Ajuda a equipe a priorizar o atendimento.') +
-      secao(5, SECOES[4], s5, 'Fotos do problema aceleram a análise (opcional).') + secao(6, SECOES[5], s6, 'Confira o resumo antes de enviar.') + '</form>' +
+      secao(5, SECOES[4], s5, 'As fotos são convertidas automaticamente para o PDF da solicitação (opcional).') + secao(6, SECOES[5], s6, 'Confira o resumo antes de enviar.') + '</form>' +
       '<aside class="hd-lado"><div class="hd-box"><b>Sua solicitação</b><ol class="hd-passos" id="hd-passos">' + SECOES.map(function (s) { return '<li data-s="' + s.id + '" style="--c:' + s.cor + '"><a href="#' + s.id + '">' + e(s.t) + '</a></li>'; }).join('') + '</ol></div>' +
       '<div class="hd-box"><b>Como funciona</b><ul class="hd-como"><li>Você recebe o <b>número do pedido</b> na hora.</li><li>A equipe analisa, define o prazo e acompanha a execução.</li><li>Consulte o andamento com o número e o seu e-mail, ou pergunte ao assistente.</li></ul></div>' +
       (st.cfg.contato ? '<div class="hd-box"><b>Contato</b><p>' + e(st.cfg.contato) + '</p></div>' : '') + '</aside></div>';
@@ -4019,7 +4207,8 @@ var Helpdesk = (function (L) {
     f.addEventListener('input', limpar); f.addEventListener('change', limpar);
     f.querySelector('[name=descricao]').addEventListener('input', function (ev) { U.$('#hd-cont').textContent = U.int(ev.target.value.length); });
     f.querySelector('[name=unidade]').addEventListener('change', function (ev) { var l = f.querySelector('[name=local]'); if (!l.value) l.value = ev.target.value; });
-    U.$('#hd-filtro').addEventListener('input', function (ev) { var q = U.norm(ev.target.value); U.$$('#hd-setores label').forEach(function (l) { l.hidden = q && U.norm(l.dataset.sigla).indexOf(q) < 0; }); });
+    var assunto = f.querySelector('[name=titulo]');
+    assunto.addEventListener('input', function () { var p = assunto.selectionStart, q = assunto.selectionEnd, up = assunto.value.toLocaleUpperCase('pt-BR'); if (up !== assunto.value) { assunto.value = up; try { assunto.setSelectionRange(p, q); } catch (x) { /* ignora */ } } });
     drop.onclick = function () { arq.click(); };
     drop.onkeydown = function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); arq.click(); } };
     arq.onchange = function () { adicionarFotos(arq.files); arq.value = ''; };
@@ -4030,7 +4219,7 @@ var Helpdesk = (function (L) {
     progresso();
   }
   function totalFotos() { return st.fotos.reduce(function (s, x) { return s + x.file.size; }, 0); }
-  function mb(b) { return (b / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB'; }
+  function mb(b) { return b >= 1048576 || b === 0 ? (b / 1048576).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
   function adicionarFotos(lista, destino) {
     var limite = st.cfg ? st.cfg.limite : L.LIMITE_ANEXOS, alvo = destino || st.fotos, ja = alvo.reduce(function (s, x) { return s + x.file.size; }, 0) + (destino ? (st.pedido ? st.pedido.anexos.reduce(function (s, a) { return s + a.tamanho; }, 0) : 0) : 0);
     var recusadas = [];
@@ -4058,10 +4247,10 @@ var Helpdesk = (function (L) {
     var r = function (n) { var el = f.querySelector('[name=' + n + ']:checked'); return el ? el.value : ''; };
     return {
       solicitante: v('solicitante'), solicitanteEmail: v('solicitanteEmail').toLowerCase(), solicitanteTelefone: v('solicitanteTelefone'), unidade: v('unidade'),
-      local: v('local'), localInterno: v('localInterno'), setores: U.$$('[name=setores]:checked', f).map(function (i) { return i.value; }),
+      local: v('local'), localInterno: v('localInterno'), setores: [],
       responsavelLocal: v('responsavelLocal'), pessoas: Number(v('pessoas')) || 0, titulo: v('titulo'), sistema: r('sistema'), descricao: v('descricao'),
-      risco: f.querySelector('[name=risco]').checked, criticidade: r('criticidade'), modalidade: r('modalidade'), prazoQtd: Number(v('prazoQtd')) || 0,
-      prazoUnidade: v('prazoUnidade'), declaro: f.querySelector('[name=declaro]').checked, armadilha: v('armadilha')
+      risco: f.querySelector('[name=risco]').checked, criticidade: r('criticidade'), modalidade: 'Contínuo', prazoQtd: 1,
+      prazoUnidade: 'semanas', declaro: f.querySelector('[name=declaro]').checked, armadilha: v('armadilha')
     };
   }
   function progresso() {
@@ -4073,7 +4262,7 @@ var Helpdesk = (function (L) {
     });
     var res = U.$('#hd-resumo');
     if (res) res.innerHTML = '<dl>' + [['Solicitante', d.solicitante ? d.solicitante + (d.solicitanteEmail ? ' · ' + d.solicitanteEmail : '') : ''], ['Unidade / local', [d.unidade, d.local, d.localInterno].filter(Boolean).join(' · ')],
-      ['Assunto', d.titulo], ['Tipo', d.sistema], ['Urgência', d.criticidade + (d.risco ? ' · com risco declarado' : '')], ['Prazo desejado', L.prazoTexto(d.prazoQtd, d.prazoUnidade)], ['Fotos', st.fotos.length ? st.fotos.length + ' (' + mb(totalFotos()) + ')' : 'nenhuma']]
+      ['Assunto', d.titulo], ['Tipo', d.sistema], ['Urgência', d.criticidade + (d.risco ? ' · com risco declarado' : '')], ['Fotos', st.fotos.length ? st.fotos.length + ' (' + mb(totalFotos()) + ')' : 'nenhuma']]
       .map(function (x) { return '<dt>' + x[0] + '</dt><dd>' + (x[1] ? e(x[1]) : '<span class="falta">a preencher</span>') + '</dd>'; }).join('') + '</dl>';
   }
   function validar(d) {
@@ -4086,36 +4275,101 @@ var Helpdesk = (function (L) {
     if (!d.titulo) marca('titulo', 'o assunto');
     if (!d.sistema) f.push('o tipo de problema');
     if (!d.descricao || d.descricao.length < 10) marca('descricao', 'a descrição (mínimo de 10 caracteres)');
-    if (!(d.prazoQtd > 0)) marca('prazoQtd', 'o prazo desejado');
     if (!d.declaro) f.push('a confirmação da declaração');
     return f;
   }
-  /* Reduz fotos grandes antes do envio (mantém boa qualidade e acelera o upload) */
-  function prepararFoto(file) {
-    var max = Api.remoto ? 2200 : 900, q = Api.remoto ? 0.86 : 0.7, leve = Api.remoto && file.size <= 1200000 && /^image\/(jpeg|png|webp)$/.test(file.type);
-    var ler = function (blob) { return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(String(r.result).split(',')[1]); }; r.onerror = rej; r.readAsDataURL(blob); }); };
-    if (leve) return ler(file).then(function (b) { return { base64: b, tipo: file.type, nome: file.name }; });
-    return new Promise(function (res) {
-      var img = new Image();
-      img.onload = function () {
-        var esc = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
-        c.width = Math.round(img.width * esc); c.height = Math.round(img.height * esc);
-        var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
-        res({ base64: c.toDataURL('image/jpeg', q).split(',')[1], tipo: 'image/jpeg', nome: file.name.replace(/\.[^.]+$/, '') + '.jpg' });
-      };
-      img.onerror = function () { ler(file).then(function (b) { res({ base64: b, tipo: file.type || 'image/heic', nome: file.name }); }); };
-      img.src = URL.createObjectURL(file);
+  /* ---------------- Conversão das fotos e PDF da solicitação ----------------
+     As fotos são reduzidas e embutidas num único PDF por envio. No Drive fica só
+     o PDF; na planilha ficam miniaturas leves para a visualização rápida. */
+  function carregarImagem(file) {
+    return new Promise(function (res, rej) {
+      var url = URL.createObjectURL(file), img = new Image();
+      img.onload = function () { res({ img: img, url: url }); };
+      img.onerror = function () { URL.revokeObjectURL(url); rej(new Error(file.name + ': formato de imagem não suportado neste navegador (use JPG ou PNG).')); };
+      img.src = url;
     });
   }
-  function enviarFotos(lista, protocolo, email, aoProgresso) {
-    var i = 0, falhas = [];
-    var proximo = function () {
-      if (i >= lista.length) return Promise.resolve(falhas);
-      var x = lista[i++]; if (aoProgresso) aoProgresso(i, lista.length);
-      return prepararFoto(x.file).then(function (p) { return api('helpdeskAnexo', { protocolo: protocolo, email: email, nome: p.nome, tipo: p.tipo, base64: p.base64 }); })
-        .catch(function (er) { falhas.push(x.file.name + ': ' + (er && er.mensagem ? er.mensagem : 'falha no envio')); }).then(proximo);
+  function reduzir(img, max, q) {
+    var esc = Math.min(1, max / Math.max(img.width, img.height)), c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(img.width * esc)); c.height = Math.max(1, Math.round(img.height * esc));
+    var g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+    return { dataUrl: c.toDataURL('image/jpeg', q), w: c.width, h: c.height };
+  }
+  function prepararFotos(lista) {
+    var max = Api.remoto ? 1400 : 800, q = Api.remoto ? 0.72 : 0.6, saida = [], falhas = [];
+    var i = 0;
+    var prox = function () {
+      if (i >= lista.length) return Promise.resolve({ fotos: saida, falhas: falhas });
+      var x = lista[i++];
+      return carregarImagem(x.file).then(function (r) {
+        var grande = reduzir(r.img, max, q), mini = reduzir(r.img, 360, 0.6);
+        if (mini.dataUrl.length > 46000) mini = reduzir(r.img, 260, 0.5);
+        URL.revokeObjectURL(r.url);
+        saida.push({ nome: x.file.name, tamanhoOriginal: x.file.size, img: grande, mini: mini.dataUrl });
+      }, function (er) { falhas.push(er.message); }).then(prox);
     };
-    return proximo();
+    return prox();
+  }
+  function textoPdf(t) { return String(t == null ? '' : t).replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"').replace(/[\u2013\u2014]/g, '-').replace(/\u2022/g, '-').replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g, ''); }
+  function gerarPdf(info, fotos, complementar) {
+    var pronto = window.jspdf ? Promise.resolve() : U.carregarScript(['https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js', 'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js']);
+    return pronto.then(function () {
+      var doc = new window.jspdf.jsPDF({ unit: 'mm', format: 'a4', compress: true }), W = 210, M = 15, y;
+      var cab = function () {
+        doc.setFillColor(11, 79, 74); doc.rect(0, 0, W, 28, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(14);
+        doc.text(textoPdf(complementar ? 'Fotos complementares da solicitação' : 'Solicitação de Manutenção Predial'), M, 12);
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+        doc.text(textoPdf('Instituto Estadual de Meio Ambiente (IEMA) - SUBAD - Central de Atendimento'), M, 19);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.text(textoPdf(info.id), W - M, 12, { align: 'right' });
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.text(textoPdf('Gerado em ' + new Date().toLocaleString('pt-BR')), W - M, 19, { align: 'right' });
+        doc.setTextColor(20, 35, 42); y = 38;
+      };
+      cab();
+      var linha = function (rot, val) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+        var linhas = doc.splitTextToSize(textoPdf(val || '-'), W - M - 62);
+        if (y + linhas.length * 5 > 280) { doc.addPage(); cab(); }
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(94, 112, 117); doc.text(textoPdf(rot), M, y);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(20, 35, 42); doc.text(linhas, M + 50, y);
+        var base = y + (Math.max(1, linhas.length) - 1) * 4.8;
+        doc.setDrawColor(221, 229, 227); doc.line(M, base + 2.6, W - M, base + 2.6);
+        y = base + 8;
+      };
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(11, 79, 74); doc.text(textoPdf(info.titulo || ''), M, y, { maxWidth: W - 2 * M }); y += 8;
+      (complementar ? [['Pedido', info.id], ['Solicitante', info.solicitante + ' (' + info.solicitanteEmail + ')'], ['Fotos', fotos.length + ' imagem(ns)']] : [
+        ['Número do pedido', info.id], ['Data da solicitação', new Date().toLocaleDateString('pt-BR')], ['Solicitante', info.solicitante], ['E-mail', info.solicitanteEmail], ['Telefone', info.solicitanteTelefone],
+        ['Unidade (setor)', info.unidade], ['Local do problema', info.local], ['Localização exata', info.localInterno], ['Quantidade de pessoas afetadas', info.pessoas ? String(info.pessoas) : '-'],
+        ['Assunto', info.titulo], ['Tipo de problema', info.sistema], ['Urgência', info.criticidade + (info.risco ? ' - com risco declarado' : '')], ['Descrição', info.descricao], ['Fotos anexadas', fotos.length ? fotos.length + ' imagem(ns), convertidas neste PDF' : 'nenhuma']
+      ]).forEach(function (x) { linha(x[0], x[1]); });
+      if (!complementar) {
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5);
+        var aviso = doc.splitTextToSize(textoPdf(L.AVISO_LEGAL), W - 2 * M);
+        if (y + aviso.length * 3.6 + 6 > 280) { doc.addPage(); cab(); }
+        y += 2; doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5); doc.setTextColor(94, 112, 117); doc.text(aviso, M, y); y += aviso.length * 3.4 + 4;
+      }
+      fotos.forEach(function (f, k) {
+        var maxW = W - 2 * M, maxH = 104, r = Math.min(maxW / f.img.w, maxH / f.img.h), w = f.img.w * r, h = f.img.h * r;
+        if (y + h + 12 > 284) { doc.addPage(); cab(); }
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(76, 29, 149); doc.text(textoPdf('Foto ' + (k + 1) + ': ' + f.nome), M, y); y += 2.5;
+        doc.addImage(f.img.dataUrl, 'JPEG', M + (maxW - w) / 2, y, w, h, undefined, 'FAST'); y += h + 8;
+      });
+      var n = doc.getNumberOfPages();
+      for (var p = 1; p <= n; p++) { doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(120, 130, 135); doc.text(textoPdf('Central de Atendimento - Manutenção Predial IEMA - SUBAD - página ' + p + ' de ' + n), W / 2, 292, { align: 'center' }); }
+      var uri = doc.output('datauristring');
+      return { base64: uri.split(',')[1], blob: doc.output('blob'), nome: (complementar ? 'fotos-complementares-' : 'solicitacao-') + info.id + (complementar ? '-' + Date.now().toString(36) : '') + '.pdf' };
+    });
+  }
+  function enviarPdf(info, lista, complementar, aviso) {
+    if (aviso) aviso('Convertendo as fotos…');
+    return prepararFotos(lista).then(function (pf) {
+      if (aviso) aviso('Gerando o PDF da solicitação…');
+      return gerarPdf(info, pf.fotos, complementar).then(function (pdf) {
+        if (aviso) aviso('Enviando o PDF…');
+        return api('helpdeskArquivos', { protocolo: info.id, email: info.solicitanteEmail, pdf: { nome: pdf.nome, base64: pdf.base64 }, miniaturas: pf.fotos.map(function (f) { return { nome: f.nome, tamanhoOriginal: f.tamanhoOriginal, dataUrl: f.mini }; }) })
+          .then(function () { return { pdf: pdf, falhas: pf.falhas }; });
+      });
+    });
   }
   function enviar() {
     if (st.enviando) return;
@@ -4123,37 +4377,37 @@ var Helpdesk = (function (L) {
     if (faltam.length) { erro.textContent = 'Para enviar, informe: ' + faltam.join(', ') + '.'; var p = U.$('#hd-form [aria-invalid]'); if (p) p.focus(); return; }
     erro.textContent = '';
     st.enviando = true;
-    var bt = U.$('#hd-enviar'); bt.disabled = true; bt.lastChild.textContent = 'Enviando…';
+    var bt = U.$('#hd-enviar'), rot = function (t) { bt.lastChild.textContent = t; };
+    bt.disabled = true; rot('Enviando…');
+    d.titulo = d.titulo.toLocaleUpperCase('pt-BR');
     guardar({ nome: d.solicitante, email: d.solicitanteEmail, telefone: d.solicitanteTelefone, unidade: d.unidade });
     api('helpdeskRegistrar', { demanda: d, armadilha: d.armadilha }).then(function (r) {
-      var id = r.id, fotos = st.fotos.slice();
+      var id = r.id, fotos = st.fotos.slice(), info = Object.assign({}, d, { id: id });
       lembrarPedido(id, d.solicitanteEmail, d.titulo);
-      var fim = function (falhas) {
+      var fim = function (res, falhas) {
         st.enviando = false; st.fotos.forEach(function (x) { URL.revokeObjectURL(x.url); }); st.fotos = [];
         st.consulta = { protocolo: id, email: d.solicitanteEmail };
-        sucesso(id, d, falhas || []);
+        sucesso(id, d, falhas || [], res && res.pdf);
         consultar(true);
       };
-      if (!fotos.length) return fim([]);
-      bt.lastChild.textContent = 'Enviando fotos…';
-      return enviarFotos(fotos, id, d.solicitanteEmail, function (n, t) { bt.lastChild.textContent = 'Enviando foto ' + n + ' de ' + t + '…'; }).then(fim);
+      return enviarPdf(info, fotos, false, rot).then(function (res) { fim(res, res.falhas); }, function (er) {
+        fim(null, ['O PDF da solicitação não pôde ser gerado ou enviado (' + (er && (er.mensagem || er.message) || 'falha') + '). O pedido foi registrado; envie as fotos novamente em "Acompanhar solicitação".']);
+      });
     }, function (er) {
-      st.enviando = false; bt.disabled = false; bt.lastChild.textContent = 'Enviar solicitação';
+      st.enviando = false; bt.disabled = false; rot('Enviar solicitação');
       erro.textContent = er && er.mensagem ? er.mensagem : 'Não foi possível enviar. Verifique a conexão e tente novamente.';
     });
   }
-  function sucesso(id, d, falhas) {
+  function sucesso(id, d, falhas, pdf) {
+    if (st.pdfUrl) URL.revokeObjectURL(st.pdfUrl);
+    st.pdfUrl = pdf ? URL.createObjectURL(pdf.blob) : null;
     U.$('#hd-main').innerHTML = '<div class="hd-ok"><div class="sel">✓</div><h2>Solicitação registrada</h2><p>Guarde o número do seu pedido. Ele e o e-mail <b>' + e(d.solicitanteEmail) + '</b> servem para acompanhar o atendimento.</p>' +
       '<div class="hd-prot"><span>Número do pedido</span><b id="hd-prot">' + e(id) + '</b><button type="button" id="hd-copiar">Copiar</button></div>' +
-      (falhas.length ? '<div class="hd-aviso">Algumas fotos não foram enviadas: ' + e(falhas.join('; ')) + '. Você pode enviá-las em "Acompanhar solicitação".</div>' : '') +
-      '<p class="calc">Uma confirmação também é enviada para o seu e-mail (quando o envio estiver disponível).</p>' +
-      '<div class="row" style="justify-content:center;margin-top:18px"><button class="btn primary" type="button" data-aba="acompanhar">Acompanhar este pedido</button><button class="btn" type="button" id="hd-imprimir">Imprimir comprovante</button><button class="btn" type="button" data-aba="nova">Nova solicitação</button></div></div>';
+      (falhas.length ? '<div class="hd-aviso">' + e(falhas.join(' ')) + '</div>' : '') +
+      '<p class="calc">As fotos foram convertidas para o <b>PDF da solicitação</b>, que fica com a equipe de gestão. Uma confirmação também é enviada para o seu e-mail (quando o envio estiver disponível).</p>' +
+      '<div class="row" style="justify-content:center;margin-top:18px"><button class="btn primary" type="button" data-aba="acompanhar">Acompanhar este pedido</button>' +
+      (st.pdfUrl ? '<a class="btn" href="' + st.pdfUrl + '" download="' + e(pdf.nome) + '">' + U.icon.down + 'Baixar o PDF da solicitação</a>' : '') + '<button class="btn" type="button" data-aba="nova">Nova solicitação</button></div></div>';
     U.$('#hd-copiar').onclick = function () { (navigator.clipboard ? navigator.clipboard.writeText(id) : Promise.reject()).then(function () { U.toast('Número copiado.', 'ok'); }, function () { window.prompt('Copie o número:', id); }); };
-    U.$('#hd-imprimir').onclick = function () {
-      U.imprimirDoc('<article class="doc"><header class="doc-h"><div><div class="org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD · Manutenção Predial</div><h2>Comprovante de solicitação</h2></div><div class="gen">Emitido em<br><b>' + new Date().toLocaleString('pt-BR') + '</b></div></header>' +
-        '<table class="t"><tbody>' + [['Número do pedido', id], ['Solicitante', d.solicitante + ' · ' + d.solicitanteEmail], ['Unidade / local', d.unidade + ' · ' + d.local + (d.localInterno ? ' · ' + d.localInterno : '')], ['Assunto', d.titulo], ['Tipo de problema', d.sistema], ['Urgência', d.criticidade], ['Descrição', d.descricao]]
-          .map(function (x) { return '<tr><th style="width:30%">' + x[0] + '</th><td>' + e(x[1]) + '</td></tr>'; }).join('') + '</tbody></table><p class="muted" style="margin-top:14px">Acompanhe pela Central de Atendimento, com o número do pedido e o e-mail informado.</p></article>');
-    };
     U.toast('Pedido ' + id + ' registrado.', 'ok');
     botDiz('Recebi a sua solicitação <b>' + e(id) + '</b>. Vou acompanhar o andamento por aqui: é só perguntar.', chipsPadrao());
   }
@@ -4215,14 +4469,14 @@ var Helpdesk = (function (L) {
       (p.cancelada ? '<div class="hd-aviso">Pedido cancelado: ' + e(p.motivoCancelamento || 'sem motivo informado') + '.</div>' : '') +
       '<ol class="hd-step">' + passos.map(function (x, i) { return '<li class="' + (x.ok ? 'ok' : '') + (i === atual + 1 && !p.cancelada ? ' prox' : '') + '"><span class="b">' + (x.ok ? '✓' : i + 1) + '</span><b>' + e(x.nome) + '</b><small>' + (x.ok && x.data ? U.fmt(x.data) : (i === atual + 1 && !p.cancelada ? 'próxima etapa' : '')) + '</small></li>'; }).join('') + '</ol>' +
       '<div class="hd-g3 hd-info">' + [['Registrada em', U.fmt(p.dataSolicitacao)], ['Previsão de término', p.fimPrevisto ? U.fmt(p.fimPrevisto) : 'a definir'], ['Execução iniciada', p.execucaoInicio ? U.fmt(p.execucaoInicio) : 'ainda não'],
-        ['Tipo de problema', p.sistema], ['Urgência', p.criticidade], ['Natureza', p.modalidade === 'Programado' ? 'Melhoria / planejada' : 'Corretiva / rotineira'],
+        ['Tipo de problema', p.sistema], ['Urgência', p.criticidade], ['Pessoas afetadas', p.pessoas ? U.int(p.pessoas) : '—'],
         ['Nº da Ordem de Serviço', p.osNumero || '—'], ['Nº do Atendimento (Help Desk)', p.atendimentoNumero || '—'], ['Solicitante', p.solicitante]]
         .map(function (x) { return '<div><span>' + x[0] + '</span><b>' + e(x[1]) + '</b></div>'; }).join('') + '</div>' +
       '<div class="hd-g2" style="margin-top:6px"><div><h3>Histórico</h3><ul class="hd-tl">' + p.eventos.slice().reverse().map(function (ev) { return '<li><b>' + e(ev.texto) + '</b><small>' + U.fmtDH(ev.em) + '</small></li>'; }).join('') + '</ul></div>' +
-      '<div><h3>Fotos (' + p.anexos.length + ')</h3><div class="hd-thumbs" id="hd-thumbs">' + (p.anexos.map(function (a) { return '<button type="button" class="hd-th" data-anx="' + e(a.id) + '" title="' + e(a.nome) + '"><span>' + e(a.nome) + '</span></button>'; }).join('') || '<p class="calc">Nenhuma foto enviada.</p>') + '</div>' +
+      '<div><h3>Fotos e PDF da solicitação</h3><div id="hd-anexos"><p class="calc">Carregando…</p></div>' +
       (!p.cancelada && st.pedido.situacao.id !== 'paga' ? '<div class="hd-mais"><button type="button" class="btn sm" id="hd-mais-b">' + U.icon.plus + 'Enviar mais fotos</button><input type="file" id="hd-mais" accept="image/*" multiple hidden><div class="hd-fotos" id="hd-fotos2"></div></div>' : '') +
       '<h3>Enviar uma observação à equipe</h3><textarea class="in" id="hd-obs" rows="3" maxlength="1000" placeholder="Ex.: o vazamento aumentou; o acesso é pela porta lateral"></textarea><button type="button" class="btn" id="hd-obs-b" style="margin-top:8px">Enviar observação</button></div></div></section>';
-    U.$$('#hd-thumbs [data-anx]').forEach(carregarThumb);
+    carregarAnexos();
     var mais = U.$('#hd-mais-b');
     if (mais) { st.extras = []; mais.onclick = function () { U.$('#hd-mais').click(); }; U.$('#hd-mais').onchange = function (ev) { adicionarFotos(ev.target.files, st.extras); ev.target.value = ''; }; }
     U.$('#hd-obs-b').onclick = function () {
@@ -4233,17 +4487,42 @@ var Helpdesk = (function (L) {
   function renderFotosExtras() {
     var box = U.$('#hd-fotos2'); if (!box) return;
     box.innerHTML = st.extras.map(function (x) { return '<figure><img src="' + x.url + '" alt=""><figcaption><span>' + e(x.file.name) + '</span><small>' + mb(x.file.size) + '</small></figcaption></figure>'; }).join('') +
-      (st.extras.length ? '<button type="button" class="btn primary sm" id="hd-mais-env">Enviar ' + st.extras.length + ' foto(s)</button>' : '');
+      (st.extras.length ? '<button type="button" class="btn primary sm" id="hd-mais-env">Converter e enviar ' + st.extras.length + ' foto(s)</button>' : '');
     var b = U.$('#hd-mais-env');
     if (b) b.onclick = function () {
       b.disabled = true;
-      enviarFotos(st.extras, st.pedido.id, st.consulta.email, function (n, t) { b.textContent = 'Enviando ' + n + ' de ' + t + '…'; }).then(function (falhas) {
-        st.extras = []; if (falhas.length) U.toast('Falhas: ' + falhas.join('; '), 'erro'); else U.toast('Fotos enviadas.', 'ok');
-        consultar(true);
-      });
+      var p = st.pedido, info = { id: p.id, titulo: p.titulo, solicitante: p.solicitante, solicitanteEmail: st.consulta.email };
+      enviarPdf(info, st.extras, true, function (t) { b.textContent = t; }).then(function (res) {
+        st.extras.forEach(function (x) { URL.revokeObjectURL(x.url); }); st.extras = [];
+        U.toast(res.falhas.length ? 'Algumas fotos não foram aceitas: ' + res.falhas.join(' ') : 'Fotos convertidas e enviadas no PDF complementar.', res.falhas.length ? 'erro' : 'ok');
+        consultar(true).then(function () { carregarAnexos(); });
+      }, function (er) { b.disabled = false; b.textContent = 'Tentar novamente'; U.toast(er && (er.mensagem || er.message) || 'Falha ao enviar.', 'erro'); });
     };
   }
-  function carregarThumb(btn) {
+  function carregarAnexos() {
+    var box = U.$('#hd-anexos'), p = st.pedido; if (!box || !p) return;
+    api('anexosDemanda', { protocolo: p.id, email: st.consulta.email }).then(function (r) {
+      var fotos = r.anexos.filter(function (a) { return /^image\//.test(a.tipo); }), pdfs = r.anexos.filter(function (a) { return a.tipo === 'application/pdf'; });
+      box.innerHTML = (pdfs.length ? '<div class="hd-pdfs">' + pdfs.map(function (a) { return '<button type="button" class="hd-pdf" data-pdf="' + e(a.id) + '" data-nome="' + e(a.nome) + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg><span><b>' + e(a.nome) + '</b><small>' + mb(a.tamanho) + ' · ' + U.fmtDH(a.enviadoEm) + '</small></span></button>'; }).join('') + '</div>' : '') +
+        (fotos.length ? '<div class="hd-thumbs">' + fotos.map(function (a) { return '<button type="button" class="hd-th' + (a.miniatura ? ' carregada' : '') + '" data-anx="' + e(a.id) + '" data-mini="' + (a.miniatura ? 1 : '') + '" title="' + e(a.nome) + '"' + (a.miniatura ? ' style="background-image:url(\'' + a.miniatura + '\')"' : '') + '><span>' + e(a.nome) + '</span></button>'; }).join('') + '</div>' : '') +
+        (!pdfs.length && !fotos.length ? '<p class="calc">Nenhuma foto enviada.</p>' : '<p class="calc" style="margin-top:6px">As miniaturas são para consulta rápida; as fotos completas estão no PDF.</p>');
+      U.$$('[data-pdf]', box).forEach(function (b) { b.onclick = function () { baixarAnexo(b.dataset.pdf, b.dataset.nome); }; });
+      U.$$('[data-anx]', box).forEach(function (b) {
+        if (b.dataset.mini) b.onclick = function () { verImagem(b.style.backgroundImage.slice(5, -2), b.title + ' (miniatura)'); };
+        else carregarAntigo(b);
+      });
+    }, function () { box.innerHTML = '<p class="calc">Não foi possível carregar os anexos.</p>'; });
+  }
+  function baixarAnexo(id, nome) {
+    U.toast('Baixando o arquivo…');
+    api('anexoConteudo', { id: id, protocolo: st.pedido.id, email: st.consulta.email }).then(function (r) {
+      var bin = atob(r.base64), arr = new Uint8Array(bin.length); for (var k = 0; k < bin.length; k++) arr[k] = bin.charCodeAt(k);
+      var url = URL.createObjectURL(new Blob([arr], { type: r.tipo })), a = document.createElement('a');
+      a.href = url; a.download = nome || r.nome; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 1000);
+    }, UI.erro);
+  }
+  /* Fotos enviadas pela versão anterior (arquivo de imagem no Drive) */
+  function carregarAntigo(btn) {
     var id = btn.dataset.anx, pinta = function (src) { btn.style.backgroundImage = 'url("' + src + '")'; btn.classList.add('carregada'); btn.onclick = function () { verImagem(src, btn.title); }; };
     if (st.thumbs[id]) { pinta(st.thumbs[id]); return; }
     api('anexoConteudo', { id: id, protocolo: st.pedido.id, email: st.consulta.email }).then(function (r) { var src = 'data:' + r.tipo + ';base64,' + r.base64; if (!st.privado) st.thumbs[id] = src; pinta(src); }, function () { btn.classList.add('erro'); });
@@ -4260,7 +4539,7 @@ var Helpdesk = (function (L) {
   }
   function chipsPadrao() {
     if (!st.pedido) return ['Consultar meu pedido', 'Como abrir uma solicitação?', 'O que significa cada etapa?', 'Falar com a equipe'];
-    return ['Qual a situação?', 'Quando fica pronto?', 'Em que etapa está?', 'Nº da OS e do atendimento', 'Já foi executado?', 'Como enviar mais fotos?', 'Falar com a equipe', 'Consultar outro pedido'];
+    return ['Qual a situação?', 'Quando fica pronto?', 'Em que etapa está?', 'A equipe respondeu?', 'Nº da OS e do atendimento', 'Já foi executado?', 'Como enviar mais fotos?', 'Falar com a equipe', 'Consultar outro pedido'];
   }
   function boasVindas() {
     if (st.msgs.length) return;
@@ -4301,20 +4580,293 @@ var Helpdesk = (function (L) {
     if (/outro pedido|consultar meu|consultar pedido|consultar outro/.test(t)) { st.pedido = null; aguardando = 'protocolo'; return botDiz('Informe o <b>número do pedido</b> e o <b>e-mail</b> da solicitação (pode ser na mesma mensagem).', []); }
     if (/abrir|nova solicita|registrar|como (abrir|pedir|solicitar)/.test(t)) { trocarAba('nova'); return botDiz('Abri o formulário de <b>Nova solicitação</b>. Preencha os quadros coloridos, anexe fotos (até 15 MB) e clique em <b>Enviar solicitação</b>. Você recebe o número do pedido na hora.', chipsPadrao()); }
     if (/significa|cada etapa|o que e|explica/.test(t)) return botDiz('As etapas são: <b>Recebida</b> (a equipe analisou), <b>Aprovada</b> (serviços planejados aprovados pela diretoria), <b>Executada</b> (o serviço foi feito), <b>Conferida</b> (a fiscalização atestou) e <b>Encerrada</b> (atendimento concluído).', chipsPadrao());
+    if (p && /resposta|respond|retorno/.test(t)) { var rs0 = p.eventos.filter(function (ev) { return ev.texto.indexOf('Resposta da equipe') === 0; }); return botDiz(rs0.length ? 'Última resposta da equipe (' + U.fmtDH(rs0[rs0.length - 1].em) + '): <b>' + e(rs0[rs0.length - 1].texto.replace('Resposta da equipe: ', '')) + '</b>' : 'A equipe ainda não enviou uma resposta escrita. Você será avisado aqui assim que ela responder.', chipsPadrao()); }
     if (/contato|telefone|falar|equipe|subad|atendente|humano/.test(t)) return botDiz('Você pode falar com a equipe: <b>' + e((st.cfg && st.cfg.contato) || 'SUBAD') + '</b>. ' + (p ? 'Também é possível enviar uma observação no quadro do pedido, em "Acompanhar solicitação".' : ''), chipsPadrao());
     if (!p) { aguardando = 'protocolo'; return botDiz('Para responder sobre o andamento, preciso do <b>número do pedido</b> e do <b>e-mail</b> da solicitação.', chipsPadrao()); }
     var etapa = function (id) { return p.etapas.filter(function (x) { return x.id === id; })[0]; };
     if (/situa|status|andamento|como esta|como anda/.test(t)) return botDiz('O pedido <b>' + e(p.id) + '</b> está <b>' + e(p.situacao.nome) + '</b>' + (p.cancelada ? ' (' + e(p.motivoCancelamento) + ')' : '') + '. Último registro: ' + e(ultimoEvento(p)) + '.', chipsPadrao());
-    if (/prazo|quando|previs|termin|demora|pronto/.test(t)) return botDiz(p.fimPrevisto ? 'A previsão de término é <b>' + U.fmt(p.fimPrevisto) + '</b> (' + e(L.prazoTexto(p.prazoQtd, p.prazoUnidade)) + '). Situação do prazo: <b>' + e(p.prazo.nome) + '</b>.' : 'A previsão ainda será definida pela equipe.', chipsPadrao());
+    if (/prazo|quando|previs|termin|demora|pronto/.test(t)) return botDiz(!p.fimPrevisto && !p.cancelada ? 'O prazo ainda está <b>em análise</b>: a equipe define a previsão ao receber o pedido.' : p.fimPrevisto ? 'A previsão de término é <b>' + U.fmt(p.fimPrevisto) + '</b> (' + e(L.prazoTexto(p.prazoQtd, p.prazoUnidade)) + '). Situação do prazo: <b>' + e(p.prazo.nome) + '</b>.' : 'A previsão ainda será definida pela equipe.', chipsPadrao());
     if (/etapa|fase|passo|onde esta/.test(t)) return botDiz('Etapas do pedido <b>' + e(p.id) + '</b>:<br>' + p.etapas.map(function (x) { return (x.ok ? '✅ ' : '⏳ ') + e(x.nome) + (x.ok && x.data ? ' (' + U.fmt(x.data) + ')' : ''); }).join('<br>'), chipsPadrao());
     if (/aprov/.test(t)) { var ap = etapa('aprovacao'); return botDiz(ap ? (ap.ok ? 'Sim, o pedido foi aprovado em ' + U.fmt(ap.data) + '.' : 'A aprovação ainda está pendente.') : 'Pedidos corretivos/rotineiros não passam por aprovação: seguem direto para a execução.', chipsPadrao()); }
     if (/execu|obra|comec|inici|feito|realiz/.test(t)) { var ex = etapa('execucao'); return botDiz(ex.ok ? 'Sim, o serviço foi executado (término em ' + U.fmt(ex.data) + ').' : p.execucaoInicio ? 'O serviço está em execução desde ' + U.fmt(p.execucaoInicio) + '.' : 'O serviço ainda não começou. ' + (p.fimPrevisto ? 'A previsão de término é ' + U.fmt(p.fimPrevisto) + '.' : ''), chipsPadrao()); }
     if (/\bos\b|ordem de servi|atendimento|numero da|nº/.test(t)) return botDiz('Ordem de Serviço: <b>' + e(p.osNumero || 'ainda não emitida') + '</b>. Atendimento (Help Desk): <b>' + e(p.atendimentoNumero || 'ainda não registrado') + '</b>.', chipsPadrao());
-    if (/foto|imagem|anexo/.test(t)) return botDiz('O pedido tem <b>' + p.anexos.length + '</b> foto(s). Para enviar mais, abra "Acompanhar solicitação" e use <b>Enviar mais fotos</b> (limite de 15 MB por pedido).', chipsPadrao());
+    if (/resposta|retorno|mensagem da equipe|responderam/.test(t)) { var rs = p.eventos.filter(function (ev) { return ev.texto.indexOf('Resposta da equipe') === 0; }); return botDiz(rs.length ? 'Última resposta da equipe (' + U.fmtDH(rs[rs.length - 1].em) + '): <b>' + e(rs[rs.length - 1].texto.replace('Resposta da equipe: ', '')) + '</b>' : 'A equipe ainda não enviou uma resposta escrita. Você será avisado aqui assim que ela responder.', chipsPadrao()); }
+    if (/foto|imagem|anexo|pdf/.test(t)) { var nf = p.anexos.filter(function (a) { return /^image\//.test(a.tipo || 'image/'); }).length, np = p.anexos.filter(function (a) { return a.tipo === 'application/pdf'; }).length; return botDiz('O pedido tem <b>' + nf + '</b> foto(s), convertidas em <b>' + np + '</b> PDF(s). Para enviar mais, abra "Acompanhar solicitação" e use <b>Enviar mais fotos</b> (limite de 15 MB por pedido).', chipsPadrao()); }
     if (/cancel/.test(t)) return botDiz(p.cancelada ? 'Este pedido foi cancelado: ' + e(p.motivoCancelamento) + '.' : 'O pedido não está cancelado. Se quiser cancelar, envie uma observação à equipe explicando o motivo.', chipsPadrao());
     botDiz('Não entendi bem. Escolha uma das opções abaixo ou pergunte, por exemplo, "qual a situação?" ou "quando fica pronto?".', chipsPadrao());
   }
   return H;
+})(Logica);
+
+/* =========================================================================
+   GESTÃO DE SOLICITAÇÕES (página própria do gestor)
+   Fila de atendimento em tempo real: triagem, etapas, fotos/PDF, conversa
+   com o solicitante e histórico. Usa a mesma planilha e as mesmas regras.
+   ========================================================================= */
+var Atend = (function (L) {
+  'use strict';
+  var A = {}, e = U.esc;
+  var st = { sel: null, filtro: 'novas', origem: 'Help Desk', ordem: 'recentes', q: '', rascunho: {}, som: false, timer: null, primeira: true };
+  var CORES_URG = { 'Baixa': '#0284C7', 'Média': '#CA8A04', 'Alta': '#EA580C', 'Crítica': '#DC2626' };
+  var MODELOS = [
+    ['', 'Respostas prontas…'],
+    ['Recebemos a sua solicitação e ela está em análise pela equipe de manutenção. Em breve informaremos a previsão de atendimento.', 'Solicitação recebida'],
+    ['O serviço foi programado. A equipe da empresa contratada comparecerá ao local; pedimos que o responsável local esteja disponível para o acompanhamento.', 'Serviço programado'],
+    ['O serviço foi concluído. Caso o problema persista, responda por esta central informando o número do pedido.', 'Serviço concluído'],
+    ['Para darmos andamento, precisamos de mais informações: descreva o local exato e envie fotos do problema em "Acompanhar solicitação".', 'Pedir mais informações'],
+    ['Esta solicitação caracteriza obra (e não manutenção) e não pode ser atendida por este canal, nos termos da Lei Federal nº 14.133/2021, art. 6º, inciso XII. Procure a SUBAD para orientação.', 'Fora do escopo (obra)']
+  ];
+
+  /* ---------------- Acesso ---------------- */
+  A.iniciar = function () {
+    App.atendimento = true;
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.title = 'Gestão de Solicitações | Manutenção Predial IEMA - SUBAD';
+    try { st.som = localStorage.getItem('iema-at-som') === '1'; } catch (x) { /* ignora */ }
+    if (!Api.token()) { A.login(); return; }
+    document.body.className = 'modo-at';
+    document.body.innerHTML = '<div class="at-carregando"><div class="hd-logo"></div><p>Carregando a fila de atendimento…</p></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+    Api.chamar('dados').then(function () { /* App.aplicar chama A.render */ }, function (er) { A.login(er && er.codigo === 'SESSAO' ? '' : er && er.mensagem); });
+  };
+  A.login = function (msg) {
+    clearInterval(st.timer);
+    document.body.className = 'modo-at';
+    document.body.innerHTML = '<div class="at-login"><section class="at-login-arte"><div class="hd-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></div>' +
+      '<h1>Gestão de Solicitações</h1><p>Central de Atendimento · Manutenção Predial<br>Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</p>' +
+      '<ul><li>Fila de solicitações em tempo real</li><li>Triagem, prazo, OS e lote em um só lugar</li><li>Fotos e PDF enviados pelo solicitante</li><li>Respostas que chegam ao solicitante na hora</li></ul></section>' +
+      '<form class="at-login-card" id="at-flogin" novalidate><h2>Acesso da equipe</h2><p class="muted small">Use o mesmo login e senha do sistema de Manutenção Predial.</p>' +
+      '<label class="f">Login<input class="in" id="at-lg" autocomplete="username" autocapitalize="none"></label><label class="f">Senha<input class="in" id="at-ls" type="password" autocomplete="current-password"></label>' +
+      '<p class="err" id="at-lerr" role="alert">' + e(msg || '') + '</p><button class="btn primary" type="submit">Entrar</button>' +
+      '<div class="at-login-links"><a href="index.html">Sistema completo</a><a href="?helpdesk">Central do solicitante</a></div>' +
+      (!Api.remoto ? '<p class="calc">Modo demonstração: use <b>gestor</b> e a senha <b>iema123</b>.</p>' : '') + '</form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+    U.$('#at-lg').focus();
+    U.$('#at-flogin').onsubmit = function (ev) {
+      ev.preventDefault();
+      var b = ev.target.querySelector('button'); b.disabled = true; U.$('#at-lerr').textContent = '';
+      Api.chamar('login', { login: U.$('#at-lg').value, senha: U.$('#at-ls').value }).then(function () { /* render via App.aplicar */ }, function (er) { b.disabled = false; U.$('#at-lerr').textContent = er.mensagem || 'Não foi possível entrar.'; U.$('#at-ls').value = ''; });
+    };
+  };
+
+  /* ---------------- Utilidades ---------------- */
+  function vistosKey() { return 'iema-at-vistos-' + (App.D ? App.D.sessao.login : ''); }
+  function vistos() { try { return JSON.parse(localStorage.getItem(vistosKey()) || '{}'); } catch (x) { return {}; } }
+  function marcarVisto(id) { var v = vistos(); v[id] = eventosHd(id).length + 1; try { localStorage.setItem(vistosKey(), JSON.stringify(v)); } catch (x) { /* ignora */ } }
+  function eventosHd(id) { return (App.D.historico || []).filter(function (h) { return h.demandaId === id && h.usuario === 'helpdesk'; }); }
+  function naoVisto(d) { var v = vistos()[d.id]; return !v ? 'nova' : eventosHd(d.id).length + 1 > v ? 'msg' : ''; }
+  function desde(iso) {
+    if (!iso) return '';
+    var t = new Date(String(iso).length > 10 ? iso : iso + 'T12:00:00'), min = Math.round((Date.now() - t) / 60000);
+    if (min < 1) return 'agora'; if (min < 60) return 'há ' + min + ' min';
+    var h = Math.round(min / 60); if (h < 24) return 'há ' + h + ' h';
+    var dd = Math.round(h / 24); return dd === 1 ? 'há 1 dia' : 'há ' + dd + ' dias';
+  }
+  function grupo(d) {
+    var s = L.situacao(d).id;
+    if (s === 'paga' || s === 'cancelada') return 'encerradas';
+    if (s === 'analise') return 'novas';
+    return 'andamento';
+  }
+  function lista() {
+    var q = U.norm(st.q);
+    var l = App.D.demandas.filter(function (d) {
+      if (st.origem && d.origem !== st.origem) return false;
+      if (st.filtro === 'atrasadas') { if (L.prazo(d).k !== 'atrasada') return false; }
+      else if (st.filtro === 'ateste') { if (['ateste', 'pagamento'].indexOf(L.situacao(d).id) < 0) return false; }
+      else if (st.filtro !== 'todas' && grupo(d) !== st.filtro) return false;
+      if (q && U.norm([d.id, d.titulo, d.solicitante, d.solicitanteEmail, d.unidade, d.local, d.localInterno, d.sistema].join(' ')).indexOf(q) < 0) return false;
+      return true;
+    });
+    var urg = { 'Crítica': 0, 'Alta': 1, 'Média': 2, 'Baixa': 3 };
+    return l.sort(function (a, b) {
+      if (st.ordem === 'urgencia') return (urg[a.criticidade] - urg[b.criticidade]) || (a.criadoEm < b.criadoEm ? 1 : -1);
+      if (st.ordem === 'prazo') return ((a.fimPrevisto || '9') < (b.fimPrevisto || '9') ? -1 : 1);
+      return (a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1;
+    });
+  }
+
+  /* ---------------- Estrutura ---------------- */
+  function montar() {
+    document.body.className = 'modo-at';
+    document.body.innerHTML = '<div class="at">' +
+      '<header class="at-top"><div class="at-marca"><span class="hd-logo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z"/></svg></span>' +
+      '<div><div class="at-nome">Gestão de Solicitações</div><div class="at-sub">Central de Atendimento · Manutenção Predial · IEMA - SUBAD</div></div></div>' +
+      '<div class="at-live" title="A fila é atualizada automaticamente"><i></i>Ao vivo · <span id="at-sync">—</span></div>' +
+      '<div class="at-user"><button type="button" class="at-ic" id="at-som" title="Aviso sonoro de novas solicitações"></button><a class="at-lnk" href="?helpdesk" target="_blank" rel="noopener">Central do solicitante</a><a class="at-lnk" href="index.html" target="_blank" rel="noopener">Sistema completo</a>' +
+      '<span class="at-quem"><b id="at-unome"></b><small id="at-uperfil"></small></span><button type="button" class="at-lnk" id="at-sair">Sair</button></div></header>' +
+      '<section class="at-kpis" id="at-kpis"></section>' +
+      '<div class="at-body"><aside class="at-fila"><div class="at-fila-h"><div class="at-busca"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="at-q" type="search" placeholder="Buscar nº, assunto, solicitante, local"></div>' +
+      '<div class="at-filtros" id="at-filtros"></div><div class="row" style="gap:8px"><select class="in" id="at-origem"><option value="Help Desk">Origem: Central de Atendimento</option><option value="">Origem: todas</option></select>' +
+      '<select class="in" id="at-ordem"><option value="recentes">Mais recentes</option><option value="urgencia">Maior urgência</option><option value="prazo">Prazo mais próximo</option></select></div></div>' +
+      '<div class="at-lista" id="at-lista" role="listbox" aria-label="Solicitações"></div></aside>' +
+      '<main class="at-ws" id="at-ws" tabindex="-1"></main></div></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+    U.$('#at-sair').onclick = function () { Api.chamar('sair', {}, true).catch(function () {}); Api.limparToken(); App.D = null; A.login(''); };
+    U.$('#at-som').onclick = function () { st.som = !st.som; try { localStorage.setItem('iema-at-som', st.som ? '1' : '0'); } catch (x) { /* ignora */ } somIcone(); if (st.som) bip(); };
+    U.$('#at-q').oninput = function (ev) { st.q = ev.target.value; renderLista(); };
+    U.$('#at-origem').onchange = function (ev) { st.origem = ev.target.value; renderTudo(); };
+    U.$('#at-ordem').onchange = function (ev) { st.ordem = ev.target.value; renderLista(); };
+    somIcone();
+    clearInterval(st.timer);
+    st.timer = setInterval(function () {
+      if (!App.D || document.hidden || U.$('.modal')) return;
+      Api.chamar('versao', {}, true).then(function (r) { if (App.D && r.versao !== App.D.versao) return Api.chamar('dados', {}, true); }).catch(function () { /* próximo ciclo */ });
+    }, 15000);
+  }
+  function somIcone() { var b = U.$('#at-som'); if (!b) return; b.innerHTML = st.som ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10 21h4"/></svg>' : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 9.5-4.9M18 8c0 7 3 9 3 9H7M10 21h4M3 3l18 18"/></svg>'; b.setAttribute('aria-pressed', String(st.som)); }
+  function bip() { try { var C = window.AudioContext || window.webkitAudioContext, c = new C(), o = c.createOscillator(), g = c.createGain(); o.frequency.value = 880; g.gain.value = 0.06; o.connect(g); g.connect(c.destination); o.start(); setTimeout(function () { o.frequency.value = 1180; }, 120); setTimeout(function () { o.stop(); c.close(); }, 260); } catch (x) { /* sem áudio */ } }
+
+  /* ---------------- Renderização (chamada a cada atualização de dados) ---------------- */
+  var idsAntes = null;
+  A.render = function () {
+    if (!App.D) return;
+    var p = App.P;
+    if (!(p.etapas || p.areaGestor)) {
+      document.body.innerHTML = '<div class="at-login"><form class="at-login-card"><h2>Sem acesso</h2><p>Seu perfil (' + e(p.nome) + ') não tem acesso à gestão de solicitações. Procure o gestor master.</p><button class="btn" type="button" id="at-volta">Sair</button></form></div>';
+      U.$('#at-volta').onclick = function () { Api.limparToken(); App.D = null; A.login(''); };
+      return;
+    }
+    if (!U.$('.at')) montar();
+    var hd = App.D.demandas.filter(function (d) { return d.origem === 'Help Desk'; });
+    if (idsAntes) { var novas = hd.filter(function (d) { return !idsAntes[d.id]; }); if (novas.length && st.som) bip(); }
+    idsAntes = hd.reduce(function (m, d) { m[d.id] = 1; return m; }, {});
+    if (st.primeira) { st.primeira = false; var l0 = lista(); if (!st.sel && l0.length) st.sel = null; }
+    renderTudo();
+  };
+  function renderTudo() {
+    U.$('#at-unome').textContent = App.D.sessao.nome; U.$('#at-uperfil').textContent = App.D.sessao.perfil.nome;
+    U.$('#at-sync').textContent = 'atualizado às ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    renderKpis(); renderLista(); renderWs();
+  }
+  function renderKpis() {
+    var base = App.D.demandas.filter(function (d) { return !st.origem || d.origem === st.origem; }), hoje = L.hoje();
+    var c = { novas: base.filter(function (d) { return grupo(d) === 'novas'; }), andamento: base.filter(function (d) { return grupo(d) === 'andamento'; }), atrasadas: base.filter(function (d) { return L.prazo(d).k === 'atrasada'; }),
+      ateste: base.filter(function (d) { return ['ateste', 'pagamento'].indexOf(L.situacao(d).id) >= 0; }), encerradas: base.filter(function (d) { return grupo(d) === 'encerradas'; }) };
+    var naoVistas = c.novas.filter(function (d) { return naoVisto(d) === 'nova'; }).length;
+    var tempos = base.filter(function (d) { return d.inicialOk && d.inicialData; }).map(function (d) { return Math.max(0, L.diff(d.dataSolicitacao, d.inicialData)); });
+    var media = tempos.length ? U.sum(tempos, function (x) { return x; }) / tempos.length : 0;
+    document.title = (naoVistas ? '(' + naoVistas + ') ' : '') + 'Gestão de Solicitações | Manutenção Predial IEMA';
+    var tile = function (k, rot, n, sub, cor) { return '<button type="button" class="at-kpi' + (st.filtro === k ? ' on' : '') + '" data-f="' + k + '" style="--c:' + cor + '"><span>' + rot + '</span><b>' + n + '</b><small>' + sub + '</small></button>'; };
+    U.$('#at-kpis').innerHTML = tile('novas', 'Novas', c.novas.length, naoVistas ? naoVistas + ' ainda não abertas' : 'aguardando análise', '#1D4ED8') +
+      tile('andamento', 'Em andamento', c.andamento.length, 'recebidas pela equipe', '#0E7490') + tile('atrasadas', 'Em atraso', c.atrasadas.length, 'prazo vencido', '#DC2626') +
+      tile('ateste', 'Ateste e pagamento', c.ateste.length, 'executadas, a conferir', '#B45309') + tile('encerradas', 'Encerradas', c.encerradas.length, 'pagas ou canceladas', '#15803D') +
+      '<div class="at-kpi info" style="--c:#6D28D9"><span>Tempo médio de recebimento</span><b>' + (tempos.length ? media.toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + ' d' : '—') + '</b><small>da abertura à demanda inicial</small></div>';
+    U.$$('#at-kpis [data-f]').forEach(function (b) { b.onclick = function () { st.filtro = b.dataset.f; renderTudo(); }; });
+    var F = [['novas', 'Novas'], ['andamento', 'Em andamento'], ['atrasadas', 'Atrasadas'], ['ateste', 'Ateste'], ['encerradas', 'Encerradas'], ['todas', 'Todas']];
+    U.$('#at-filtros').innerHTML = F.map(function (f) { return '<button type="button" data-f="' + f[0] + '" aria-pressed="' + (st.filtro === f[0]) + '">' + f[1] + '</button>'; }).join('');
+    U.$$('#at-filtros [data-f]').forEach(function (b) { b.onclick = function () { st.filtro = b.dataset.f; renderTudo(); }; });
+  }
+  function renderLista() {
+    var box = U.$('#at-lista'), top = box.scrollTop, l = lista();
+    box.innerHTML = l.length ? l.map(function (d) {
+      var s = L.situacao(d), nv = naoVisto(d), nf = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id && /^image\//.test(a.tipo); }).length, pz = L.prazo(d);
+      return '<button type="button" role="option" class="at-item' + (st.sel === d.id ? ' ativo' : '') + (nv === 'nova' ? ' nao-visto' : '') + '" data-id="' + e(d.id) + '" aria-selected="' + (st.sel === d.id) + '" style="--u:' + (CORES_URG[d.criticidade] || '#94A3B8') + '">' +
+        '<div class="l1"><b>' + e(d.id) + '</b>' + (nv === 'nova' ? '<em class="at-nova">Nova</em>' : nv === 'msg' ? '<em class="at-msg" title="Novidade do solicitante">●</em>' : '') + '<span>' + desde(d.criadoEm || d.dataSolicitacao) + '</span></div>' +
+        '<div class="tt">' + e(d.titulo) + '</div><div class="l3">' + e([d.solicitante, d.unidade].filter(Boolean).join(' · ')) + '</div>' +
+        '<div class="l4"><span class="sit" style="--c:' + s.cor + '"><i></i>' + e(s.nome) + '</span>' + (pz.k === 'atrasada' ? '<span class="tag atrasada">Em atraso</span>' : '') + (d.risco ? '<span class="tag alerta">Risco</span>' : '') + (nf ? '<span class="at-cam">📷 ' + nf + '</span>' : '') + '</div></button>';
+    }).join('') : '<div class="at-vazio"><b>Nenhuma solicitação aqui</b><span>Mude o filtro ou a origem para ver outras solicitações.</span></div>';
+    box.scrollTop = top;
+    U.$$('.at-item', box).forEach(function (b) { b.onclick = function () { st.sel = b.dataset.id; marcarVisto(st.sel); renderTudo(); var ws = U.$('#at-ws'); ws.scrollTop = 0; if (window.innerWidth < 1000) ws.scrollIntoView({ behavior: 'smooth' }); }; });
+  }
+
+  /* ---------------- Área de trabalho da solicitação ---------------- */
+  function card(t, cor, corpo, extra) { return '<section class="at-card" style="--c:' + cor + '"><header><h3>' + t + '</h3>' + (extra || '') + '</header><div class="at-card-b">' + corpo + '</div></section>'; }
+  function kv(pares) { return '<dl class="at-kv">' + pares.map(function (x) { return '<dt>' + x[0] + '</dt><dd>' + x[1] + '</dd>'; }).join('') + '</dl>'; }
+  function renderWs() {
+    var ws = U.$('#at-ws'), top = ws.scrollTop, d = st.sel ? T.dem(st.sel) : null;
+    if (!d) {
+      ws.innerHTML = '<div class="at-vazio grande"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg><b>Selecione uma solicitação na fila</b><span>A fila se atualiza sozinha. As novas solicitações da Central de Atendimento aparecem marcadas como <em class="at-nova">Nova</em>.</span></div>';
+      return;
+    }
+    var p = App.P, s = L.situacao(d), pz = L.prazo(d), rasc = st.rascunho[d.id] || '';
+    var temPdf = (App.D.anexos || []).some(function (a) { return a.demandaId === d.id && a.tipo === 'application/pdf'; });
+    var passos = [{ nome: 'Registrada', ok: true, data: d.dataSolicitacao }].concat(T.etapasVisiveis(d).map(function (x) { return { nome: x.nome, ok: !!d[x.id + 'Ok'], data: x.id === 'execucao' ? d.execucaoFim : d[x.id + 'Data'] }; }));
+    var conversa = (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && (h.acao.indexOf('Mensagem do solicitante') === 0 || h.acao.indexOf('Resposta da equipe') === 0); }).slice().reverse();
+    var etapasH = T.etapasVisiveis(d).map(function (x) {
+      var ok = d[x.id + 'Ok'], pode = p.etapas && !d.cancelada, hab = pode && (ok ? !T.posteriorMarcada(d, x) : T.anterioresOk(d, x));
+      var extra = '';
+      if (pode && ok) extra = '<button class="btn sm ghost" data-ed="' + x.id + '">' + U.icon.edit + 'Editar</button>';
+      if (pode && !ok && x.id === 'execucao' && d.inicialOk) extra = '<button class="btn sm ghost" data-ini="1">' + (d.execucaoInicio ? 'Alterar início' : 'Informar início') + '</button>';
+      if (x.id === 'pagamento' && p.financeiro && d.atesteOk && !d.cancelada) extra += '<button class="btn sm ghost" data-nf="1">' + U.icon.plus + 'Nota Fiscal</button>';
+      return '<div class="etapa' + (ok ? ' feita' : '') + '"><input type="checkbox" data-et="' + x.id + '"' + (ok ? ' checked' : '') + (hab ? '' : ' disabled') + ' aria-label="' + e(x.nome) + '"><div><div class="nm">' + e(x.nome) + (x.opcional ? '<small>opcional</small>' : '') + '</div><div class="info">' + T.infoEtapa(d, x) + '</div></div><div class="row" style="gap:4px;justify-content:flex-end">' + extra + '</div></div>';
+    }).join('');
+    var lotes = App.D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero + ' · ' + l.descricao }; });
+    var pd = function (k) { return L.podeEditarCampo(p, k, d, App.D.sessao.login) && !d.cancelada ? '' : ' disabled'; };
+    var triagem = '<form id="at-tri" class="at-tri" novalidate><div class="fgrid">' +
+      '<label class="f full"><span class="req">Lote</span><select class="in" name="loteId"' + pd('loteId') + '>' + U.opts(lotes, d.loteId, 'Selecione o lote') + '</select></label>' +
+      '<label class="f"><span class="req">Modalidade</span><select class="in" name="modalidade"' + pd('modalidade') + '>' + U.opts(L.MODALIDADES, d.modalidade) + '</select></label>' +
+      '<label class="f"><span class="req">Urgência</span><select class="in" name="criticidade"' + pd('criticidade') + '>' + U.opts(L.CRITICIDADES, d.criticidade) + '</select></label>' +
+      '<div class="f"><span class="req">Prazo de atendimento</span><div class="row" style="flex-wrap:nowrap"><input class="in" name="prazoQtd" type="number" min="1" style="max-width:80px" value="' + e(d.prazoQtd || 1) + '"' + pd('prazoQtd') + '><select class="in" name="prazoUnidade"' + pd('prazoUnidade') + '>' + U.opts([{ v: 'dias', l: 'dia(s)' }, { v: 'semanas', l: 'semana(s)' }, { v: 'meses', l: 'mês(es)' }], d.prazoUnidade === 'quinzenas' ? 'dias' : d.prazoUnidade) + '</select></div></div>' +
+      '<label class="f"><span>Início previsto</span><input class="in" type="date" name="inicioPrevisto" value="' + e(d.inicioPrevisto) + '"' + pd('inicioPrevisto') + '></label>' +
+      '<p class="calc full" id="at-fim"></p>' +
+      '<label class="f"><span>Nº da Ordem de Serviço</span><input class="in" name="osNumero" value="' + e(d.osNumero) + '"' + pd('osNumero') + '></label>' +
+      '<label class="f"><span>Nº do Atendimento (Help Desk)</span><input class="in" name="atendimentoNumero" value="' + e(d.atendimentoNumero) + '"' + pd('atendimentoNumero') + '></label>' +
+      '<label class="f"><span id="at-rv">Valor estimado</span>' + U.inputMoeda('valorEstimado', d.valorEstimado, pd('valorEstimado')) + '</label>' +
+      '<label class="f"><span>Responsável local</span><input class="in" name="responsavelLocal" value="' + e(d.responsavelLocal) + '"' + pd('responsavelLocal') + '></label>' +
+      '<label class="f full"><span>Observações internas</span><textarea class="in" name="obs" rows="2"' + pd('obs') + '>' + e(d.obs) + '</textarea></label></div>' +
+      '<p class="err" id="at-tri-err" role="alert"></p><div class="row" style="justify-content:flex-end"><button class="btn primary" type="submit"' + (d.cancelada ? ' disabled' : '') + '>Salvar triagem</button></div></form>';
+    ws.innerHTML = '<div class="at-ws-h" style="--c:' + s.cor + '"><div><div class="row small" style="gap:8px"><b class="at-prot">' + e(d.id) + '</b>' + (d.origem === 'Help Desk' ? '<span class="tag hd-tag">Central de Atendimento</span>' : '<span class="tag mod">' + e(d.origem || 'Sistema') + '</span>') + '<span class="muted">aberta ' + desde(d.criadoEm || d.dataSolicitacao) + ' · ' + U.fmt(d.dataSolicitacao) + '</span></div>' +
+      '<h2>' + e(d.titulo) + '</h2><div class="row" style="gap:8px;margin-top:6px"><span class="at-pill" style="--c:' + s.cor + '">' + e(s.nome) + '</span>' + T.prazoTag(d) + '<span class="at-pill" style="--c:' + (CORES_URG[d.criticidade] || '#64748B') + '">Urgência ' + e(d.criticidade) + '</span>' + (d.risco ? '<span class="tag atrasada">Risco declarado</span>' : '') + '</div></div>' +
+      '<div class="at-acoes">' + (temPdf ? '<button class="btn" type="button" data-act="pdfSol">' + U.icon.down + 'PDF da solicitação</button>' : '') + '<button class="btn" type="button" data-act="ficha">' + U.icon.down + 'Ficha (PDF)</button><a class="btn" href="index.html?abrir=' + encodeURIComponent(d.id) + '" target="_blank" rel="noopener">Abrir no sistema</a></div></div>' +
+      (d.cancelada ? '<div class="notice" style="margin:0 0 14px">Cancelada: ' + e(d.motivoCancelamento) + '</div>' : '') +
+      '<ol class="hd-step at-step">' + passos.map(function (x, i) { var at = passos.reduce(function (m, y, k) { return y.ok ? k : m; }, 0); return '<li class="' + (x.ok ? 'ok' : '') + (i === at + 1 && !d.cancelada ? ' prox' : '') + '"><span class="b">' + (x.ok ? '✓' : i + 1) + '</span><b>' + e(x.nome) + '</b><small>' + (x.ok && x.data ? U.fmt(x.data) : '') + '</small></li>'; }).join('') + '</ol>' +
+      '<div class="at-grid"><div class="at-col">' +
+      card('Solicitante', '#1D4ED8', kv([['Nome', e(d.solicitante || '—')], ['E-mail', d.solicitanteEmail ? '<a href="mailto:' + e(d.solicitanteEmail) + '">' + e(d.solicitanteEmail) + '</a>' : '—'], ['Telefone', d.solicitanteTelefone ? '<a href="tel:' + e(d.solicitanteTelefone.replace(/[^\d+]/g, '')) + '">' + e(d.solicitanteTelefone) + '</a>' : '—'], ['Unidade (setor)', e(d.unidade || '—')]])) +
+      card('Local', '#0E7490', kv([['Local do problema', e(d.local || '—')], ['Localização exata', e(d.localInterno || '—')], ['Pessoas afetadas', d.pessoas ? U.int(d.pessoas) : '—'], ['Responsável local', e(d.responsavelLocal || '—')]])) +
+      card('Problema', '#B45309', kv([['Tipo de problema', e(d.sistema || '—')], ['Urgência', e(d.criticidade)], ['Risco', d.risco ? '<b style="color:var(--bad)">Sim, declarado pelo solicitante</b>' : 'Não informado']]) + '<p class="at-desc">' + e(d.descricao || '') + '</p>') +
+      card('Fotos e PDF da solicitação', '#6D28D9', '<div id="at-anexos"><p class="muted small">Carregando…</p></div>') +
+      card('Conversa com o solicitante', '#4338CA', '<div class="at-chat">' + (conversa.length ? conversa.map(function (h) { var eq = h.acao.indexOf('Resposta da equipe') === 0; return '<div class="at-bolha ' + (eq ? 'eq' : 'sol') + '"><small>' + (eq ? e(T.nome(h.usuario)) + ' · equipe' : e(d.solicitante || 'Solicitante')) + ' · ' + U.fmtDH(h.em) + (h.motivo ? ' · ' + e(h.motivo) : '') + '</small><p>' + e(h.novo) + '</p></div>'; }).join('') : '<p class="muted small">Nenhuma mensagem ainda. A resposta enviada aqui aparece para o solicitante na Central de Atendimento e no assistente virtual.</p>') + '</div>' +
+        '<div class="at-resp"><select class="in" id="at-modelo">' + MODELOS.map(function (m) { return '<option value="' + e(m[0]) + '">' + e(m[1]) + '</option>'; }).join('') + '</select><textarea class="in" id="at-texto" rows="3" maxlength="2000" placeholder="Escreva a resposta ao solicitante">' + e(rasc) + '</textarea>' +
+        '<div class="row" style="justify-content:space-between"><label class="check"><input type="checkbox" id="at-email"' + (d.solicitanteEmail ? ' checked' : ' disabled') + '><span>Enviar também por e-mail' + (d.solicitanteEmail ? '' : ' (sem e-mail cadastrado)') + '</span></label><button class="btn primary" type="button" id="at-enviar">Enviar resposta</button></div></div>') +
+      '</div><div class="at-col">' +
+      card('Triagem e atendimento', '#BE123C', triagem) +
+      card('Andamento', '#15803D', '<div class="etapas">' + etapasH + '</div>' + (p.etapas ? '<p class="calc" style="margin-top:8px">Etapas já marcadas só são alteradas com senha. Ao marcar a demanda inicial, o prazo passa a aparecer para o solicitante.</p>' : '')) +
+      card('Histórico', '#475569', '<ul class="timeline">' + (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && h.acao !== 'Entrada no sistema'; }).slice(0, 14).map(function (h) { return '<li style="--c:' + (h.usuario === 'helpdesk' ? '#6D28D9' : '#0F766E') + '"><b>' + e(h.acao) + '</b> <span class="d">' + U.fmtDH(h.em) + ' · ' + e(T.nome(h.usuario)) + '</span>' + (h.campo || h.novo ? '<div class="muted small">' + e([h.campo, h.novo].filter(Boolean).join(': ')) + '</div>' : '') + '</li>'; }).join('') + '</ul>') +
+      ((p.excluir) ? '<div class="row" style="justify-content:flex-end;gap:8px">' + (d.cancelada ? '' : '<button class="btn" type="button" data-act="cancelar">Cancelar solicitação</button>') + '<button class="btn danger" type="button" data-act="excluir">Excluir</button></div>' : '') +
+      '</div></div>';
+    ws.scrollTop = top;
+    ligarWs(d);
+  }
+  function ligarWs(d) {
+    var ws = U.$('#at-ws');
+    T.anexosDe(d.id).then(function (lst) { var box = U.$('#at-anexos'); if (box && st.sel === d.id) { box.innerHTML = T.htmlAnexos(lst); T.ligarAnexos(box); } }, function () { var box = U.$('#at-anexos'); if (box) box.innerHTML = '<p class="muted small">Não foi possível carregar os anexos.</p>'; });
+    U.$$('[data-et]', ws).forEach(function (c) { c.onchange = function () { c.checked = !!d[c.dataset.et + 'Ok']; T.alternarEtapa(d, c.dataset.et); }; });
+    U.$$('[data-ed]', ws).forEach(function (b) { b.onclick = function () { T.editarEtapa(d, b.dataset.ed); }; });
+    U.$$('[data-ini]', ws).forEach(function (b) { b.onclick = function () { T.inicioExec(d); }; });
+    U.$$('[data-nf]', ws).forEach(function (b) { b.onclick = function () { T.novaNF(d); }; });
+    var acao = function (k, fn) { var b = ws.querySelector('[data-act="' + k + '"]'); if (b) b.onclick = fn; };
+    acao('ficha', function () { G.fichaPdf(d.id); });
+    acao('pdfSol', function () { T.anexosDe(d.id).then(function (l) { var pdf = l.filter(function (a) { return a.tipo === 'application/pdf'; })[0]; if (pdf) T.baixarAnexo(pdf.id, pdf.nome); }); });
+    acao('excluir', function () { T.excluir(d); });
+    acao('cancelar', function () {
+      UI.modal({ title: 'Cancelar ' + d.id, size: 'sm', ok: 'Cancelar solicitação', danger: true, cancel: 'Voltar', body: '<label class="f"><span class="req">Motivo do cancelamento</span><textarea class="in" id="at-mc" rows="3"></textarea><span class="calc">O motivo aparece para o solicitante.</span></label>',
+        onOk: function (w) { var m = w.querySelector('#at-mc').value.trim(); if (!m) { w.erro('Informe o motivo.'); return false; } var n = JSON.parse(JSON.stringify(d)); n.cancelada = true; n.motivoCancelamento = m; return T.salvar(n, d).then(function (r) { return !!r; }); } });
+    });
+    var txt = U.$('#at-texto'), mod = U.$('#at-modelo');
+    txt.oninput = function () { st.rascunho[d.id] = txt.value; };
+    mod.onchange = function () { if (mod.value) { txt.value = mod.value; st.rascunho[d.id] = txt.value; } mod.value = ''; txt.focus(); };
+    U.$('#at-enviar').onclick = function () {
+      var t = txt.value.trim(); if (!t) { U.toast('Escreva a resposta.', 'erro'); return; }
+      var b = U.$('#at-enviar'); b.disabled = true;
+      Api.chamar('responderSolicitante', { id: d.id, texto: t, porEmail: U.$('#at-email').checked }).then(function (r) { delete st.rascunho[d.id]; U.toast(r.emailEnviado ? 'Resposta enviada e copiada por e-mail.' : 'Resposta enviada ao solicitante.', 'ok'); }, function (er) { b.disabled = false; UI.erro(er); });
+    };
+    var f = U.$('#at-tri');
+    var calc = function () {
+      var ini = f.inicioPrevisto.value || d.dataSolicitacao, fim = L.fimPrevisto(ini, f.prazoQtd.value, f.prazoUnidade.value);
+      U.$('#at-fim').innerHTML = fim ? 'Término previsto: <b>' + U.fmt(fim) + '</b> (' + e(L.prazoTexto(f.prazoQtd.value, f.prazoUnidade.value)) + ' a partir de ' + U.fmt(ini) + ')' + (d.inicialOk ? '' : '. O solicitante passa a ver o prazo quando a demanda inicial for marcada.') : '';
+      U.$('#at-rv').className = f.modalidade.value === 'Programado' ? 'req' : '';
+    };
+    ['prazoQtd', 'prazoUnidade', 'inicioPrevisto', 'modalidade'].forEach(function (k) { f[k].addEventListener('input', calc); f[k].addEventListener('change', calc); });
+    calc();
+    f.onsubmit = function (ev) {
+      ev.preventDefault();
+      var n = JSON.parse(JSON.stringify(d));
+      U.$$('[name]', f).forEach(function (i) { if (i.disabled) return; n[i.name] = i.hasAttribute('data-moeda') ? U.lerMoeda(i.value) : i.type === 'number' ? Number(i.value) || 0 : i.value.trim(); });
+      var falt = L.validarObrigatorios(n);
+      if (falt.length) { U.$('#at-tri-err').textContent = 'Preencha: ' + falt.join(', ') + '.'; return; }
+      U.$('#at-tri-err').textContent = '';
+      T.salvar(n, d).catch(function (er) { U.$('#at-tri-err').textContent = er && er.mensagem ? er.mensagem : 'Não foi possível salvar.'; });
+    };
+  }
+  return A;
 })(Logica);
 
 /* =========================================================================
@@ -4336,6 +4888,7 @@ var App = (function (L) {
     App.P = dados.sessao.perfil;
     App.fin = L.financeiro(dados);
     if (App.publico) { renderPublico(); return; }
+    if (App.atendimento) { Atend.render(); return; }
     if (U.$('#app')) App.render();
   };
 
@@ -4396,7 +4949,7 @@ var App = (function (L) {
     document.body.innerHTML = '<div class="login"><form class="card" id="flogin" novalidate><div><h1>Manutenção Predial</h1></div><p class="org">Instituto Estadual de Meio Ambiente (IEMA) - SUBAD</p>' +
       '<label class="f">Login<input class="in" id="lg" autocomplete="username" autocapitalize="none"></label><label class="f">Senha<input class="in" id="ls" type="password" autocomplete="current-password"></label>' +
       '<p class="err" id="lerr" role="alert">' + U.esc(msg || '') + '</p><button class="btn primary" type="submit">Entrar</button>' +
-      '<a class="link-hd" href="?helpdesk">Sou solicitante: abrir a Central de Atendimento</a><div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
+      '<a class="link-hd" href="?helpdesk">Sou solicitante: abrir a Central de Atendimento</a><a class="link-hd" href="?atendimento">Equipe: abrir a Gestão de Solicitações</a><div class="modo">' + (Api.remoto ? 'Conectado à planilha Google do sistema.' : 'Modo demonstração: dados fictícios salvos só neste navegador. Usuários de teste (senha <b>iema123</b>): master, gestor, solicitante, contratada e leitura.') + '</div></form></div><div id="toasts" aria-live="polite"></div><div id="loading" class="loading" hidden></div>';
     U.$('#lg').focus();
     U.$('#flogin').onsubmit = function (ev) {
       ev.preventDefault();
@@ -4419,6 +4972,8 @@ var App = (function (L) {
     busca.oninput = function () { T.st.filtros.q = busca.value; if (rota() !== 'demandas') location.hash = '#demandas'; else { clearTimeout(App._bt); App._bt = setTimeout(App.render, 220); } };
     App.render();
     if (App.D.sessao.trocarSenha) trocarSenha(true);
+    var abrir = (location.search.match(/[?&]abrir=([^&#]+)/) || [])[1];
+    if (abrir && T.dem(decodeURIComponent(abrir))) { location.hash = '#demandas'; setTimeout(function () { T.abrir(decodeURIComponent(abrir)); }, 120); }
   }
   function lerTema() { try { return localStorage.getItem(TEMA); } catch (e) { return null; } }
   function tema(t) {
@@ -4443,6 +4998,7 @@ var App = (function (L) {
   }
   App.sair = function (motivo) {
     Api.limparToken(); App.D = null; T.fechar(); if (G.limparAutorizacoes) G.limparAutorizacoes();
+    if (App.atendimento) { U.$$('.modal').forEach(function (m) { m.remove(); }); Atend.login(motivo === true ? 'Sua sessão expirou. Entre novamente.' : (typeof motivo === 'string' ? motivo : '')); return; }
     telaLogin(motivo === true ? 'Sua sessão expirou. Entre novamente.' : (typeof motivo === 'string' ? motivo : ''));
   };
 
@@ -4484,6 +5040,7 @@ var App = (function (L) {
   var TEMPLATE = '';
   function iniciar() {
     if (/[?&]helpdesk\b/.test(location.search) || location.hash === '#helpdesk') { Helpdesk.iniciar(); return; }
+    if (/[?&]atendimento\b/.test(location.search)) { Atend.iniciar(); return; }
     var chavePainel = (location.search.match(/[?&]painel=([^&#]+)/) || [])[1];
     if (chavePainel) { iniciarPainel(decodeURIComponent(chavePainel)); return; }
     TEMPLATE = U.$('#tpl-app').innerHTML;
