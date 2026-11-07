@@ -876,6 +876,186 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
 @media (max-width: 900px) { .view { padding: 18px 16px 40px; } .top { padding: 10px 16px; } .live { display: none; } .nav a[aria-current="page"]::before { left: -14px; } }
 .kpis { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 
+/* =========================================================================
+   OPERAÇÃO: layout limpo (faixa de indicadores, abas, listas em linhas)
+   ========================================================================= */
+.view { max-width: 1480px; }
+.stack { gap: 20px; }
+/* faixa de indicadores */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; box-shadow: 0 1px 2px rgba(20,35,42,.04); }
+.stat { all: unset; box-sizing: border-box; padding: 14px 18px 14px 20px; display: flex; flex-direction: column; gap: 2px; position: relative; cursor: pointer; border-right: 1px solid var(--line); min-width: 0; }
+.stat:last-child { border-right: 0; }
+.stat::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0; background: var(--c); }
+.stat:hover:not([disabled]) { background: var(--surface-2); }
+.stat[disabled] { cursor: default; }
+.stat:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.stat-l { font-size: 12px; color: var(--muted); font-weight: 600; line-height: 1.3; min-height: 2.6em; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.stat b { font-size: clamp(19px, 1.5vw, 24px); font-weight: 800; letter-spacing: -0.02em; color: var(--ink); white-space: nowrap; }
+.stat small { font-size: 11.5px; color: var(--muted); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+/* abas internas */
+.subnav { display: flex; gap: 2px; border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: thin; }
+.subnav button { border: 0; background: transparent; padding: 10px 14px 11px; font: inherit; font-size: 14px; font-weight: 600; color: var(--muted); cursor: pointer; border-bottom: 2.5px solid transparent; margin-bottom: -1px; white-space: nowrap; display: inline-flex; align-items: center; gap: 7px; }
+.subnav button:hover { color: var(--ink); }
+.subnav button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--brand); }
+:root[data-theme="dark"] .subnav button[aria-selected="true"] { border-bottom-color: #5EEAD4; }
+.cnt { display: inline-grid; place-items: center; min-width: 20px; height: 19px; padding: 0 6px; border-radius: 999px; background: var(--surface-3); color: var(--ink-2); font-size: 11.5px; font-weight: 700; }
+button[aria-selected="true"] .cnt, button[aria-pressed="true"] .cnt { background: var(--brand); color: #fff; }
+/* blocos e grade da visão geral */
+.bloco { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+.bloco > header { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 14px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.bloco > header h2 { font-size: 15px; display: flex; align-items: center; gap: 8px; }
+.bloco > header > span { font-size: 12.5px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; }
+.bloco.central { border-top: 3px solid #7C3AED; }
+.grade-geral { display: grid; grid-template-columns: minmax(0, 1.75fr) minmax(300px, 1fr); gap: 20px; align-items: start; }
+.col-principal, .col-lateral { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+.faixa-alerta { padding: 10px 16px; border-radius: 12px; background: var(--bad-bg); color: var(--bad); font-size: 13.5px; border: 1px solid rgba(185,28,28,.25); }
+/* listas em linhas */
+.linhas { display: flex; flex-direction: column; }
+.linha { all: unset; box-sizing: border-box; display: grid; align-items: center; gap: 14px; padding: 11px 18px; border-bottom: 1px solid var(--line); cursor: pointer; position: relative; font-size: 13.5px; color: var(--ink); }
+.linha:last-child { border-bottom: 0; }
+.linha:hover:not(.cab):not([disabled]) { background: var(--surface-2); }
+.linha:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+.linha[disabled] { cursor: default; }
+.linha.cab { cursor: default; font-size: 11.5px; font-weight: 700; color: var(--muted); padding-top: 8px; padding-bottom: 8px; background: var(--surface-2); letter-spacing: .01em; }
+.linha small { display: block; font-size: 12px; color: var(--muted); font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.linha .c-tt { min-width: 0; } .linha .c-tt b { display: block; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.linha .c-loc, .linha .c-tempo { min-width: 0; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bloco { container-type: inline-size; }
+.central-linhas .linha { grid-template-columns: 4px 132px minmax(0, 1fr) 140px 176px 90px 96px; padding-left: 0; }
+.central-linhas .linha .barra { align-self: stretch; background: var(--u); border-radius: 0 3px 3px 0; margin: -4px 0; }
+.central-linhas .linha.cab .barra, .central-linhas .linha.cab span:first-child { background: none; }
+.central-linhas .linha.nova { background: color-mix(in srgb, #8B5CF6 6%, var(--surface)); }
+.central-linhas .linha.nova .c-tt b { font-weight: 800; }
+.c-id b { font-size: 12.5px; color: var(--ink-2); } .c-id .selo-nova, .c-id .selo-msg { margin-left: 4px; }
+.urg { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; font-size: 13px; }
+.urg::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--u); }
+.risco { color: var(--bad) !important; font-weight: 600 !important; }
+.linha.prazo { grid-template-columns: 48px minmax(0, 1fr) 170px 150px; }
+.linha .data { text-align: center; background: var(--surface-2); border-radius: 8px; padding: 3px 0; }
+.linha .data b { display: block; font-size: 16px; line-height: 1.1; } .linha .data small { font-size: 10.5px; }
+.linha.alerta-l { grid-template-columns: 4px minmax(0, 1fr) minmax(0, 1.1fr); padding-left: 0; }
+.linha .nivel { align-self: stretch; background: var(--muted); margin: -4px 0; border-radius: 0 3px 3px 0; }
+.linha.alto .nivel { background: var(--bad); } .linha.medio .nivel { background: #D97706; } .linha.baixo .nivel { background: var(--info); }
+.linha .c-x { font-size: 13px; color: var(--muted); min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.linha.hist { grid-template-columns: 140px minmax(0, 1fr) 200px; }
+.col-lateral .linha.prazo { grid-template-columns: 44px minmax(0, 1fr) auto; } .col-lateral .linha.prazo > span:nth-child(3), .col-lateral .linha.cab.prazo > span:nth-child(3) { display: none; }
+.col-lateral .linha.alerta-l { grid-template-columns: 4px minmax(0, 1fr); } .col-lateral .linha .c-x { display: none; }
+.col-principal .linha.alerta-l .c-x { white-space: normal; }
+.vazio-l { padding: 26px 18px; text-align: center; color: var(--muted); font-size: 13.5px; } .vazio-l b { display: block; color: var(--ink); margin-bottom: 4px; }
+.barra-ferr { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.busca-l { max-width: 340px; }
+/* situação em barra única */
+.pilha { display: flex; height: 14px; border-radius: 999px; overflow: hidden; margin: 18px 18px 6px; background: var(--surface-2); }
+.pilha i { display: block; height: 100%; }
+.pilha-leg { list-style: none; margin: 0; padding: 6px 18px 16px; display: flex; flex-direction: column; gap: 2px; }
+.pilha-leg li { display: grid; grid-template-columns: 1fr auto 52px; gap: 10px; align-items: center; padding: 5px 0; border-bottom: 1px dashed var(--line); font-size: 13px; }
+.pilha-leg li:last-child { border-bottom: 0; } .pilha-leg small { color: var(--muted); text-align: right; }
+/* demandas */
+.tabela-demandas .barra-ferr { background: var(--surface); }
+.busca-grande { position: relative; flex: 1 1 320px; } .busca-grande svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; color: var(--muted); }
+.busca-grande .in { padding: 10px 12px 10px 38px; border-radius: 10px; font-size: 14.5px; }
+.btn.ativo { border-color: var(--brand); color: var(--brand); background: color-mix(in srgb, var(--brand) 7%, var(--surface)); }
+:root[data-theme="dark"] .btn.ativo { color: #5EEAD4; border-color: #5EEAD4; }
+.sep-v { width: 1px; height: 26px; background: var(--line); }
+.painel-filtros { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; padding: 14px 18px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+.chips-filtro { display: flex; gap: 6px; flex-wrap: wrap; padding: 10px 18px 0; }
+.chips-filtro button { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line-2); background: var(--surface); border-radius: 999px; padding: 4px 6px 4px 11px; font-size: 12.5px; cursor: pointer; color: var(--ink-2); }
+.chips-filtro button svg { width: 13px; height: 13px; } .chips-filtro .limpar { border: 0; color: var(--accent); font-weight: 600; padding-left: 6px; }
+.resumo-l { display: flex; gap: 18px; align-items: center; padding: 10px 18px; font-size: 13px; color: var(--muted); flex-wrap: wrap; } .resumo-l b { color: var(--ink); }
+.t-demandas th { font-size: 12px; }
+.t-demandas td { padding: 12px; }
+.t-demandas .c-num { position: relative; padding-left: 18px; white-space: nowrap; }
+.t-demandas .c-num b { font-size: 13px; } .t-demandas .c-num small { display: block; font-size: 11.5px; color: var(--muted); }
+.t-demandas .barra-u { position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--u); }
+.t-demandas .tt { max-width: 460px; }
+.acoes-l .btn { opacity: .35; } tr:hover .acoes-l .btn, .acoes-l .btn:focus-visible { opacity: 1; }
+/* detalhe em abas */
+.drawer-h { padding-bottom: 0; } .drawer-h .subnav { margin: 12px -22px 0; padding: 0 14px; border-bottom: 0; }
+.dr-id { font-size: 13px; letter-spacing: .02em; }
+.fatos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+.fato { background: var(--surface); padding: 11px 14px; display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.fato span { font-size: 12px; color: var(--muted); } .fato b { font-size: 14px; font-weight: 600; overflow-wrap: anywhere; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.desc-box { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid #B45309; border-radius: 12px; padding: 12px 14px; }
+.desc-box span { font-size: 12px; color: var(--muted); font-weight: 600; } .desc-box p { margin-top: 4px; white-space: pre-wrap; font-size: 14px; }
+/* cronograma e setores com barras de ferramentas mais leves */
+.filters { background: var(--surface); border-bottom: 1px solid var(--line); gap: 12px; }
+.filters label.f { font-size: 12px; }
+/* área do gestor: indicadores mais leves */
+.kpi { border-top-width: 0; border-left: 0; position: relative; padding-left: 20px; }
+.kpi::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0; background: var(--c); }
+.doc .kpi::before { display: none; } .doc .kpi { padding-left: 16px; border-top: 3px solid var(--c); }
+@media (max-width: 1200px) { .grade-geral { grid-template-columns: 1fr; } }
+@container (max-width: 900px) { .central-linhas .linha { grid-template-columns: 4px 118px minmax(0, 1fr) 170px 88px; } .central-linhas .linha > span:nth-child(4), .central-linhas .linha > span:nth-child(7) { display: none; } }
+@container (max-width: 600px) { .central-linhas .linha { grid-template-columns: 4px minmax(0, 1fr) auto; } .central-linhas .linha > span:nth-child(2), .central-linhas .linha > span:nth-child(6) { display: none; } }
+@media (max-width: 760px) {
+  .linha.prazo { grid-template-columns: 44px minmax(0, 1fr) auto; } .linha.prazo > span:nth-child(3) { display: none; }
+  .linha.hist { grid-template-columns: 1fr; } .linha.alerta-l { grid-template-columns: 4px 1fr; } .linha .c-x { display: none; }
+  .fatos { grid-template-columns: repeat(2, minmax(0, 1fr)); } .stat { border-bottom: 1px solid var(--line); }
+}
+.c-id { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; } .c-id .selo-nova, .c-id .selo-msg { margin-left: 0; }
+.drawer-b > * { flex-shrink: 0; }
+/* abas da Área do Gestor no mesmo padrão das abas internas */
+.tabs { background: transparent; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; padding: 0; gap: 2px; }
+.tabs button { border-radius: 0; padding: 10px 16px 11px; border-bottom: 2.5px solid transparent; margin-bottom: -1px; background: transparent; }
+.tabs button[aria-selected="true"] { background: transparent; color: var(--ink); border-bottom-color: var(--brand); }
+:root[data-theme="dark"] .tabs button[aria-selected="true"] { border-bottom-color: #5EEAD4; }
+
+/* ---------------- Central: quadro de avisos (manutenção + LGPD) ---------------- */
+.hd-avisos { margin-top: 22px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.hd-av { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.26); color: #F0FDFA; backdrop-filter: blur(4px); }
+.hd-av .ic { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; flex: none; background: rgba(253,230,138,.18); color: #FDE68A; }
+.hd-av:last-child .ic { background: rgba(167,243,208,.18); color: #A7F3D0; }
+.hd-av .ic svg { width: 21px; height: 21px; }
+.hd-av b { display: block; font-size: 15px; color: #fff; margin-bottom: 4px; }
+.hd-av p { font-size: 13.5px; line-height: 1.55; color: #E2F5F1; margin: 0; max-width: none; }
+@media (max-width: 900px) { .hd-avisos { grid-template-columns: 1fr; } }
+/* quadro do pedido */
+.hd-ped-b { padding: 6px 20px 20px; align-items: start; }
+.hd-sit .btn { color: #14232A; }
+.hd-resumo-t { padding: 14px 20px 0; font-size: 14.5px; font-weight: 700; color: #14232A; }
+.hd-step li { flex: 1 1 0; }
+
+/* ---------------- PDF e impressão sem sobreposição nem cortes ---------------- */
+.doc.pdf, #print-area .doc { overflow: visible; }
+.doc.pdf *, #print-area .doc * { -webkit-line-clamp: unset !important; text-overflow: clip !important; }
+.doc.pdf table.t, #print-area table.t { width: 100% !important; }
+.doc.pdf td, .doc.pdf th, #print-area td, #print-area th { overflow-wrap: anywhere; word-break: normal; }
+.doc.pdf img, .doc.pdf svg, #print-area img, #print-area svg { max-width: 100%; height: auto; }
+.doc.pdf .kpis, #print-area .kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.doc.pdf .grid.g2, #print-area .grid.g2 { grid-template-columns: 1fr; }
+.doc.pdf .chart, .doc.pdf .kpi, .doc.pdf tr, .doc.pdf .meter, .doc.pdf .doc-h, .doc.pdf h3, .doc.pdf .fato, .doc.pdf .etapa, .doc.pdf li { page-break-inside: avoid; break-inside: avoid; }
+@media print {
+  #print-area .doc .chart, #print-area .doc .kpi, #print-area .doc .meter, #print-area .doc .doc-h, #print-area .doc li, #print-area .doc p, #print-area .doc .etapa { break-inside: avoid; }
+  #print-area .doc h3 { break-after: avoid; }
+  #print-area .doc { width: 100% !important; }
+  #print-area table { page-break-inside: auto; } #print-area tr { break-inside: avoid; page-break-inside: avoid; }
+}
+
+/* ---------------- Conversa com o solicitante (área do gestor) ---------------- */
+.balao-chat { display: inline-flex; align-items: center; gap: 3px; margin-left: 6px; padding: 2px 7px 2px 5px; border-radius: 999px; background: #7C3AED; color: #fff; font-size: 11px; font-weight: 800; line-height: 1; cursor: pointer; vertical-align: middle; position: relative; animation: balao-pisca 1.4s ease-in-out infinite; box-shadow: 0 0 0 0 rgba(124,58,237,.55); }
+.balao-chat svg { width: 13px; height: 13px; }
+.balao-chat:hover { background: #6D28D9; }
+.balao-chat:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+@keyframes balao-pisca { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(124,58,237,.55); } 50% { opacity: .55; box-shadow: 0 0 0 6px rgba(124,58,237,0); } }
+@media (prefers-reduced-motion: reduce) { .balao-chat { animation: none; } }
+.c-id .balao-chat { margin-left: 0; }
+.chat-g { position: fixed; right: 20px; bottom: 20px; z-index: 45; width: min(400px, calc(100vw - 24px)); height: min(560px, calc(100vh - 40px)); background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 30px 70px -20px rgba(0,0,0,.45); display: flex; flex-direction: column; overflow: hidden; }
+.chat-g > header { display: flex; align-items: center; gap: 10px; padding: 12px 14px; background: linear-gradient(135deg, #6D28D9, #4338CA); color: #fff; }
+.chat-g > header div { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.chat-g > header span:not(.chat-g-ic) { font-size: 12px; color: #DDD6FE; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-g-ic { width: 30px; height: 30px; border-radius: 9px; background: rgba(255,255,255,.16); display: grid; place-items: center; flex: none; }
+.chat-g-ic svg { width: 16px; height: 16px; }
+.chat-g-x { border: 0; background: rgba(255,255,255,.16); color: #fff; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; cursor: pointer; flex: none; }
+.chat-g-x svg { width: 15px; height: 15px; }
+.chat-g-tt { padding: 8px 14px; font-size: 13px; font-weight: 600; border-bottom: 1px solid var(--line); background: var(--surface-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-g-msgs { flex: 1; overflow-y: auto; padding: 12px; display: flex; flex-direction: column; gap: 8px; background: var(--bg); }
+.chat-g-vazio { font-size: 13px; color: var(--muted); text-align: center; margin: auto 10px; }
+.chat-g-f { border-top: 1px solid var(--line); padding: 10px 12px; display: flex; flex-direction: column; gap: 8px; }
+.chat-g-f .in { font-size: 13.5px; }
+.chat-g-acoes { display: flex; align-items: center; gap: 8px; } .chat-g-acoes .check { margin-right: auto; font-size: 12.5px; }
+#som-btn[aria-pressed="true"] { color: #7C3AED; }
+:root[data-theme="dark"] #som-btn[aria-pressed="true"] { color: #C4B5FD; }
+
   </style>
   <script src="config.js"></script>
 </head>
@@ -912,6 +1092,7 @@ ol.passos { margin: 12px 0 0; padding-left: 20px; display: flex; flex-direction:
           <span class="top-spacer"></span>
           <span class="live" title="As solicitações da Central de Atendimento chegam automaticamente"><i></i><span id="live-t">Ao vivo</span></span>
           <label class="search"><span class="sr-only">Buscar demandas</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="busca" type="search" placeholder="Buscar demandas ( / )" autocomplete="off"></label>
+          <button class="btn ghost icon-btn" id="som-btn" type="button" aria-pressed="false"></button>
           <button class="btn ghost icon-btn" id="theme-btn" aria-label="Alternar tema"></button>
           <button class="btn primary" id="btn-nova"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span>Nova demanda</span></button>
         </header>
@@ -1044,6 +1225,8 @@ var Logica = (function () {
   /* Nomes das etapas como o solicitante as vê no Help Desk */
   L.ETAPAS_SOLICITANTE = { inicial: 'Recebida pela equipe', aprovacao: 'Aprovada', execucao: 'Serviço executado', ateste: 'Serviço conferido (ateste)', pagamento: 'Encerrada' };
   L.AVISO_LEGAL = 'Este canal destina-se exclusivamente a solicitações de manutenção predial (conservação, reparo e adequação com preservação das características originais do imóvel), caracterizadas como serviço comum de engenharia (Lei Federal nº 14.133/2021, art. 6º, inciso XXI, alínea "a"). É vedado solicitar por aqui qualquer serviço que configure obra, como construção, ampliação ou reforma que inove o espaço físico ou altere substancialmente as características originais do imóvel (Lei Federal nº 14.133/2021, art. 6º, inciso XII), conforme aplicada no Estado do Espírito Santo pelos Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023.';
+  L.AVISO_LGPD = 'Os dados pessoais informados (nome, e-mail, telefone e imagens) são tratados exclusivamente para registrar, executar e acompanhar a sua solicitação, nos termos da Lei Geral de Proteção de Dados Pessoais (Lei Federal nº 13.709/2018), com base no art. 7º, inciso III, e no art. 23, que tratam do uso de dados pela administração pública para cumprir suas atribuições. As informações ficam restritas à equipe de gestão e a quem executa o serviço, e você pode pedir acesso ou correção dos seus dados pelo contato da SUBAD (art. 18). Em computadores compartilhados, use a opção "Não salvar nesta máquina".';
+  L.ETAPAS_VISIVEIS_SOLICITANTE = ['inicial', 'execucao'];
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -1797,7 +1980,8 @@ var Servico = (function (L) {
         (h.acao.indexOf('Demanda alterada') < 0 || h.campo === 'Execução: início');
     }).map(function (h) {
       var t = h.acao;
-      if (h.acao.indexOf('Etapa marcada') === 0) { var et = L.ETAPAS.filter(function (e) { return h.acao.indexOf(e.nome) >= 0; })[0]; t = et ? L.ETAPAS_SOLICITANTE[et.id] : h.acao; }
+      if (h.acao.indexOf('Etapa marcada') === 0) { var et = L.ETAPAS.filter(function (e) { return h.acao.indexOf(e.nome) >= 0; })[0]; if (et && L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(et.id) < 0) return null; t = et ? L.ETAPAS_SOLICITANTE[et.id] : h.acao; }
+      else if (h.acao.indexOf('Etapa desmarcada') === 0 && L.ETAPAS.some(function (e) { return h.acao.indexOf(e.nome) >= 0 && L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(e.id) < 0; })) return null;
       else if (h.acao.indexOf('Etapa desmarcada') === 0) t = 'Etapa reaberta pela equipe';
       else if (h.acao.indexOf('Demanda alterada') === 0) t = 'Execução iniciada';
       else if (h.acao.indexOf('Mensagem do solicitante') === 0) t = 'Sua observação: ' + h.novo;
@@ -1805,14 +1989,17 @@ var Servico = (function (L) {
       else if (h.acao.indexOf('PDF da solicitação') === 0) t = 'Fotos convertidas para o PDF da solicitação';
       else if (h.acao.indexOf('Demanda registrada') === 0) t = 'Solicitação registrada';
       return { em: h.em, texto: t };
-    });
+    }).filter(Boolean);
+    var sitP = L.situacao(d);
+    if (['ateste', 'pagamento', 'paga'].indexOf(sitP.id) >= 0) sitP = { id: 'executado', nome: 'Serviço executado', cor: '#15803D' };
     return {
       id: d.id, titulo: d.titulo, modalidade: d.modalidade, unidade: d.unidade, local: d.local, localInterno: d.localInterno, sistema: d.sistema,
       criticidade: d.criticidade, risco: d.risco, descricao: d.descricao, solicitante: d.solicitante, dataSolicitacao: d.dataSolicitacao,
       prazoQtd: d.inicialOk ? d.prazoQtd : 0, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicialOk ? d.inicioPrevisto : '', fimPrevisto: d.inicialOk ? d.fimPrevisto : '', execucaoInicio: d.execucaoInicio, pessoas: d.pessoas,
       osNumero: d.osNumero, atendimentoNumero: d.atendimentoNumero, cancelada: d.cancelada, motivoCancelamento: d.motivoCancelamento,
-      situacao: L.situacao(d), prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
-      etapas: L.ETAPAS.filter(function (e) { return !e.soProgramado || d.modalidade === 'Programado'; }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
+      situacao: sitP, aceitaAnexos: !d.cancelada && !d.pagamentoOk, execucaoFim: d.execucaoOk ? d.execucaoFim : '',
+      prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
+      etapas: L.ETAPAS.filter(function (e) { return L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(e.id) >= 0 && (!e.soProgramado || d.modalidade === 'Programado'); }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
       anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, temMiniatura: !!a.miniatura }; }),
       eventos: eventos
     };
@@ -2490,10 +2677,16 @@ var U = (function (L) {
     });
     return raiz;
   };
+  function maxColunas(raiz) { return Math.max.apply(null, [0].concat(Array.prototype.map.call(raiz.querySelectorAll('table'), function (t) { return t.rows[0] ? t.rows[0].cells.length : 0; }))); }
   U.imprimirDoc = function (html) {
     var area = document.createElement('div'); area.id = 'print-area'; area.innerHTML = html;
-    document.body.appendChild(area); U.ajustarColunas(area); document.body.classList.add('print-doc');
-    var fim = function () { document.body.classList.remove('print-doc'); area.remove(); window.removeEventListener('afterprint', fim); };
+    var paisagem = maxColunas(area) >= 8, pg = document.createElement('style');
+    pg.id = 'print-pagina'; pg.textContent = '@media print { @page { size: A4 ' + (paisagem ? 'landscape' : 'portrait') + '; margin: 11mm 9mm 12mm; } }';
+    document.head.appendChild(pg);
+    var px = Math.floor(((paisagem ? 297 : 210) - 18) * 96 / 25.4);
+    area.style.cssText = 'position:fixed;left:-20000px;top:0;width:' + px + 'px;display:block';
+    document.body.appendChild(area); U.ajustarColunas(area); area.style.cssText = ''; document.body.classList.add('print-doc');
+    var fim = function () { document.body.classList.remove('print-doc'); area.remove(); pg.remove(); window.removeEventListener('afterprint', fim); };
     window.addEventListener('afterprint', fim);
     setTimeout(function () { window.print(); setTimeout(fim, 1500); }, 60);
   };
@@ -2504,15 +2697,27 @@ var U = (function (L) {
       var box = document.createElement('div');
       box.innerHTML = html;
       var doc = box.firstElementChild; doc.classList.add('pdf');
-      box.style.cssText = 'position:fixed;left:0;top:0;width:' + (Math.max.apply(null, [0].concat(Array.prototype.map.call(doc.querySelectorAll('table'), function (t) { return t.rows[0] ? t.rows[0].cells.length : 0; }))) >= 8 ? 1047 : 718) + 'px;left:-20000px;background:#fff';
-      document.body.appendChild(box); U.ajustarColunas(doc); box.remove(); box.style.cssText = '';
-      var cols = Math.max.apply(null, [0].concat(Array.prototype.map.call(doc.querySelectorAll('table'), function (t) { return t.rows[0] ? t.rows[0].cells.length : 0; })));
+      /* A largura do documento é exatamente a da área útil da página A4: o que se mede é o que se imprime */
+      var paisagem = maxColunas(doc) >= 8, px = Math.floor(((paisagem ? 297 : 210) - 18) * 96 / 25.4);
+      doc.style.width = px + 'px'; doc.style.maxWidth = px + 'px'; doc.style.boxSizing = 'border-box';
+      box.style.cssText = 'position:fixed;left:-20000px;top:0;width:' + px + 'px;background:#fff';
+      document.body.appendChild(box); U.ajustarColunas(doc);
+      /* Título nunca fica sozinho no pé da página: título + bloco seguinte viajam juntos quando cabem numa página */
+      var altPag = Math.floor(((paisagem ? 210 : 297) - 22) * 96 / 25.4);
+      Array.prototype.forEach.call(doc.querySelectorAll('h3'), function (h) {
+        var nx = h.nextElementSibling; if (!nx || h.parentNode.classList.contains('avoid-break')) return;
+        if (h.offsetHeight + nx.offsetHeight < altPag * 0.9) { var w = document.createElement('div'); w.className = 'avoid-break'; h.parentNode.insertBefore(w, h); w.appendChild(h); w.appendChild(nx); }
+      });
+      box.remove(); box.style.cssText = '';
       return window.html2pdf().set({
         margin: [10, 9, 12, 9], filename: nome + '.pdf', image: { type: 'jpeg', quality: 0.96 },
         html2canvas: { scale: 2, backgroundColor: '#ffffff', useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: cols >= 8 ? 'landscape' : 'portrait' },
-        pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', '.kpi', '.meter', '.chart', '.avoid-break', 'h3'] }
-      }).from(doc).save();
+        jsPDF: { unit: 'mm', format: 'a4', orientation: paisagem ? 'landscape' : 'portrait', compress: true },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'], avoid: ['tr', '.kpi', '.meter', '.chart', '.avoid-break', 'h3', '.doc-h', '.fato', '.etapa', 'li', 'p', 'svg'] }
+      }).from(doc).toPdf().get('pdf').then(function (pdf) {
+        var n = pdf.internal.getNumberOfPages(), w = pdf.internal.pageSize.getWidth(), h = pdf.internal.pageSize.getHeight();
+        for (var i = 1; i <= n; i++) { pdf.setPage(i); pdf.setFontSize(7.5); pdf.setTextColor(120); pdf.text('Página ' + i + ' de ' + n, w - 9, h - 5, { align: 'right' }); }
+      }).save();
     }).then(function () { U.toast('PDF gerado: ' + nome + '.pdf', 'ok'); }, function () {
       U.toast('Não foi possível gerar o PDF direto (sem acesso à internet?). Abrindo a impressão: escolha "Salvar como PDF".', 'erro');
       U.imprimirDoc(html);
@@ -2535,6 +2740,21 @@ var U = (function (L) {
         rd.readAsArrayBuffer(arquivo);
       });
     });
+  };
+
+  /* Aviso sonoro curto (dois tons), usado quando chegam novidades */
+  U.bip = function () {
+    try {
+      var C = window.AudioContext || window.webkitAudioContext; if (!C) return;
+      var c = U._audio || (U._audio = new C()), t = c.currentTime;
+      if (c.state === 'suspended') c.resume();
+      [[880, 0], [1175, 0.14]].forEach(function (n) {
+        var o = c.createOscillator(), g = c.createGain();
+        o.type = 'sine'; o.frequency.value = n[0]; o.connect(g); g.connect(c.destination);
+        g.gain.setValueAtTime(0.0001, t + n[1]); g.gain.exponentialRampToValueAtTime(0.08, t + n[1] + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t + n[1] + 0.13);
+        o.start(t + n[1]); o.stop(t + n[1] + 0.15);
+      });
+    } catch (x) { /* sem áudio */ }
   };
 
   U.toast = function (msg, tipo) {
@@ -2790,7 +3010,12 @@ var T = (function (L) {
     var h = Math.round(min / 60); if (h < 24) return 'há ' + h + ' h';
     var dd = Math.round(h / 24); return dd === 1 ? 'há 1 dia' : 'há ' + dd + ' dias';
   };
-  T.seloNovo = function (d) { var n = T.naoVisto(d); return n === 'nova' ? '<em class="selo-nova">Nova</em>' : n === 'msg' ? '<em class="selo-msg" title="Nova mensagem ou foto do solicitante">Mensagem</em>' : ''; };
+  T.seloNovo = function (d) { var n = T.naoVisto(d); return (n === 'nova' ? '<em class="selo-nova">Nova</em>' : '') + (window.Conversa ? Conversa.balao(d) : ''); };
+  T.corUrg = function (c) { return { 'Baixa': '#0284C7', 'Média': '#CA8A04', 'Alta': '#EA580C', 'Crítica': '#DC2626' }[c] || '#94A3B8'; };
+  T.subnav = function (itens, ativo, attr) {
+    attr = attr || 'data-sub';
+    return '<nav class="subnav" role="tablist">' + itens.map(function (x) { return '<button type="button" role="tab" ' + attr + '="' + x[0] + '" aria-selected="' + (x[0] === ativo) + '">' + U.esc(x[1]) + (x[2] ? '<span class="cnt">' + x[2] + '</span>' : '') + '</button>'; }).join('') + '</nav>';
+  };
   T.verFin = function () { var p = App.P; return p.financeiro || p.areaGestor; };
   T.bannerFin = function (fin) {
     if (!fin.alertas.length) return '';
@@ -2806,50 +3031,101 @@ var T = (function (L) {
   T.v_painel = {
     title: 'Painel', sub: function () { return 'Situação das manutenções em ' + new Date().toLocaleDateString('pt-BR', { day: 'numeric', month: 'long', year: 'numeric' }); },
     render: function (el) {
-      var D = App.D, ds = D.demandas, hoje = L.hoje(), mes = hoje.slice(0, 7);
+      var D = App.D, ds = D.demandas, hoje = L.hoje(), mes = hoje.slice(0, 7), fin = App.fin, aba = st.subPainel || 'geral';
       var abertas = ds.filter(function (d) { return !d.cancelada && !d.pagamentoOk; });
       var atraso = abertas.filter(function (d) { return L.prazo(d).k === 'atrasada'; });
       var exec = abertas.filter(function (d) { return L.situacao(d).id === 'execucao'; });
       var aguard = abertas.filter(function (d) { return ['ateste', 'pagamento'].indexOf(L.situacao(d).id) >= 0; });
       var nfMes = (D.nfs || []).filter(function (n) { return (n.data || '').slice(0, 7) === mes; });
-      var fin = App.fin;
-      var kp = T.kpi('Demandas em aberto', U.int(abertas.length), U.brlCurto(U.sum(abertas, function (d) { return d.valorEstimado; })) + ' estimados', 'var(--info)') +
-        T.kpi('Em atraso', U.int(atraso.length), abertas.length ? U.pct(atraso.length / abertas.length * 100) + ' das abertas' : 'nenhuma em aberto', 'var(--bad)') +
-        T.kpi('Em execução', U.int(exec.length), 'serviços em andamento', '#0E7490') +
-        T.kpi('Aguardando ateste ou pagamento', U.int(aguard.length), U.brlCurto(U.sum(aguard, function (d) { return d.atesteValor || d.valorEstimado; })), '#C2410C');
       var central = ds.filter(function (d) { return d.origem === 'Help Desk'; }), novasC = T.novasCentral();
-      kp = T.kpi('Central de Atendimento', U.int(novasC.length), novasC.length ? 'novidade(s) para ver' : 'nada pendente', '#6D28D9') + kp;
-      if (T.verFin()) kp += T.kpi('Notas fiscais no mês', U.brlCurto(U.sum(nfMes, function (n) { return n.valor; })), nfMes.length + ' nota(s) em ' + U.mesLongo(mes), 'var(--ok)') +
-        T.kpi('Saldo global da vigência', U.brlCurto(fin.global.saldo), U.pct(fin.global.pctSaldo) + ' de ' + U.brlCurto(fin.global.total), fin.global.alerta ? 'var(--bad)' : 'var(--brand)');
-      var sitRows = L.SITUACOES.map(function (s) { var n = ds.filter(function (d) { return L.situacao(d).id === s.id; }).length; return { label: s.nome, total: n, color: s.cor }; }).filter(function (r) { return r.total; });
-      var prox = abertas.filter(function (d) { return d.fimPrevisto && !d.execucaoOk; }).sort(function (a, b) { return a.fimPrevisto < b.fimPrevisto ? -1 : 1; }).slice(0, 8);
-      var proxH = prox.length ? prox.map(function (d) {
-        var dt = L.parse(d.fimPrevisto);
-        return '<div class="li click" data-open="' + d.id + '" tabindex="0" role="button"><div class="date"><b>' + L.pad(dt.getDate()) + '</b><span>' + U.MESES[dt.getMonth()] + '</span></div><div style="min-width:0"><div class="tt">' + U.esc(d.titulo) + '</div><div class="sub">' + U.esc(d.id + ' · ' + d.local) + '</div></div>' + T.prazoTag(d) + '</div>';
-      }).join('') : '<div class="empty"><b>Nenhum término previsto em aberto</b>As demandas abertas aparecerão aqui.</div>';
+      var prox = abertas.filter(function (d) { return d.fimPrevisto && !d.execucaoOk; }).sort(function (a, b) { return a.fimPrevisto < b.fimPrevisto ? -1 : 1; });
       var aten = [];
-      atraso.forEach(function (d) { aten.push({ n: 'alto', d: d, t: 'Prazo vencido', x: L.prazo(d).dias + ' dia(s) além do término previsto (' + U.fmt(d.fimPrevisto) + ').' }); });
-      abertas.filter(function (d) { return !d.inicialOk && L.diff(d.dataSolicitacao, hoje) > 3; }).forEach(function (d) { aten.push({ n: 'medio', d: d, t: 'Aguardando análise', x: 'Registrada há ' + L.diff(d.dataSolicitacao, hoje) + ' dias sem a marcação de demanda inicial.' }); });
-      abertas.filter(function (d) { return d.risco && !d.execucaoInicio; }).forEach(function (d) { aten.push({ n: 'medio', d: d, t: 'Risco declarado sem execução', x: 'Risco a pessoas, patrimônio ou meio ambiente.' }); });
-      abertas.filter(function (d) { return d.atesteOk && !(App.fin.nfPorDemanda[d.id]); }).forEach(function (d) { aten.push({ n: 'baixo', d: d, t: 'Atestada sem Nota Fiscal', x: 'Registre a Nota Fiscal e o empenho para seguir ao pagamento.' }); });
-      var atH = aten.slice(0, 7).map(function (a) { return '<div class="alert ' + a.n + ' click" data-open="' + a.d.id + '" tabindex="0" role="button" style="grid-template-columns:5px 1fr"><span class="bar"></span><div><div class="tt">' + U.esc(a.t) + '</div><div class="sub">' + U.esc(a.d.id + ': ' + a.d.titulo) + '. ' + U.esc(a.x) + '</div></div></div>'; }).join('') ||
-        '<div class="empty"><b>Sem pontos de atenção</b>Prazos e registros em dia.</div>';
-      var hist = (D.historico || []).filter(function (h) { return h.acao !== 'Entrada no sistema'; }).slice(0, 8).map(function (h) {
-        return '<div class="li' + (h.demandaId ? ' click" data-open="' + h.demandaId + '" tabindex="0" role="button"' : '"') + '><div class="date"><b>' + h.em.slice(8, 10) + '</b><span>' + U.MESES[+h.em.slice(5, 7) - 1] + '</span></div><div style="min-width:0"><div class="tt">' + U.esc(h.acao) + '</div><div class="sub">' + U.esc((h.demandaId ? h.demandaId + ' · ' : '') + T.nome(h.usuario) + (h.campo ? ' · ' + h.campo : '')) + '</div></div><span></span></div>';
-      }).join('') || '<div class="empty">Sem registros.</div>';
-      var recentes = central.slice().sort(function (a, b) { var na = T.naoVisto(a) ? 1 : 0, nb = T.naoVisto(b) ? 1 : 0; return (nb - na) || ((a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1); }).slice(0, 6);
-      var cores = { 'Baixa': '#0284C7', 'Média': '#CA8A04', 'Alta': '#EA580C', 'Crítica': '#DC2626' };
-      var centralH = '<section class="panel painel-central"><div class="panel-h"><h2><span class="ic-central"></span>Central de Atendimento · solicitações recebidas</h2><span class="meta"><span class="live-dot"></span>em tempo real · <a href="#demandas" data-central>Ver todas (' + central.length + ')</a></span></div><div class="panel-b">' +
-        (recentes.length ? '<div class="central-grid">' + recentes.map(function (d) {
-          var s = L.situacao(d);
-          return '<button type="button" class="central-item' + (T.naoVisto(d) ? ' nova' : '') + '" data-open="' + d.id + '" style="--u:' + (cores[d.criticidade] || '#94A3B8') + '"><div class="l1"><b>' + U.esc(d.id) + '</b>' + T.seloNovo(d) + '<span>' + T.desde(d.criadoEm || d.dataSolicitacao) + '</span></div>' +
-            '<div class="tt">' + U.esc(d.titulo) + '</div><div class="l3">' + U.esc([d.solicitante, d.unidade, d.local].filter(Boolean).join(' · ')) + '</div><div class="l4">' + T.sit(d) + '<span class="tag" style="color:' + (cores[d.criticidade] || 'inherit') + '">' + U.esc(d.criticidade) + '</span></div></button>';
-        }).join('') + '</div>' : '<div class="empty"><b>Nenhuma solicitação recebida pela Central</b>As solicitações abertas pelos servidores na Central de Atendimento aparecem aqui assim que são enviadas.</div>') + '</div></section>';
-      el.innerHTML = '<div class="stack">' + (T.verFin() ? T.bannerFin(fin) : '') + '<div class="kpis">' + kp + '</div>' + centralH +
-        '<div class="grid g-main">' + T.painel('Próximos términos previstos', '<a href="#cronograma">Ver cronograma</a>', '<div class="list">' + proxH + '</div>') +
-        T.painel('Pontos de atenção', aten.length + ' no total', '<div class="stack" style="gap:8px">' + atH + '</div>') + '</div>' +
-        '<div class="grid g2">' + T.painel('Situação das demandas', ds.length + ' registradas', Ch.hbars(sitRows)) + T.painel('Últimos registros', '', '<div class="list">' + hist + '</div>') + '</div></div>';
-      el.onclick = function (ev) { if (ev.target.closest('[data-central]')) { ev.preventDefault(); st.filtros = { origem: 'Help Desk' }; location.hash = '#demandas'; } };
+      atraso.forEach(function (d) { aten.push({ n: 'alto', d: d, t: 'Prazo vencido', x: L.prazo(d).dias + ' dia(s) além do término previsto (' + U.fmt(d.fimPrevisto) + ')' }); });
+      abertas.filter(function (d) { return !d.inicialOk && L.diff(d.dataSolicitacao, hoje) > 3; }).forEach(function (d) { aten.push({ n: 'medio', d: d, t: 'Aguardando análise', x: 'registrada há ' + L.diff(d.dataSolicitacao, hoje) + ' dias sem a demanda inicial' }); });
+      abertas.filter(function (d) { return d.risco && !d.execucaoInicio; }).forEach(function (d) { aten.push({ n: 'medio', d: d, t: 'Risco declarado sem execução', x: 'risco a pessoas, patrimônio ou meio ambiente' }); });
+      abertas.filter(function (d) { return d.atesteOk && !(fin.nfPorDemanda[d.id]); }).forEach(function (d) { aten.push({ n: 'baixo', d: d, t: 'Atestada sem Nota Fiscal', x: 'registre a Nota Fiscal e o empenho' }); });
+      var hist = (D.historico || []).filter(function (h) { return h.acao !== 'Entrada no sistema'; });
+
+      /* Indicadores em faixa única */
+      var stat = function (rot, val, sub, cor, alvo) { return '<button type="button" class="stat" style="--c:' + cor + '"' + (alvo ? ' data-ir="' + alvo + '"' : ' disabled') + '><span class="stat-l">' + U.esc(rot) + '</span><b>' + U.esc(val) + '</b><small>' + U.esc(sub) + '</small></button>'; };
+      var stats = stat('Central de Atendimento', U.int(novasC.length), novasC.length ? 'novidade(s) para ver' : 'nada pendente', '#7C3AED', 'central') +
+        stat('Em aberto', U.int(abertas.length), U.brlCurto(U.sum(abertas, function (d) { return d.valorEstimado; })) + ' estimados', '#2563EB', 'dem:aberto') +
+        stat('Em atraso', U.int(atraso.length), abertas.length ? U.pct(atraso.length / abertas.length * 100) + ' das abertas' : 'nenhuma', '#DC2626', 'prazos') +
+        stat('Em execução', U.int(exec.length), 'serviços em andamento', '#0E7490', 'dem:execucao') +
+        stat('Ateste ou pagamento', U.int(aguard.length), U.brlCurto(U.sum(aguard, function (d) { return d.atesteValor || d.valorEstimado; })), '#C2410C', 'dem:ateste');
+      if (T.verFin()) stats += stat('Notas fiscais no mês', U.brlCurto(U.sum(nfMes, function (n) { return n.valor; })), nfMes.length + ' nota(s)', '#15803D') +
+        stat('Saldo global', U.brlCurto(fin.global.saldo), U.pct(fin.global.pctSaldo) + ' disponível', fin.global.alerta ? '#DC2626' : '#0B4F4A');
+
+      /* Linhas reutilizáveis */
+      var linhasCentral = function (lst) {
+        if (!lst.length) return '<div class="vazio-l"><b>Nenhuma solicitação</b>As solicitações abertas na Central de Atendimento aparecem aqui assim que são enviadas.</div>';
+        return '<div class="linhas central-linhas"><div class="linha cab"><span></span><span>Nº</span><span>Assunto e solicitante</span><span>Local</span><span>Situação</span><span>Urgência</span><span>Recebida</span></div>' + lst.map(function (d) {
+          var nf = (D.anexos || []).filter(function (a) { return a.demandaId === d.id && /^image\//.test(a.tipo); }).length;
+          return '<button type="button" class="linha' + (T.naoVisto(d) ? ' nova' : '') + '" data-open="' + d.id + '" style="--u:' + T.corUrg(d.criticidade) + '"><span class="barra"></span>' +
+            '<span class="c-id"><b>' + U.esc(d.id) + '</b>' + T.seloNovo(d) + '</span>' +
+            '<span class="c-tt"><b>' + U.esc(d.titulo) + '</b><small>' + U.esc([d.solicitante, d.unidade].filter(Boolean).join(' · ')) + (nf ? ' · ' + nf + ' foto(s)' : '') + '</small></span>' +
+            '<span class="c-loc">' + U.esc(d.local || '—') + (d.localInterno ? '<small>' + U.esc(d.localInterno) + '</small>' : '') + '</span>' +
+            '<span>' + T.sit(d) + '</span><span><span class="urg" style="--u:' + T.corUrg(d.criticidade) + '">' + U.esc(d.criticidade) + '</span>' + (d.risco ? '<small class="risco">risco</small>' : '') + '</span>' +
+            '<span class="c-tempo">' + T.desde(d.criadoEm || d.dataSolicitacao) + '<small>' + U.fmt(d.dataSolicitacao) + '</small></span></button>';
+        }).join('') + '</div>';
+      };
+      var linhasPrazo = function (lst) {
+        if (!lst.length) return '<div class="vazio-l"><b>Nenhum término previsto em aberto</b>As demandas abertas com prazo aparecem aqui.</div>';
+        return '<div class="linhas"><div class="linha cab prazo"><span>Término</span><span>Demanda</span><span>Situação</span><span>Prazo</span></div>' + lst.map(function (d) {
+          var dt = L.parse(d.fimPrevisto);
+          return '<button type="button" class="linha prazo" data-open="' + d.id + '"><span class="data"><b>' + L.pad(dt.getDate()) + '</b><small>' + U.MESES[dt.getMonth()] + '</small></span>' +
+            '<span class="c-tt"><b>' + U.esc(d.titulo) + '</b><small>' + U.esc(d.id + ' · ' + d.local) + '</small></span><span>' + T.sit(d) + '</span><span>' + T.prazoTag(d) + '</span></button>';
+        }).join('') + '</div>';
+      };
+      var linhasAtencao = function (lst) {
+        if (!lst.length) return '<div class="vazio-l"><b>Sem pontos de atenção</b>Prazos e registros em dia.</div>';
+        return '<div class="linhas">' + lst.map(function (a) {
+          return '<button type="button" class="linha alerta-l ' + a.n + '" data-open="' + a.d.id + '"><span class="nivel"></span><span class="c-tt"><b>' + U.esc(a.t) + '</b><small>' + U.esc(a.d.id + ' · ' + a.d.titulo) + '</small></span><span class="c-x">' + U.esc(a.x) + '</span></button>';
+        }).join('') + '</div>';
+      };
+      var linhasHist = function (lst) {
+        return '<div class="linhas">' + lst.map(function (h) {
+          return '<button type="button" class="linha hist"' + (h.demandaId ? ' data-open="' + h.demandaId + '"' : ' disabled') + '><span class="c-tempo">' + U.fmtDH(h.em) + '</span><span class="c-tt"><b>' + U.esc(h.acao) + '</b><small>' + U.esc((h.demandaId ? h.demandaId + ' · ' : '') + (h.campo || '')) + '</small></span><span class="c-loc">' + U.esc(T.nome(h.usuario)) + '</span></button>';
+        }).join('') + '</div>';
+      };
+      var sitRows = L.SITUACOES.map(function (s) { var n = ds.filter(function (d) { return L.situacao(d).id === s.id; }).length; return { s: s, n: n }; }).filter(function (r) { return r.n; });
+      var totalSit = U.sum(sitRows, function (r) { return r.n; }) || 1;
+      var situacao = '<div class="pilha">' + sitRows.map(function (r) { return '<i style="width:' + (r.n / totalSit * 100) + '%;background:' + r.s.cor + '" title="' + U.esc(r.s.nome) + ': ' + r.n + '"></i>'; }).join('') + '</div>' +
+        '<ul class="pilha-leg">' + sitRows.map(function (r) { return '<li><span class="sit" style="--c:' + r.s.cor + '"><i></i>' + U.esc(r.s.nome) + '</span><b>' + r.n + '</b><small>' + U.pct(r.n / totalSit * 100) + '</small></li>'; }).join('') + '</ul>';
+      var bloco = function (t, meta, corpo, cls) { return '<section class="bloco ' + (cls || '') + '"><header><h2>' + t + '</h2>' + (meta ? '<span>' + meta + '</span>' : '') + '</header>' + corpo + '</section>'; };
+      var abas = [['geral', 'Visão geral'], ['central', 'Central de Atendimento', novasC.length], ['prazos', 'Prazos', atraso.length], ['atencao', 'Pontos de atenção', aten.length], ['atividade', 'Atividade recente']];
+      var corpo = '';
+      if (aba === 'geral') {
+        corpo = '<div class="grade-geral"><div class="col-principal">' +
+          bloco('<span class="ic-central"></span>Central de Atendimento · solicitações recebidas', '<span class="live-dot"></span>em tempo real · <a href="#" data-sub="central">ver todas (' + central.length + ')</a>',
+            linhasCentral(central.slice().sort(function (a, b) { var na = T.naoVisto(a) ? 1 : 0, nb = T.naoVisto(b) ? 1 : 0; return (nb - na) || ((a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1); }).slice(0, 7)), 'central') +
+          bloco('Pontos de atenção', aten.length + ' no total · <a href="#" data-sub="atencao">ver todos</a>', linhasAtencao(aten.slice(0, 4))) + '</div>' +
+          '<div class="col-lateral">' + bloco('Situação das demandas', ds.length + ' registradas', situacao) +
+          bloco('Próximos términos', '<a href="#" data-sub="prazos">ver todos</a>', linhasPrazo(prox.slice(0, 5))) + '</div></div>';
+      } else if (aba === 'central') {
+        var fc = st.filtroCentral || 'novas', qc = U.norm(st.qCentral || '');
+        var lc = central.filter(function (d) { return fc === 'todas' || (fc === 'novas' ? !!T.naoVisto(d) : fc === 'abertas' ? !d.cancelada && !d.pagamentoOk : d.cancelada || d.pagamentoOk); })
+          .filter(function (d) { return !qc || U.norm([d.id, d.titulo, d.solicitante, d.solicitanteEmail, d.unidade, d.local].join(' ')).indexOf(qc) >= 0; })
+          .sort(function (a, b) { return (a.criadoEm || a.dataSolicitacao) < (b.criadoEm || b.dataSolicitacao) ? 1 : -1; });
+        corpo = bloco('<span class="ic-central"></span>Solicitações da Central de Atendimento', '<span class="live-dot"></span>em tempo real',
+          '<div class="barra-ferr"><div class="seg">' + [['novas', 'Novidades', novasC.length], ['abertas', 'Em aberto'], ['encerradas', 'Encerradas'], ['todas', 'Todas', central.length]].map(function (x) { return '<button type="button" data-fc="' + x[0] + '" aria-pressed="' + (fc === x[0]) + '">' + x[1] + (x[2] != null ? ' <span class="cnt">' + x[2] + '</span>' : '') + '</button>'; }).join('') + '</div>' +
+          '<input class="in busca-l" type="search" data-qc placeholder="Buscar nº, assunto, solicitante ou local" value="' + U.esc(st.qCentral || '') + '"></div>' + linhasCentral(lc), 'central');
+      } else if (aba === 'prazos') corpo = bloco('Próximos términos previstos', prox.length + ' demanda(s) em aberto com prazo', linhasPrazo(prox));
+      else if (aba === 'atencao') corpo = bloco('Pontos de atenção', aten.length + ' no total', linhasAtencao(aten));
+      else corpo = bloco('Atividade recente', 'últimos 40 registros', linhasHist(hist.slice(0, 40)));
+      el.innerHTML = '<div class="stack">' + (T.verFin() && fin.alertas.length ? '<div class="faixa-alerta" role="alert"><b>Execução financeira no limite de alerta:</b> ' + fin.alertas.map(function (a) { return U.esc(a.nome) + ' (' + U.pct(a.item.pctUsado) + ' executado)'; }).join(' · ') + (App.P.areaGestor ? ' <a href="#gestor">ver detalhes</a>' : '') + '</div>' : '') +
+        '<div class="stats">' + stats + '</div>' + T.subnav(abas, aba) + corpo + '</div>';
+      var qcI = U.$('[data-qc]', el);
+      if (qcI) qcI.oninput = function () { st.qCentral = qcI.value; clearTimeout(T._qc); T._qc = setTimeout(function () { App.render(); var i = U.$('[data-qc]'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 250); };
+      el.onclick = function (ev) {
+        var sb = ev.target.closest('[data-sub]'); if (sb) { ev.preventDefault(); st.subPainel = sb.dataset.sub; App.render(); return; }
+        var fcb = ev.target.closest('[data-fc]'); if (fcb) { st.filtroCentral = fcb.dataset.fc; App.render(); return; }
+        var ir = ev.target.closest('[data-ir]'); if (ir) {
+          var alvo = ir.dataset.ir;
+          if (alvo.indexOf('dem:') === 0) { st.filtros = {}; st.grupoDem = alvo.slice(4); location.hash = '#demandas'; }
+          else { st.subPainel = alvo; App.render(); }
+        }
+      };
     }
   };
 
@@ -2890,43 +3166,63 @@ var T = (function (L) {
   T.v_demandas = {
     title: 'Demandas', sub: function () { return 'Registro e acompanhamento das solicitações de manutenção'; },
     render: function (el) {
-      var D = App.D, cfg = D.config, f = st.filtros;
+      if (st.grupoDem === 'central') st.grupoDem = 'aberto';
+      var D = App.D, cfg = D.config, f = st.filtros, grupo = st.grupoDem || 'todas';
       var ordem = { atrasada: 0, atencao: 1, ok: 2, neutro: 3, 'concluida-atraso': 4, concluida: 5 };
-      var val = function (d) { var k = st.sort.k; return k === 'prazo' ? ordem[L.prazo(d).k] : k === 'situacao' ? L.SITUACOES.indexOf(L.situacao(d)) : d[k]; };
-      var lista = filtrar(D.demandas, f).sort(function (a, b) { var x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.sort.dir; });
+      var val = function (d) { var k = st.sort.k; return k === 'prazo' ? ordem[L.prazo(d).k] + (d.fimPrevisto || '9') : k === 'situacao' ? L.SITUACOES.indexOf(L.situacao(d)) : d[k]; };
+      var noGrupo = function (d) {
+        var s = L.situacao(d).id;
+        if (grupo === 'central') return d.origem === 'Help Desk';
+        if (grupo === 'aberto') return !d.cancelada && !d.pagamentoOk;
+        if (grupo === 'execucao') return s === 'execucao';
+        if (grupo === 'ateste') return s === 'ateste' || s === 'pagamento';
+        if (grupo === 'atraso') return L.prazo(d).k === 'atrasada';
+        if (grupo === 'encerradas') return d.cancelada || d.pagamentoOk;
+        return true;
+      };
+      var base = filtrar(D.demandas, f), lista = base.filter(noGrupo).sort(function (a, b) { var x = val(a), y = val(b); return (x > y ? 1 : x < y ? -1 : 0) * st.sort.dir; });
+      var conta = function (g) { var ant = grupo; grupo = g; var n = base.filter(noGrupo).length; grupo = ant; return n; };
       var anos = Object.keys(U.groupBy(D.demandas, function (d) { return d.dataSolicitacao.slice(0, 4); })).sort().reverse();
-      var sel = function (k, l, arr) { return '<label class="f">' + l + '<select class="in" data-f="' + k + '">' + U.opts(arr, f[k] || '', 'Todos') + '</select></label>'; };
-      var cols = [['id', 'Nº'], ['titulo', 'Demanda'], ['modalidade', 'Modalidade'], ['situacao', 'Situação'], ['prazo', 'Prazo'], ['fimPrevisto', 'Término previsto'], ['valorEstimado', 'Valor estimado']];
+      var FILTROS = [['modalidade', 'Modalidade', L.MODALIDADES], ['situacao', 'Situação', L.SITUACOES.map(function (s) { return { v: s.id, l: s.nome }; })],
+        ['prazo', 'Prazo', [{ v: 'atrasada', l: 'Em atraso' }, { v: 'atencao', l: 'Vence em até 7 dias' }, { v: 'ok', l: 'No prazo' }, { v: 'concluida', l: 'Executada no prazo' }, { v: 'concluida-atraso', l: 'Executada com atraso' }]],
+        ['lote', 'Lote', D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero }; })], ['local', 'Local', T.locais()], ['setor', 'Setor atendido', cfg.setores],
+        ['sistema', 'Sistema', L.SISTEMAS], ['criticidade', 'Urgência', L.CRITICIDADES], ['ano', 'Ano', anos]];
+      var ativos = FILTROS.filter(function (x) { return f[x[0]]; });
+      var rotulo = function (x) { var o = x[2].filter(function (y) { return String(typeof y === 'object' ? y.v : y) === String(f[x[0]]); })[0]; return o ? (typeof o === 'object' ? o.l : o) : f[x[0]]; };
       var podeExcluir = App.P.excluir;
+      var cols = [['id', 'Nº'], ['titulo', 'Demanda'], ['situacao', 'Situação'], ['prazo', 'Prazo'], ['valorEstimado', 'Valor estimado']];
       var th = cols.map(function (c) { return '<th' + (c[0] === 'valorEstimado' ? ' class="right"' : '') + ' aria-sort="' + (st.sort.k === c[0] ? (st.sort.dir > 0 ? 'ascending' : 'descending') : 'none') + '"><button data-sort="' + c[0] + '">' + c[1] + (st.sort.k === c[0] ? (st.sort.dir > 0 ? ' ▲' : ' ▼') : '') + '</button></th>'; }).join('');
       var rows = lista.map(function (d) {
-        return '<tr class="click' + (T.naoVisto(d) ? ' nao-visto' : '') + '" data-open="' + d.id + '" tabindex="0"><td class="id">' + U.esc(d.id) + T.seloNovo(d) + '</td>' +
-          '<td><div class="tt">' + U.esc(d.titulo) + (d.origem === 'Help Desk' ? ' <span class="tag hd-tag">Help Desk</span>' : '') + '</div><div class="sub">' + U.esc(d.local + ' · ' + (d.loteId ? T.loteCurto(d.loteId) : 'sem lote')) + '</div></td>' +
-          '<td><span class="tag mod">' + U.esc(d.modalidade) + '</span></td>' +
-          '<td>' + T.sit(d) + '<div style="margin-top:4px">' + T.marks(d) + '</div></td>' +
-          '<td>' + T.prazoTag(d) + '</td><td class="nowrap">' + U.fmt(d.fimPrevisto) + '<div class="sub">' + U.esc(L.prazoTexto(d.prazoQtd, d.prazoUnidade)) + '</div></td>' +
-          '<td class="right nowrap">' + U.brl(d.valorEstimado) + '</td>' + (podeExcluir ? '<td class="right"><button class="btn sm ghost danger" data-excluir="' + d.id + '" title="Excluir demanda (exige senha)" aria-label="Excluir ' + d.id + '">' + U.icon.x + '</button></td>' : '') + '</tr>';
+        return '<tr class="click' + (T.naoVisto(d) ? ' nao-visto' : '') + '" data-open="' + d.id + '" tabindex="0" style="--u:' + T.corUrg(d.criticidade) + '">' +
+          '<td class="c-num"><span class="barra-u"></span><b>' + U.esc(d.id) + '</b>' + T.seloNovo(d) + '<small>' + U.esc(d.modalidade) + ' · ' + U.esc(d.criticidade) + '</small></td>' +
+          '<td><div class="tt">' + U.esc(d.titulo) + (d.origem === 'Help Desk' ? ' <span class="tag hd-tag">Central</span>' : '') + '</div><div class="sub">' + U.esc([d.local + (d.localInterno ? ' · ' + d.localInterno : ''), d.loteId ? T.loteCurto(d.loteId) : 'sem lote'].join(' · ')) + '</div></td>' +
+          '<td>' + T.sit(d) + '<div style="margin-top:5px">' + T.marks(d) + '</div></td>' +
+          '<td>' + T.prazoTag(d) + '<div class="sub">' + (d.fimPrevisto ? 'término ' + U.fmt(d.fimPrevisto) : 'sem término') + '</div></td>' +
+          '<td class="right nowrap"><b>' + U.brl(d.valorEstimado) + '</b>' + (App.fin.nfPorDemanda[d.id] ? '<div class="sub">NF ' + U.brlCurto(App.fin.nfPorDemanda[d.id]) + '</div>' : '') + '</td>' +
+          (podeExcluir ? '<td class="right acoes-l"><button class="btn sm ghost danger" data-excluir="' + d.id + '" title="Excluir demanda (exige senha)" aria-label="Excluir ' + d.id + '">' + U.icon.x + '</button></td>' : '') + '</tr>';
       }).join('');
-      el.innerHTML = '<section class="panel"><div class="filters">' +
-        '<label class="f grow">Buscar<input class="in" data-f="q" type="search" placeholder="Título, nº, local, OS, atendimento" value="' + U.esc(f.q || '') + '"></label>' +
-        sel('modalidade', 'Modalidade', L.MODALIDADES) + sel('situacao', 'Situação', L.SITUACOES.map(function (s) { return { v: s.id, l: s.nome }; })) +
-        sel('prazo', 'Prazo', [{ v: 'atrasada', l: 'Em atraso' }, { v: 'atencao', l: 'Vence em até 7 dias' }, { v: 'ok', l: 'No prazo' }, { v: 'concluida', l: 'Executada no prazo' }, { v: 'concluida-atraso', l: 'Executada com atraso' }]) +
-        sel('lote', 'Lote', D.lotes.map(function (l) { return { v: l.id, l: 'Lote ' + l.numero }; })) + sel('local', 'Local', T.locais()) + sel('setor', 'Setor atendido', cfg.setores) +
-        sel('sistema', 'Sistema', L.SISTEMAS) + sel('criticidade', 'Criticidade', L.CRITICIDADES) + sel('ano', 'Ano', anos) + '</div>' +
-        '<div class="origens"><div class="seg" role="tablist">' + [['', 'Todas as demandas', D.demandas.length], ['Help Desk', 'Central de Atendimento', D.demandas.filter(function (d) { return d.origem === 'Help Desk'; }).length]].map(function (o) { return '<button type="button" data-origem="' + o[0] + '" aria-pressed="' + ((f.origem || '') === o[0]) + '">' + o[1] + ' <span class="cnt">' + o[2] + '</span></button>'; }).join('') + '</div>' +
-        (T.novasCentral().length ? '<span class="aviso-novas"><span class="live-dot"></span>' + T.novasCentral().length + ' novidade(s) da Central de Atendimento</span>' : '') + '</div>' +
-        '<div class="count"><span>' + lista.length + ' demanda(s) · ' + U.brl(U.sum(lista, function (d) { return d.valorEstimado; })) + ' estimados</span><span class="row">' +
-        '<button class="btn sm ghost" data-act="limpar">Limpar filtros</button><button class="btn sm" data-act="xls">' + U.icon.down + 'Excel</button><button class="btn sm" data-act="csv">' + U.icon.down + 'CSV</button></span></div>' +
-        '<div class="table-wrap"><table class="t"><thead><tr>' + th + (podeExcluir ? '<th></th>' : '') + '</tr></thead><tbody>' + (rows || '<tr><td colspan="8"><div class="empty"><b>Nenhuma demanda encontrada</b>Ajuste os filtros' + (App.P.criar ? ' ou registre uma nova demanda' : '') + '.</div></td></tr>') + '</tbody></table></div></section>';
+      var abas = [['todas', 'Todas', conta('todas')], ['aberto', 'Em aberto', conta('aberto')], ['execucao', 'Em execução', conta('execucao')],
+        ['ateste', 'Ateste e pagamento', conta('ateste')], ['atraso', 'Em atraso', conta('atraso')], ['encerradas', 'Encerradas', conta('encerradas')]];
+      el.innerHTML = '<div class="stack">' + T.subnav(abas, grupo, 'data-grupo') +
+        '<section class="panel tabela-demandas"><div class="barra-ferr"><div class="busca-grande"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>' +
+        '<input class="in" data-f="q" type="search" placeholder="Buscar por título, nº, local, OS ou atendimento" value="' + U.esc(f.q || '') + '"></div>' +
+        '<button class="btn' + (st.verFiltros || ativos.length ? ' ativo' : '') + '" data-act="filtros" aria-expanded="' + !!st.verFiltros + '"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg>Filtros' + (ativos.length ? ' <span class="cnt">' + ativos.length + '</span>' : '') + '</button>' +
+        '<span class="sep-v"></span><button class="btn ghost" data-act="xls" title="Exportar para Excel">' + U.icon.down + 'Excel</button><button class="btn ghost" data-act="csv" title="Exportar CSV">' + U.icon.down + 'CSV</button></div>' +
+        (st.verFiltros ? '<div class="painel-filtros">' + FILTROS.map(function (x) { return '<label class="f">' + x[1] + '<select class="in" data-f="' + x[0] + '">' + U.opts(x[2], f[x[0]] || '', 'Todos') + '</select></label>'; }).join('') + '</div>' : '') +
+        (ativos.length ? '<div class="chips-filtro">' + ativos.map(function (x) { return '<button type="button" data-rmf="' + x[0] + '">' + x[1] + ': <b>' + U.esc(rotulo(x)) + '</b> ' + U.icon.x + '</button>'; }).join('') + '<button type="button" class="limpar" data-act="limpar">Limpar tudo</button></div>' : '') +
+        '<div class="resumo-l"><span><b>' + lista.length + '</b> demanda(s)</span><span>' + U.brl(U.sum(lista, function (d) { return d.valorEstimado; })) + ' estimados</span>' + (T.novasCentral().length ? '<span class="aviso-novas"><span class="live-dot"></span>' + T.novasCentral().length + ' novidade(s) da Central</span>' : '') + '</div>' +
+        '<div class="table-wrap"><table class="t t-demandas"><thead><tr>' + th + (podeExcluir ? '<th></th>' : '') + '</tr></thead><tbody>' + (rows || '<tr><td colspan="6"><div class="empty"><b>Nenhuma demanda encontrada</b>Ajuste a aba, a busca ou os filtros' + (App.P.criar ? ', ou registre uma nova demanda' : '') + '.</div></td></tr>') + '</tbody></table></div></section></div>';
       el.oninput = function (e) { if (e.target.dataset.f === 'q') { st.filtros.q = e.target.value; clearTimeout(T._t); T._t = setTimeout(function () { App.render(); var i = U.$('[data-f="q"]'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } }, 250); } };
       el.onchange = function (e) { var t = e.target; if (t.dataset.f && t.dataset.f !== 'q') { st.filtros[t.dataset.f] = t.value; App.render(); } };
       el.onclick = function (e) {
-        var og = e.target.closest('[data-origem]'); if (og) { st.filtros.origem = og.dataset.origem; App.render(); return; }
+        var gr = e.target.closest('[data-grupo]'); if (gr) { st.grupoDem = gr.dataset.grupo; App.render(); return; }
+        var rm = e.target.closest('[data-rmf]'); if (rm) { delete st.filtros[rm.dataset.rmf]; App.render(); return; }
         var ex = e.target.closest('[data-excluir]'); if (ex) { e.stopPropagation(); T.excluir(T.dem(ex.dataset.excluir)); return; }
         var s = e.target.closest('[data-sort]'); if (s) { st.sort = { k: s.dataset.sort, dir: st.sort.k === s.dataset.sort ? -st.sort.dir : 1 }; App.render(); return; }
         var a = e.target.closest('[data-act]'); if (!a) return;
         var t = T.linhasDemandas(lista);
-        if (a.dataset.act === 'limpar') { st.filtros = {}; App.render(); }
+        if (a.dataset.act === 'filtros') { st.verFiltros = !st.verFiltros; App.render(); }
+        if (a.dataset.act === 'limpar') { var q = st.filtros.q; st.filtros = q ? { q: q } : {}; App.render(); }
         if (a.dataset.act === 'csv') U.download('demandas_' + L.hoje() + '.csv', U.csv([t.cab].concat(t.linhas)), 'text/csv;charset=utf-8');
         if (a.dataset.act === 'xls') U.download('demandas_' + L.hoje() + '.xls', U.xls([{ nome: 'Demandas', cab: t.cab, linhas: t.linhas }]), 'application/vnd.ms-excel');
       };
@@ -2936,7 +3232,7 @@ var T = (function (L) {
   /* =====================================================================
      DETALHE DA DEMANDA (gaveta lateral)
      ===================================================================== */
-  var aberta = null;
+  var aberta = null, abaDr = 'resumo', abaDrId = null;
   T.abrir = function (id) {
     aberta = id;
     if (App.D && T.dem(id)) T.marcarVisto(id);
@@ -3033,13 +3329,32 @@ var T = (function (L) {
     acoes += '<span style="flex:1"></span><button class="btn" data-a="imprimir" title="Baixar a ficha da demanda em PDF">' + U.icon.down + 'Ficha (PDF)</button>';
     if (p.excluir) acoes += '<button class="btn danger" data-a="excluir">Excluir</button>';
     dr.style.setProperty('--sit', s.cor);
-    dr.innerHTML = '<div class="drawer-h"><div class="row1"><div><div class="row small"><b>' + U.esc(d.id) + '</b>' + T.sit(d) + T.prazoTag(d) + '</div><h2 id="dr-t">' + U.esc(d.titulo) + '</h2>' +
+    if (abaDrId !== d.id) { abaDr = 'resumo'; abaDrId = d.id; }
+    if (abaDr === 'conversa' && window.Conversa) Conversa.marcarLidas(d.id);
+    var conv = conversaH(d), fotos = fotosH(d), nMsg = (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && h.acao.indexOf('Mensagem do solicitante') === 0; }).length;
+    var nAnx = (App.D.anexos || []).filter(function (a) { return a.demandaId === d.id; }).length;
+    var abas = [['resumo', 'Resumo'], ['andamento', 'Andamento' + (nfs.length ? ' e notas' : '')]];
+    if (conv) abas.push(['conversa', 'Conversa', nMsg]);
+    if (fotos) abas.push(['anexos', 'Fotos e PDF', nAnx]);
+    abas.push(['historico', 'Histórico', hist.length]);
+    if (!abas.some(function (a) { return a[0] === abaDr; })) abaDr = 'resumo';
+    var fato = function (r, v) { return '<div class="fato"><span>' + r + '</span><b>' + v + '</b></div>'; };
+    var resumo = '<div class="fatos">' + fato('Situação', T.sit(d)) + fato('Prazo', T.prazoTag(d)) + fato('Término previsto', d.fimPrevisto ? U.fmt(d.fimPrevisto) : '—') +
+      fato('Urgência', '<span class="urg" style="--u:' + T.corUrg(d.criticidade) + '">' + U.esc(d.criticidade) + '</span>' + (d.risco ? ' <span class="tag atrasada">Risco</span>' : '')) +
+      fato('Lote', U.esc(d.loteId ? T.loteCurto(d.loteId) : 'sem lote')) + fato('Valor estimado', U.brl(d.valorEstimado)) +
+      fato('Local', U.esc(d.local || '—')) + fato('Solicitante', U.esc(d.solicitante || '—')) + fato('Notas fiscais', totNF ? U.brl(totNF) : '—') + '</div>' +
+      (d.descricao ? '<div class="desc-box"><span>Descrição</span><p>' + U.esc(d.descricao) + '</p></div>' : '') +
+      '<section class="dr-sec" style="--c:#1D4ED8"><div class="sec-t"><span>Dados completos</span></div><dl class="kv">' + kv + '</dl>' + (d.obs ? '<p class="muted small" style="margin-top:10px">Observações: ' + U.esc(d.obs) + '</p>' : '') + '</section>';
+    var paineis = {
+      resumo: resumo,
+      andamento: '<section class="dr-sec" style="--c:#15803D"><div class="sec-t"><span>Etapas</span>' + (p.etapas ? '<span class="muted small">Etapas já marcadas só são alteradas com senha</span>' : '') + '</div><div class="etapas">' + et + '</div></section>' + nfH,
+      conversa: conv, anexos: fotos,
+      historico: '<section class="dr-sec" style="--c:#475569"><div class="sec-t"><span>Histórico de alterações</span><span class="muted small">' + hist.length + ' registro(s)</span></div>' + histH + '</section>'
+    };
+    dr.innerHTML = '<div class="drawer-h"><div class="row1"><div><div class="row small" style="gap:8px"><b class="dr-id">' + U.esc(d.id) + '</b>' + T.seloNovo(d) + (d.origem === 'Help Desk' ? '<span class="tag hd-tag">Central de Atendimento</span>' : '') + '<span class="muted">' + U.esc(d.modalidade) + ' · aberta em ' + U.fmt(d.dataSolicitacao) + '</span></div><h2 id="dr-t">' + U.esc(d.titulo) + '</h2>' +
       (d.cancelada ? '<div class="notice" style="margin-top:8px">Cancelada: ' + U.esc(d.motivoCancelamento) + '</div>' : '') + '</div>' +
-      '<button class="btn ghost icon-btn" data-a="fechar" aria-label="Fechar">' + U.icon.x + '</button></div></div>' +
-      '<div class="drawer-b"><section class="dr-sec" style="--c:#15803D"><div class="sec-t"><span>Andamento</span>' + (p.etapas ? '<span class="muted small">Etapas já marcadas só são alteradas com senha</span>' : '') + '</div><div class="etapas">' + et + '</div></section>' +
-      conversaH(d) + fotosH(d) + nfH + '<section class="dr-sec" style="--c:#1D4ED8"><div class="sec-t"><span>Dados da demanda</span></div><dl class="kv">' + kv + '</dl>' +
-      (d.descricao ? '<p style="margin-top:12px">' + U.esc(d.descricao) + '</p>' : '') + (d.obs ? '<p class="muted small" style="margin-top:8px">Observações: ' + U.esc(d.obs) + '</p>' : '') + '</section>' +
-      '<section class="dr-sec" style="--c:#475569"><div class="sec-t"><span>Histórico de alterações</span><span class="muted small">' + hist.length + ' registro(s)</span></div>' + histH + '</section></div>' +
+      '<button class="btn ghost icon-btn" data-a="fechar" aria-label="Fechar">' + U.icon.x + '</button></div>' + T.subnav(abas, abaDr, 'data-drtab') + '</div>' +
+      '<div class="drawer-b">' + paineis[abaDr] + '</div>' +
       '<div class="drawer-f">' + acoes + '</div>';
   };
 
@@ -3076,6 +3391,7 @@ var T = (function (L) {
     ['O serviço foi concluído. Caso o problema persista, responda por esta central informando o número do pedido.', 'Serviço concluído'],
     ['Para darmos andamento, precisamos de mais informações: descreva o local exato e envie fotos do problema em "Acompanhar solicitação".', 'Pedir mais informações'],
     ['Esta solicitação caracteriza obra (e não manutenção) e não pode ser atendida por este canal, nos termos da Lei Federal nº 14.133/2021, art. 6º, inciso XII. Procure a SUBAD para orientação.', 'Fora do escopo (obra)']];
+  T.MODELOS = MODELOS;
   function conversaH(d) {
     if (d.origem !== 'Help Desk' && !d.solicitanteEmail) return '';
     var p = App.P, msgs = (App.D.historico || []).filter(function (h) { return h.demandaId === d.id && (h.acao.indexOf('Mensagem do solicitante') === 0 || h.acao.indexOf('Resposta da equipe') === 0); }).slice().reverse();
@@ -3183,6 +3499,7 @@ var T = (function (L) {
   }
 
   function cliqueDetalhe(ev) {
+    var tb = ev.target.closest('[data-drtab]'); if (tb) { abaDr = tb.dataset.drtab; T.renderDetalhe(); var bb = U.$('.drawer-b'); if (bb) bb.scrollTop = 0; return; }
     var b = ev.target.closest('[data-a]'); if (!b) return;
     var d = dem(aberta); if (!d) return;
     var a = b.dataset.a, e = L.ETAPAS.filter(function (x) { return x.id === b.dataset.e; })[0];
@@ -3451,6 +3768,105 @@ var T = (function (L) {
     }
   };
   return T;
+})(Logica);
+
+/* =========================================================================
+   CONVERSA DO GESTOR COM O SOLICITANTE (por pedido)
+   Um balão roxo piscando aparece na linha do pedido quando o solicitante
+   envia mensagem. Ao clicar, abre a janela da conversa para responder.
+   ========================================================================= */
+var Conversa = (function (L) {
+  'use strict';
+  var C = {}, aberto = null, rascunho = {};
+  var ICONE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 4h16a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg>';
+
+  function chave() { return 'iema-chat-lidas-' + (App.D ? App.D.sessao.login : ''); }
+  function lidas() { try { return JSON.parse(localStorage.getItem(chave()) || '{}'); } catch (x) { return {}; } }
+  function msgsDo(id) { return (App.D.historico || []).filter(function (h) { return h.demandaId === id && (h.acao.indexOf('Mensagem do solicitante') === 0 || h.acao.indexOf('Resposta da equipe') === 0); }).slice().reverse(); }
+  function qtdSolicitante(id) { return (App.D.historico || []).filter(function (h) { return h.demandaId === id && h.acao.indexOf('Mensagem do solicitante') === 0; }).length; }
+
+  C.naoLidas = function (d) { return Math.max(0, qtdSolicitante(d.id) - (lidas()[d.id] || 0)); };
+  C.mapa = function () { var m = {}; (App.D ? App.D.demandas : []).forEach(function (d) { m[d.id] = qtdSolicitante(d.id); }); return m; };
+  C.marcarLidas = function (id) { var l = lidas(); l[id] = qtdSolicitante(id); try { localStorage.setItem(chave(), JSON.stringify(l)); } catch (x) { /* ignora */ } };
+  C.total = function () { return App.D ? App.D.demandas.reduce(function (s, d) { return s + C.naoLidas(d); }, 0) : 0; };
+  C.pode = function () { return App.P && (App.P.etapas || App.P.areaGestor); };
+
+  /* Balão mínimo na linha do pedido */
+  C.balao = function (d) {
+    var n = C.naoLidas(d); if (!n || !C.pode()) return '';
+    return '<span class="balao-chat" role="button" tabindex="0" data-chat-id="' + U.esc(d.id) + '" title="' + n + ' nova(s) mensagem(ns) do solicitante. Clique para responder." aria-label="Responder ao solicitante do pedido ' + U.esc(d.id) + ' (' + n + ' nova(s) mensagem(ns))">' + ICONE + '<b>' + n + '</b></span>';
+  };
+
+  /* Janela da conversa */
+  C.abrir = function (id) {
+    if (!App.D || !T.dem(id)) return;
+    aberto = id; C.marcarLidas(id);
+    montar(); C.atualizar(true);
+    if (App.render) App.render();
+    setTimeout(function () { var t = U.$('#chat-g-txt'); if (t) t.focus(); }, 60);
+  };
+  C.fechar = function () { aberto = null; var w = U.$('#chat-g'); if (w) w.remove(); };
+  C.aberto = function () { return aberto; };
+  function montar() {
+    if (U.$('#chat-g')) return;
+    var w = document.createElement('section');
+    w.id = 'chat-g'; w.className = 'chat-g'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', 'Conversa com o solicitante');
+    w.innerHTML = '<header><span class="chat-g-ic">' + ICONE + '</span><div><b id="chat-g-id"></b><span id="chat-g-sol"></span></div><button type="button" class="chat-g-x" aria-label="Fechar a conversa">' + U.icon.x + '</button></header>' +
+      '<div class="chat-g-tt" id="chat-g-tt"></div><div class="chat-g-msgs" id="chat-g-msgs" aria-live="polite"></div>' +
+      '<div class="chat-g-f"><select class="in" id="chat-g-mod" aria-label="Respostas prontas">' + (T.MODELOS || []).map(function (m) { return '<option value="' + U.esc(m[0]) + '">' + U.esc(m[1]) + '</option>'; }).join('') + '</select>' +
+      '<textarea class="in" id="chat-g-txt" rows="3" maxlength="2000" placeholder="Escreva a mensagem ao solicitante"></textarea>' +
+      '<div class="chat-g-acoes"><label class="check"><input type="checkbox" id="chat-g-email"><span>Copiar por e-mail</span></label><button type="button" class="btn sm ghost" id="chat-g-det">Abrir pedido</button><button type="button" class="btn primary sm" id="chat-g-env">Enviar</button></div></div>';
+    document.body.appendChild(w);
+    w.querySelector('.chat-g-x').onclick = C.fechar;
+    var txt = w.querySelector('#chat-g-txt'), mod = w.querySelector('#chat-g-mod');
+    txt.oninput = function () { rascunho[aberto] = txt.value; };
+    txt.onkeydown = function (ev) { if (ev.key === 'Enter' && (ev.ctrlKey || ev.metaKey)) { ev.preventDefault(); enviar(); } };
+    mod.onchange = function () { if (mod.value) { txt.value = mod.value; rascunho[aberto] = txt.value; } mod.value = ''; txt.focus(); };
+    w.querySelector('#chat-g-env').onclick = enviar;
+    w.querySelector('#chat-g-det').onclick = function () { if (aberto) T.abrir(aberto); };
+    w.addEventListener('keydown', function (ev) { if (ev.key === 'Escape') { ev.stopPropagation(); C.fechar(); } });
+  }
+  function enviar() {
+    var id = aberto, txt = U.$('#chat-g-txt'), b = U.$('#chat-g-env'); if (!id || !txt) return;
+    var t = txt.value.trim(); if (!t) { U.toast('Escreva a mensagem.', 'erro'); txt.focus(); return; }
+    b.disabled = true;
+    Api.chamar('responderSolicitante', { id: id, texto: t, porEmail: U.$('#chat-g-email').checked }).then(function (r) {
+      delete rascunho[id]; if (U.$('#chat-g-txt')) U.$('#chat-g-txt').value = ''; b.disabled = false;
+      C.atualizar(true); U.toast(r.emailEnviado ? 'Mensagem enviada e copiada por e-mail.' : 'Mensagem enviada ao solicitante.', 'ok');
+    }, function (er) { b.disabled = false; UI.erro(er); });
+  }
+  /* Chamado a cada atualização dos dados: mantém a conversa aberta em dia */
+  C.atualizar = function (forcar) {
+    if (!aberto) return;
+    var d = App.D && T.dem(aberto); if (!d) { C.fechar(); return; }
+    C.marcarLidas(aberto);
+    var box = U.$('#chat-g-msgs'); if (!box) return;
+    U.$('#chat-g-id').textContent = 'Pedido ' + d.id;
+    U.$('#chat-g-sol').textContent = [d.solicitante, d.solicitanteEmail].filter(Boolean).join(' · ') || 'Solicitante';
+    U.$('#chat-g-tt').textContent = d.titulo;
+    var em = U.$('#chat-g-email'); em.disabled = !d.solicitanteEmail;
+    var lista = msgsDo(d.id), assinatura = lista.length + '|' + (lista.length ? lista[lista.length - 1].em : '');
+    if (forcar || box.dataset.ass !== assinatura) {
+      box.dataset.ass = assinatura;
+      box.innerHTML = lista.length ? lista.map(function (h) {
+        var eq = h.acao.indexOf('Resposta da equipe') === 0;
+        return '<div class="bolha ' + (eq ? 'eq' : 'sol') + '"><small>' + (eq ? U.esc(T.nome(h.usuario)) + ' · equipe' : U.esc(d.solicitante || 'Solicitante')) + ' · ' + U.fmtDH(h.em) + '</small><p>' + U.esc(h.novo) + '</p></div>';
+      }).join('') : '<p class="chat-g-vazio">Nenhuma mensagem ainda. O que você escrever aqui aparece para o solicitante na Central de Atendimento e no assistente virtual.</p>';
+      box.scrollTop = box.scrollHeight;
+    }
+    var txt = U.$('#chat-g-txt');
+    if (txt && document.activeElement !== txt && txt.value !== (rascunho[d.id] || '')) txt.value = rascunho[d.id] || '';
+  };
+
+  /* Clique (ou Enter) no balão abre a conversa, sem abrir o detalhe da linha */
+  document.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('[data-chat-id]'); if (!b) return;
+    ev.preventDefault(); ev.stopPropagation(); C.abrir(b.dataset.chatId);
+  }, true);
+  document.addEventListener('keydown', function (ev) {
+    if ((ev.key === 'Enter' || ev.key === ' ') && ev.target.matches && ev.target.matches('[data-chat-id]')) { ev.preventDefault(); ev.stopPropagation(); C.abrir(ev.target.dataset.chatId); }
+  }, true);
+  return C;
 })(Logica);
 
 /* =========================================================================
@@ -4244,7 +4660,8 @@ var Helpdesk = (function (L) {
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg><span id="hd-priv-t"></span></button>' +
       '<button class="hd-limpar" id="hd-limpar" type="button">Limpar meus dados</button><a class="hd-equipe" href="index.html">Acesso da equipe</a></div></header>' +
       '<section class="hd-hero"><div class="hd-hero-in"><h1>Como podemos ajudar?</h1><p>Registre uma solicitação de manutenção predial ou acompanhe um pedido já aberto. O atendimento é direcionado automaticamente à equipe de gestão da SUBAD.</p>' +
-      '<div class="hd-legal" role="note"><b>Somente manutenção predial.</b> ' + e(L.AVISO_LEGAL) + '</div><div class="hd-cards"><button class="hd-card" data-aba="nova" type="button"><span class="ic" style="--c:#1D4ED8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Nova solicitação</b><span>Descreva o problema e envie fotos</span></button>' +
+      '<div class="hd-avisos" role="note"><div class="hd-av"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 16H3z"/><path d="M12 10v4M12 17h.01"/></svg></span><div><b>Somente manutenção predial</b><p>' + e(L.AVISO_LEGAL) + '</p></div></div>' +
+      '<div class="hd-av"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></span><div><b>Proteção de dados pessoais (LGPD)</b><p>' + e(L.AVISO_LGPD) + '</p></div></div></div><div class="hd-cards"><button class="hd-card" data-aba="nova" type="button"><span class="ic" style="--c:#1D4ED8"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span><b>Nova solicitação</b><span>Descreva o problema e envie fotos</span></button>' +
       '<button class="hd-card" data-aba="acompanhar" type="button"><span class="ic" style="--c:#0E7490"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></span><b>Acompanhar solicitação</b><span>Use o número do pedido e o seu e-mail</span></button>' +
       '<button class="hd-card" data-chat type="button"><span class="ic" style="--c:#6D28D9"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5h16v11H8l-4 4z"/></svg></span><b>Assistente virtual</b><span>Tire dúvidas sobre o andamento</span></button></div></div></section>' +
       '<nav class="hd-abas" role="tablist"><button role="tab" data-aba="nova">Nova solicitação</button><button role="tab" data-aba="acompanhar">Acompanhar solicitação</button></nav>' +
@@ -4335,7 +4752,7 @@ var Helpdesk = (function (L) {
     var s5 = '<div class="hd-drop" id="hd-drop" tabindex="0" role="button" aria-label="Adicionar fotos"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M21 17l-5-5-8 7"/></svg>' +
       '<b>Arraste as fotos aqui ou clique para escolher</b><span>JPG, PNG, WEBP ou GIF · até 15 MB no total · convertidas para PDF ao enviar</span><input type="file" id="hd-arq" accept="image/*" multiple hidden></div>' +
       '<div class="hd-medidor"><div class="track"><i id="hd-uso-b"></i></div><span id="hd-uso-t">0 MB de 15 MB</span></div><div class="hd-fotos" id="hd-fotos"></div>';
-    var s6 = '<div id="hd-resumo" class="hd-resumo"></div><label class="hd-decl"><input type="checkbox" name="declaro"><span>Declaro que a solicitação trata de <b>manutenção</b>, e não de obra, que as informações são verdadeiras e autorizo o contato da equipe pelo e-mail ou telefone informados.</span></label>' +
+    var s6 = '<div id="hd-resumo" class="hd-resumo"></div><label class="hd-decl"><input type="checkbox" name="declaro"><span>Declaro que a solicitação trata de <b>manutenção</b>, e não de obra, que as informações são verdadeiras e que estou ciente do tratamento dos meus dados pessoais para o atendimento, nos termos da LGPD (Lei Federal nº 13.709/2018). Autorizo o contato da equipe pelo e-mail ou telefone informados.</span></label>' +
       '<input type="text" name="armadilha" class="hd-hp" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<p class="err" id="hd-erro" role="alert"></p><button class="hd-enviar" id="hd-enviar" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Enviar solicitação</button>';
     el.innerHTML = '<div class="hd-grid"><form id="hd-form" novalidate>' +
@@ -4474,31 +4891,39 @@ var Helpdesk = (function (L) {
         doc.setTextColor(20, 35, 42); y = 38;
       };
       cab();
+      var LIM = 280, PASSO = 4.8;
       var linha = function (rot, val) {
         doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
-        var linhas = doc.splitTextToSize(textoPdf(val || '-'), W - M - 62);
-        if (y + linhas.length * 5 > 280) { doc.addPage(); cab(); }
-        doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(94, 112, 117); doc.text(textoPdf(rot), M, y);
-        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(20, 35, 42); doc.text(linhas, M + 50, y);
-        var base = y + (Math.max(1, linhas.length) - 1) * 4.8;
-        doc.setDrawColor(221, 229, 227); doc.line(M, base + 2.6, W - M, base + 2.6);
-        y = base + 8;
+        var linhas = doc.splitTextToSize(textoPdf(val || '-'), W - 2 * M - 52), cont = false;
+        if (y + PASSO > LIM) { doc.addPage(); cab(); }
+        while (linhas.length) {
+          var cabem = Math.max(1, Math.floor((LIM - y) / PASSO) + 1), parte = linhas.splice(0, cabem);
+          doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(94, 112, 117); doc.text(textoPdf(rot + (cont ? ' (cont.)' : '')), M, y, { maxWidth: 48 });
+          doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(20, 35, 42); doc.text(parte, M + 52, y);
+          var base = y + (parte.length - 1) * PASSO;
+          if (linhas.length) { doc.addPage(); cab(); cont = true; continue; }
+          doc.setDrawColor(221, 229, 227); doc.line(M, base + 2.6, W - M, base + 2.6);
+          y = base + 8;
+        }
       };
-      doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(11, 79, 74); doc.text(textoPdf(info.titulo || ''), M, y, { maxWidth: W - 2 * M }); y += 8;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(11.5); doc.setTextColor(11, 79, 74);
+      var tit = doc.splitTextToSize(textoPdf(info.titulo || ''), W - 2 * M); doc.text(tit, M, y); y += tit.length * 5.4 + 4;
       (complementar ? [['Pedido', info.id], ['Solicitante', info.solicitante + ' (' + info.solicitanteEmail + ')'], ['Fotos', fotos.length + ' imagem(ns)']] : [
         ['Número do pedido', info.id], ['Data da solicitação', new Date().toLocaleDateString('pt-BR')], ['Solicitante', info.solicitante], ['E-mail', info.solicitanteEmail], ['Telefone', info.solicitanteTelefone],
         ['Unidade (setor)', info.unidade], ['Local do problema', info.local], ['Localização exata', info.localInterno], ['Quantidade de pessoas afetadas', info.pessoas ? String(info.pessoas) : '-'],
         ['Assunto', info.titulo], ['Tipo de problema', info.sistema], ['Urgência', info.criticidade + (info.risco ? ' - com risco declarado' : '')], ['Descrição', info.descricao], ['Fotos anexadas', fotos.length ? fotos.length + ' imagem(ns), convertidas neste PDF' : 'nenhuma']
       ]).forEach(function (x) { linha(x[0], x[1]); });
       if (!complementar) {
-        doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5);
-        var aviso = doc.splitTextToSize(textoPdf(L.AVISO_LEGAL), W - 2 * M);
-        if (y + aviso.length * 3.6 + 6 > 280) { doc.addPage(); cab(); }
-        y += 2; doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5); doc.setTextColor(94, 112, 117); doc.text(aviso, M, y); y += aviso.length * 3.4 + 4;
+        [L.AVISO_LEGAL, L.AVISO_LGPD].forEach(function (txt) {
+          doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5); doc.setTextColor(94, 112, 117);
+          var av = doc.splitTextToSize(textoPdf(txt), W - 2 * M);
+          if (y + av.length * 3.4 + 4 > LIM) { doc.addPage(); cab(); }
+          y += 1; doc.text(av, M, y); y += av.length * 3.4 + 3;
+        });
       }
       fotos.forEach(function (f, k) {
         var maxW = W - 2 * M, maxH = 104, r = Math.min(maxW / f.img.w, maxH / f.img.h), w = f.img.w * r, h = f.img.h * r;
-        if (y + h + 12 > 284) { doc.addPage(); cab(); }
+        if (y + h + 8 > 284) { doc.addPage(); cab(); }
         doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(76, 29, 149); doc.text(textoPdf('Foto ' + (k + 1) + ': ' + f.nome), M, y); y += 2.5;
         doc.addImage(f.img.dataUrl, 'JPEG', M + (maxW - w) / 2, y, w, h, undefined, 'FAST'); y += h + 8;
       });
@@ -4574,14 +4999,14 @@ var Helpdesk = (function (L) {
       (recentes ? '<div class="hd-recentes"><span>Pedidos recentes neste computador</span><div>' + recentes + '</div></div>' : '') +
       (!Api.remoto ? '<p class="calc" style="margin-top:10px">Modo demonstração: experimente um pedido de exemplo com o e-mail <b>ana.ribeiro@iema.es.gov.br</b>.</p>' : '') + '<p class="err" id="hd-cons-erro" role="alert"></p></div></section>' +
       '<div id="hd-res"></div></div><aside class="hd-lado"><div class="hd-box"><b>Assistente virtual</b><p>Converse com o assistente para saber a situação, a previsão e as próximas etapas do seu pedido.</p><button type="button" class="btn" data-chat style="margin-top:10px">Abrir o assistente</button></div>' +
-      '<div class="hd-box"><b>Etapas do atendimento</b><ol class="hd-glos"><li><b>Recebida</b>: a equipe analisou o pedido.</li><li><b>Aprovada</b>: serviços planejados aprovados pela diretoria.</li><li><b>Executada</b>: o serviço foi realizado.</li><li><b>Conferida</b>: a fiscalização atestou o serviço.</li><li><b>Encerrada</b>: atendimento concluído.</li></ol></div></aside></div>';
+      '<div class="hd-box"><b>Etapas do atendimento</b><ol class="hd-glos"><li><b>Registrada</b>: o pedido entrou na Central.</li><li><b>Recebida pela equipe</b>: o pedido foi analisado e ganhou prazo.</li><li><b>Serviço executado</b>: o serviço foi realizado no local.</li></ol></div></aside></div>';
     atualizarPriv();
-    U.$('#hd-cons').onsubmit = function (ev) { ev.preventDefault(); var f = ev.target; st.consulta = { protocolo: f.protocolo.value.trim().toUpperCase(), email: f.email.value.trim().toLowerCase() }; consultar(); };
-    U.$$('.hd-rec').forEach(function (b) { b.onclick = function () { st.consulta = { protocolo: b.dataset.p, email: b.dataset.e }; renderAcompanhar(); consultar(); }; });
+    U.$('#hd-cons').onsubmit = function (ev) { ev.preventDefault(); var f = ev.target; st.consulta = { protocolo: f.protocolo.value.trim().toUpperCase(), email: f.email.value.trim().toLowerCase() }; st.pedido = null; consultar(false, true); };
+    U.$$('.hd-rec').forEach(function (b) { b.onclick = function () { st.consulta = { protocolo: b.dataset.p, email: b.dataset.e }; st.pedido = null; renderAcompanhar(); consultar(false, true); }; });
     if (st.pedido && c.protocolo === st.pedido.id) { renderPedido(); consultar(true); }
-    else if (c.protocolo && c.email) consultar();
+    else if (c.protocolo && c.email) consultar(false, true);
   }
-  function consultar(silencioso) {
+  function consultar(silencioso, abrir) {
     var c = st.consulta || {}, err = U.$('#hd-cons-erro');
     if (!c.protocolo || !L.emailValido(c.email)) { if (err && !silencioso) err.textContent = 'Informe o número do pedido e um e-mail válido.'; return Promise.resolve(null); }
     if (err) err.textContent = '';
@@ -4591,9 +5016,12 @@ var Helpdesk = (function (L) {
       if (!st.privado) { lembrarPedido(r.pedido.id, c.email, r.pedido.titulo); guardar({ email: c.email }); }
       if (st.aba === 'acompanhar') renderPedido();
       if (antes && antes.id === r.pedido.id && (antes.situacao.id !== r.pedido.situacao.id || antes.eventos.length !== r.pedido.eventos.length)) {
-        botDiz('Atualização do pedido <b>' + e(r.pedido.id) + '</b>: ' + e(ultimoEvento(r.pedido)) + '. Situação atual: <b>' + e(r.pedido.situacao.nome) + '</b>.');
-        U.toast('Seu pedido foi atualizado: ' + r.pedido.situacao.nome, 'ok');
-      } else if (!antes || antes.id !== r.pedido.id) botDiz('Encontrei o pedido <b>' + e(r.pedido.id) + '</b> (' + e(r.pedido.titulo) + '). Situação: <b>' + e(r.pedido.situacao.nome) + '</b>. O que deseja saber?', chipsPadrao());
+        var ult = ultimoEvento(r.pedido);
+        if (ult.indexOf('Resposta da equipe: ') === 0) botDiz('A equipe respondeu sobre o pedido <b>' + e(r.pedido.id) + '</b>: ' + e(ult.replace('Resposta da equipe: ', '')));
+        else if (ult.indexOf('Sua observação') !== 0) botDiz('Atualização do pedido <b>' + e(r.pedido.id) + '</b>: ' + e(ult) + '. Situação atual: <b>' + e(r.pedido.situacao.nome) + '</b>.');
+        if (ult.indexOf('Sua observação') !== 0) U.toast(ult.indexOf('Resposta da equipe') === 0 ? 'A equipe respondeu ao seu pedido.' : 'Seu pedido foi atualizado: ' + r.pedido.situacao.nome, 'ok');
+      } else if (!antes || antes.id !== r.pedido.id || abrir) botDiz('Encontrei o pedido <b>' + e(r.pedido.id) + '</b> (' + e(r.pedido.titulo) + '). Situação: <b>' + e(r.pedido.situacao.nome) + '</b>. O que deseja saber?', chipsPadrao());
+      if (abrir) abrirChat(true);
       agendar();
       return r.pedido;
     }, function (er) {
@@ -4610,20 +5038,17 @@ var Helpdesk = (function (L) {
   function renderPedido() {
     var p = st.pedido, box = U.$('#hd-res'); if (!box || !p) return;
     var sit = p.situacao, pz = p.prazo;
-    var passos = [{ nome: 'Registrada', ok: true, data: p.dataSolicitacao }].concat(p.etapas.map(function (x) { return x; }));
+    var passos = [{ nome: 'Registrada', ok: true, data: p.dataSolicitacao }].concat(p.etapas);
     var atual = passos.reduce(function (m, x, i) { return x.ok ? i : m; }, 0);
     box.innerHTML = '<section class="hd-ped" style="--c:' + sit.cor + '"><header><div><span class="hd-num">' + e(p.id) + '</span><h2>' + e(p.titulo) + '</h2><p>' + e([p.unidade, p.local, p.localInterno].filter(Boolean).join(' · ')) + '</p></div>' +
       '<div class="hd-sit"><span>Situação</span><b>' + e(sit.nome) + '</b>' + (p.cancelada ? '' : '<em class="tag ' + pz.k + '">' + e(pz.nome) + '</em>') + '</div></header>' +
       (p.cancelada ? '<div class="hd-aviso">Pedido cancelado: ' + e(p.motivoCancelamento || 'sem motivo informado') + '.</div>' : '') +
       '<ol class="hd-step">' + passos.map(function (x, i) { return '<li class="' + (x.ok ? 'ok' : '') + (i === atual + 1 && !p.cancelada ? ' prox' : '') + '"><span class="b">' + (x.ok ? '✓' : i + 1) + '</span><b>' + e(x.nome) + '</b><small>' + (x.ok && x.data ? U.fmt(x.data) : (i === atual + 1 && !p.cancelada ? 'próxima etapa' : '')) + '</small></li>'; }).join('') + '</ol>' +
-      '<div class="hd-g3 hd-info">' + [['Registrada em', U.fmt(p.dataSolicitacao)], ['Previsão de término', p.fimPrevisto ? U.fmt(p.fimPrevisto) : 'a definir'], ['Execução iniciada', p.execucaoInicio ? U.fmt(p.execucaoInicio) : 'ainda não'],
-        ['Tipo de problema', p.sistema], ['Urgência', p.criticidade], ['Pessoas afetadas', p.pessoas ? U.int(p.pessoas) : '—'],
-        ['Nº da Ordem de Serviço', p.osNumero || '—'], ['Nº do Atendimento (Help Desk)', p.atendimentoNumero || '—'], ['Solicitante', p.solicitante]]
-        .map(function (x) { return '<div><span>' + x[0] + '</span><b>' + e(x[1]) + '</b></div>'; }).join('') + '</div>' +
-      '<div class="hd-g2" style="margin-top:6px"><div><h3>Histórico</h3><ul class="hd-tl">' + p.eventos.slice().reverse().map(function (ev) { return '<li><b>' + e(ev.texto) + '</b><small>' + U.fmtDH(ev.em) + '</small></li>'; }).join('') + '</ul></div>' +
-      '<div><h3>Fotos e PDF da solicitação</h3><div id="hd-anexos"><p class="calc">Carregando…</p></div>' +
-      (!p.cancelada && st.pedido.situacao.id !== 'paga' ? '<div class="hd-mais"><button type="button" class="btn sm" id="hd-mais-b">' + U.icon.plus + 'Enviar mais fotos</button><input type="file" id="hd-mais" accept="image/*" multiple hidden><div class="hd-fotos" id="hd-fotos2"></div></div>' : '') +
-      '<h3>Enviar uma observação à equipe</h3><textarea class="in" id="hd-obs" rows="3" maxlength="1000" placeholder="Ex.: o vazamento aumentou; o acesso é pela porta lateral"></textarea><button type="button" class="btn" id="hd-obs-b" style="margin-top:8px">Enviar observação</button></div></div></section>';
+      '<div class="hd-resumo-t">Resumo do pedido</div><div class="hd-g3 hd-info">' + [['Local', [p.unidade, p.local, p.localInterno].filter(Boolean).join(' · ')]].concat(camposPedido(p)).concat([['Situação', sit.nome]]).map(function (x) { return '<div><span>' + x[0] + '</span><b>' + e(x[1]) + '</b></div>'; }).join('') + '</div>' +
+      '<div class="hd-g2 hd-ped-b"><div><h3>Fotos e PDF da solicitação</h3><div id="hd-anexos"><p class="calc">Carregando…</p></div>' +
+      (p.aceitaAnexos ? '<div class="hd-mais"><button type="button" class="btn sm" id="hd-mais-b">' + U.icon.plus + 'Enviar mais fotos</button><input type="file" id="hd-mais" accept="image/*" multiple hidden><div class="hd-fotos" id="hd-fotos2"></div></div>' : '') + '</div>' +
+      '<div><h3>Enviar uma observação à equipe</h3><textarea class="in" id="hd-obs" rows="4" maxlength="1000" placeholder="Ex.: o vazamento aumentou; o acesso é pela porta lateral"></textarea><button type="button" class="btn" id="hd-obs-b" style="margin-top:8px">Enviar observação</button>' +
+      '<p class="calc" style="margin-top:10px">As respostas da equipe aparecem no assistente virtual, que avisa automaticamente quando houver novidade.</p></div></div></section>';
     carregarAnexos();
     var mais = U.$('#hd-mais-b');
     if (mais) { st.extras = []; mais.onclick = function () { U.$('#hd-mais').click(); }; U.$('#hd-mais').onchange = function (ev) { adicionarFotos(ev.target.files, st.extras); ev.target.value = ''; }; }
@@ -4631,6 +5056,12 @@ var Helpdesk = (function (L) {
       var t = U.$('#hd-obs').value.trim(); if (!t) { U.toast('Escreva a observação.', 'erro'); return; }
       api('helpdeskMensagem', { protocolo: p.id, email: st.consulta.email, texto: t }).then(function (r) { st.pedido = r.pedido; renderPedido(); U.toast('Observação enviada à equipe.', 'ok'); botDiz('Sua observação foi entregue à equipe de gestão do pedido <b>' + e(p.id) + '</b>.'); }, UI.erro);
     };
+  }
+  /* Os mesmos campos do quadro do pedido, usados também pelo assistente */
+  function camposPedido(p) {
+    return [['Registrada em', U.fmt(p.dataSolicitacao)], ['Previsão de término', p.fimPrevisto ? U.fmt(p.fimPrevisto) : 'em análise pela equipe'], ['Execução iniciada', p.execucaoInicio ? U.fmt(p.execucaoInicio) : 'ainda não'],
+      ['Tipo de problema', p.sistema || '—'], ['Urgência', p.criticidade + (p.risco ? ' (com risco declarado)' : '')], ['Pessoas afetadas', p.pessoas ? U.int(p.pessoas) : 'não informado'],
+      ['Nº da Ordem de Serviço', p.osNumero || 'ainda não emitida'], ['Nº do Atendimento (Help Desk)', p.atendimentoNumero || 'ainda não registrado'], ['Solicitante', p.solicitante || '—']];
   }
   function renderFotosExtras() {
     var box = U.$('#hd-fotos2'); if (!box) return;
@@ -4683,11 +5114,11 @@ var Helpdesk = (function (L) {
   function abrirChat(v) {
     st.chatAberto = v;
     U.$('#hd-chat').hidden = !v; U.$('#hd-fab').classList.toggle('aberto', v);
-    if (v) { if (!st.msgs.length) boasVindas(); setTimeout(function () { U.$('#hd-chat-in').focus(); }, 50); }
+    if (v) { if (!st.msgs.length) boasVindas(); var m = U.$('#hd-msgs'); m.scrollTop = m.scrollHeight; setTimeout(function () { U.$('#hd-chat-in').focus(); }, 50); }
   }
   function chipsPadrao() {
     if (!st.pedido) return ['Consultar meu pedido', 'Como abrir uma solicitação?', 'O que significa cada etapa?', 'Falar com a equipe'];
-    return ['Qual a situação?', 'Quando fica pronto?', 'Em que etapa está?', 'A equipe respondeu?', 'Nº da OS e do atendimento', 'Já foi executado?', 'Como enviar mais fotos?', 'Falar com a equipe', 'Consultar outro pedido'];
+    return ['Qual a situação?', 'Quando fica pronto?', 'Em que etapa está?', 'A equipe respondeu?', 'Nº da OS e do atendimento', 'Já foi executado?', 'Como enviar mais fotos?', 'Enviar mensagem à equipe', 'Consultar outro pedido'];
   }
   function boasVindas() {
     if (st.msgs.length) return;
@@ -4709,39 +5140,66 @@ var Helpdesk = (function (L) {
   function ouvir(texto) {
     addMsg('eu', e(texto));
     var t = U.norm(texto), prot = (texto.toUpperCase().match(/M[CP]-\d{4}-\d{1,4}/) || [])[0], email = (texto.match(/[^\s@]+@[^\s@]+\.[^\s@]{2,}/) || [])[0];
-    setTimeout(function () { responder(t, prot, email); }, 280);
+    setTimeout(function () { responder(t, prot, email, texto); }, 260);
   }
-  function responder(t, prot, email) {
-    var p = st.pedido;
+  function responder(t, prot, email, bruto) {
+    var p = st.pedido, ch = chipsPadrao();
+    /* Mensagem para a equipe: fica registrada no pedido e a resposta chega nesta conversa */
+    if (aguardando === 'mensagem') {
+      aguardando = null;
+      if (/^cancelar( a)? mensagem$/.test(t)) return botDiz('Tudo bem, a mensagem não foi enviada.', ch);
+      if (!p) return botDiz('Para enviar uma mensagem, consulte antes o seu pedido.', ch);
+      var texto = String(bruto || '').trim().slice(0, 1000);
+      api('helpdeskMensagem', { protocolo: p.id, email: st.consulta.email, texto: texto }).then(function (r) {
+        st.pedido = r.pedido; if (st.aba === 'acompanhar') renderPedido();
+        botDiz('Sua mensagem foi registrada no pedido <b>' + e(p.id) + '</b>. Quando a equipe responder, a resposta aparecerá aqui nesta conversa.', chipsPadrao());
+      }, function (er) { botDiz(e(er && er.mensagem ? er.mensagem : 'Não foi possível registrar a mensagem. Tente novamente.'), chipsPadrao()); });
+      return;
+    }
     if (prot || email) {
       st.consulta = st.consulta || {};
       if (prot) { if (prot.split('-')[2].length < 3) prot = prot.replace(/-(\d{1,2})$/, function (m, n) { return '-' + ('00' + n).slice(-3); }); st.consulta.protocolo = prot; }
       if (email) st.consulta.email = email.toLowerCase();
       if (!st.consulta.email) { var sv = dadosSalvos(); if (sv.email) st.consulta.email = sv.email; }
-      if (st.consulta.protocolo && st.consulta.email) { botDiz('Consultando o pedido <b>' + e(st.consulta.protocolo) + '</b>…', []); consultar().then(function (r) { if (r && st.aba === 'acompanhar') renderAcompanhar(); }); return; }
+      if (st.consulta.protocolo && st.consulta.email) { botDiz('Consultando o pedido <b>' + e(st.consulta.protocolo) + '</b>…', []); st.pedido = null; consultar(false, true).then(function (r) { if (r && st.aba === 'acompanhar') renderAcompanhar(); }); return; }
       aguardando = st.consulta.protocolo ? 'email' : 'protocolo';
       botDiz(aguardando === 'email' ? 'Certo. Agora informe o <b>e-mail</b> usado na solicitação.' : 'Certo. Agora informe o <b>número do pedido</b>.', []);
       return;
     }
-    if (/^(oi|ola|bom dia|boa tarde|boa noite)/.test(t)) return botDiz('Olá! Como posso ajudar?', chipsPadrao());
-    if (/obrigad|valeu|agradec/.test(t)) return botDiz('Por nada! Se precisar, estou por aqui.', chipsPadrao());
+    var campo = function (rot) { var x = camposPedido(p).filter(function (c) { return c[0] === rot; })[0]; return x ? x[1] : '—'; };
+    var diz = function (html) { botDiz(html, ch); };
+    if (/^(oi|ola|bom dia|boa tarde|boa noite)/.test(t)) return diz('Olá! Como posso ajudar?');
+    if (/obrigad|valeu|agradec/.test(t)) return diz('Por nada! Se precisar, estou por aqui.');
     if (/outro pedido|consultar meu|consultar pedido|consultar outro/.test(t)) { st.pedido = null; aguardando = 'protocolo'; return botDiz('Informe o <b>número do pedido</b> e o <b>e-mail</b> da solicitação (pode ser na mesma mensagem).', []); }
-    if (/abrir|nova solicita|registrar|como (abrir|pedir|solicitar)/.test(t)) { trocarAba('nova'); return botDiz('Abri o formulário de <b>Nova solicitação</b>. Preencha os quadros coloridos, anexe fotos (até 15 MB) e clique em <b>Enviar solicitação</b>. Você recebe o número do pedido na hora.', chipsPadrao()); }
-    if (/significa|cada etapa|o que e|explica/.test(t)) return botDiz('As etapas são: <b>Recebida</b> (a equipe analisou), <b>Aprovada</b> (serviços planejados aprovados pela diretoria), <b>Executada</b> (o serviço foi feito), <b>Conferida</b> (a fiscalização atestou) e <b>Encerrada</b> (atendimento concluído).', chipsPadrao());
-    if (p && /resposta|respond|retorno/.test(t)) { var rs0 = p.eventos.filter(function (ev) { return ev.texto.indexOf('Resposta da equipe') === 0; }); return botDiz(rs0.length ? 'Última resposta da equipe (' + U.fmtDH(rs0[rs0.length - 1].em) + '): <b>' + e(rs0[rs0.length - 1].texto.replace('Resposta da equipe: ', '')) + '</b>' : 'A equipe ainda não enviou uma resposta escrita. Você será avisado aqui assim que ela responder.', chipsPadrao()); }
-    if (/contato|telefone|falar|equipe|subad|atendente|humano/.test(t)) return botDiz('Você pode falar com a equipe: <b>' + e((st.cfg && st.cfg.contato) || 'SUBAD') + '</b>. ' + (p ? 'Também é possível enviar uma observação no quadro do pedido, em "Acompanhar solicitação".' : ''), chipsPadrao());
-    if (!p) { aguardando = 'protocolo'; return botDiz('Para responder sobre o andamento, preciso do <b>número do pedido</b> e do <b>e-mail</b> da solicitação.', chipsPadrao()); }
-    var etapa = function (id) { return p.etapas.filter(function (x) { return x.id === id; })[0]; };
-    if (/situa|status|andamento|como esta|como anda/.test(t)) return botDiz('O pedido <b>' + e(p.id) + '</b> está <b>' + e(p.situacao.nome) + '</b>' + (p.cancelada ? ' (' + e(p.motivoCancelamento) + ')' : '') + '. Último registro: ' + e(ultimoEvento(p)) + '.', chipsPadrao());
-    if (/prazo|quando|previs|termin|demora|pronto/.test(t)) return botDiz(!p.fimPrevisto && !p.cancelada ? 'O prazo ainda está <b>em análise</b>: a equipe define a previsão ao receber o pedido.' : p.fimPrevisto ? 'A previsão de término é <b>' + U.fmt(p.fimPrevisto) + '</b> (' + e(L.prazoTexto(p.prazoQtd, p.prazoUnidade)) + '). Situação do prazo: <b>' + e(p.prazo.nome) + '</b>.' : 'A previsão ainda será definida pela equipe.', chipsPadrao());
-    if (/etapa|fase|passo|onde esta/.test(t)) return botDiz('Etapas do pedido <b>' + e(p.id) + '</b>:<br>' + p.etapas.map(function (x) { return (x.ok ? '✅ ' : '⏳ ') + e(x.nome) + (x.ok && x.data ? ' (' + U.fmt(x.data) + ')' : ''); }).join('<br>'), chipsPadrao());
-    if (/aprov/.test(t)) { var ap = etapa('aprovacao'); return botDiz(ap ? (ap.ok ? 'Sim, o pedido foi aprovado em ' + U.fmt(ap.data) + '.' : 'A aprovação ainda está pendente.') : 'Pedidos corretivos/rotineiros não passam por aprovação: seguem direto para a execução.', chipsPadrao()); }
-    if (/execu|obra|comec|inici|feito|realiz/.test(t)) { var ex = etapa('execucao'); return botDiz(ex.ok ? 'Sim, o serviço foi executado (término em ' + U.fmt(ex.data) + ').' : p.execucaoInicio ? 'O serviço está em execução desde ' + U.fmt(p.execucaoInicio) + '.' : 'O serviço ainda não começou. ' + (p.fimPrevisto ? 'A previsão de término é ' + U.fmt(p.fimPrevisto) + '.' : ''), chipsPadrao()); }
-    if (/\bos\b|ordem de servi|atendimento|numero da|nº/.test(t)) return botDiz('Ordem de Serviço: <b>' + e(p.osNumero || 'ainda não emitida') + '</b>. Atendimento (Help Desk): <b>' + e(p.atendimentoNumero || 'ainda não registrado') + '</b>.', chipsPadrao());
-    if (/resposta|retorno|mensagem da equipe|responderam/.test(t)) { var rs = p.eventos.filter(function (ev) { return ev.texto.indexOf('Resposta da equipe') === 0; }); return botDiz(rs.length ? 'Última resposta da equipe (' + U.fmtDH(rs[rs.length - 1].em) + '): <b>' + e(rs[rs.length - 1].texto.replace('Resposta da equipe: ', '')) + '</b>' : 'A equipe ainda não enviou uma resposta escrita. Você será avisado aqui assim que ela responder.', chipsPadrao()); }
-    if (/foto|imagem|anexo|pdf/.test(t)) { var nf = p.anexos.filter(function (a) { return /^image\//.test(a.tipo || 'image/'); }).length, np = p.anexos.filter(function (a) { return a.tipo === 'application/pdf'; }).length; return botDiz('O pedido tem <b>' + nf + '</b> foto(s), convertidas em <b>' + np + '</b> PDF(s). Para enviar mais, abra "Acompanhar solicitação" e use <b>Enviar mais fotos</b> (limite de 15 MB por pedido).', chipsPadrao()); }
-    if (/cancel/.test(t)) return botDiz(p.cancelada ? 'Este pedido foi cancelado: ' + e(p.motivoCancelamento) + '.' : 'O pedido não está cancelado. Se quiser cancelar, envie uma observação à equipe explicando o motivo.', chipsPadrao());
-    botDiz('Não entendi bem. Escolha uma das opções abaixo ou pergunte, por exemplo, "qual a situação?" ou "quando fica pronto?".', chipsPadrao());
+    if (/abrir|nova solicita|registrar|como (abrir|pedir|solicitar)/.test(t)) { trocarAba('nova'); return diz('Abri o formulário de <b>Nova solicitação</b>. Preencha os quadros coloridos, anexe fotos (até 15 MB) e clique em <b>Enviar solicitação</b>. Você recebe o número do pedido na hora.'); }
+    if (/significa|cada etapa|o que e|explica/.test(t)) return diz('As etapas são: <b>Registrada</b> (o pedido entrou na Central), <b>Recebida pela equipe</b> (foi analisado e ganhou prazo) e <b>Serviço executado</b> (o serviço foi realizado no local).');
+    if (p && /resposta|respond|retorno/.test(t)) { var rs = p.eventos.filter(function (ev) { return ev.texto.indexOf('Resposta da equipe') === 0; }); return diz(rs.length ? rs.slice(-3).map(function (ev) { return '<b>' + U.fmtDH(ev.em) + '</b>: ' + e(ev.texto.replace('Resposta da equipe: ', '')); }).join('<br>') : 'A equipe ainda não enviou uma resposta escrita. Eu aviso aqui assim que ela responder.'); }
+    if (/enviar mensagem|mensagem (a|para a) equipe|falar com a equipe|deixar (uma )?mensagem|escrever (para|a) equipe|atendente|humano|falar com alguem/.test(t)) {
+      if (!p) { aguardando = 'protocolo'; return botDiz('Para enviar uma mensagem à equipe, informe primeiro o <b>número do pedido</b> e o <b>e-mail</b> da solicitação.', []); }
+      aguardando = 'mensagem';
+      return botDiz('Escreva abaixo a sua mensagem para a equipe de gestão. Ela ficará registrada no pedido <b>' + e(p.id) + '</b> e a resposta aparecerá aqui nesta conversa.', ['Cancelar mensagem']);
+    }
+    if (/contato|telefone|falar|equipe|subad/.test(t)) return diz('Você pode falar com a equipe: <b>' + e((st.cfg && st.cfg.contato) || 'SUBAD') + '</b>. ' + (p ? 'Também é possível enviar uma observação no quadro do pedido.' : ''));
+    if (!p) { aguardando = 'protocolo'; return diz('Para responder sobre o pedido, preciso do <b>número do pedido</b> e do <b>e-mail</b> da solicitação.'); }
+    if (/resumo|tudo|todos os dados|dados do pedido|informac|detalhe|quadro|ficha/.test(t)) return diz('Todas as informações do pedido <b>' + e(p.id) + '</b> estão no quadro do pedido, na tela de acompanhamento. Pergunte aqui sobre qualquer uma delas, por exemplo "qual a previsão de término?".');
+    if (/registrad|abertura|data do pedido|quando (abri|registr|pedi|solicitei)/.test(t)) return diz('O pedido foi <b>registrado em ' + e(campo('Registrada em')) + '</b>.');
+    if (/previs|termin|prazo|quando fica|pronto|demora/.test(t)) return diz(p.fimPrevisto ? 'A <b>previsão de término</b> é <b>' + U.fmt(p.fimPrevisto) + '</b>' + (p.prazoQtd ? ' (' + e(L.prazoTexto(p.prazoQtd, p.prazoUnidade)) + ')' : '') + '. Situação do prazo: <b>' + e(p.prazo.nome) + '</b>.' : 'A previsão de término ainda está <b>em análise</b>: a equipe define o prazo ao receber o pedido.');
+    if (/execucao inici|inicio|comec|iniciad/.test(t)) return diz(p.execucaoInicio ? 'A <b>execução foi iniciada em ' + U.fmt(p.execucaoInicio) + '</b>.' + (p.execucaoFim ? ' O serviço foi concluído em ' + U.fmt(p.execucaoFim) + '.' : '') : 'A execução <b>ainda não foi iniciada</b>.' + (p.fimPrevisto ? ' A previsão de término é ' + U.fmt(p.fimPrevisto) + '.' : ''));
+    if (/executad|concluid|terminou|feito|realiz|ja foi/.test(t)) return diz(p.execucaoFim ? 'Sim, o <b>serviço foi executado</b> (término em ' + U.fmt(p.execucaoFim) + ').' : p.execucaoInicio ? 'O serviço está <b>em execução</b> desde ' + U.fmt(p.execucaoInicio) + '.' : 'O serviço ainda não começou.');
+    if (/tipo|sistema|categoria/.test(t)) return diz('Tipo de problema: <b>' + e(campo('Tipo de problema')) + '</b>.');
+    if (/urgen|priorid|critic|risco/.test(t)) return diz('Urgência: <b>' + e(campo('Urgência')) + '</b>.');
+    if (/pessoa|afetad/.test(t)) return diz('Pessoas afetadas: <b>' + e(campo('Pessoas afetadas')) + '</b>.');
+    if (/(\bos\b|ordem de servi)/.test(t) && /atendimento/.test(t)) return diz('Ordem de Serviço: <b>' + e(campo('Nº da Ordem de Serviço')) + '</b>. Atendimento (Help Desk): <b>' + e(campo('Nº do Atendimento (Help Desk)')) + '</b>.');
+    if (/\bos\b|ordem de servi/.test(t)) return diz('Nº da Ordem de Serviço: <b>' + e(campo('Nº da Ordem de Serviço')) + '</b>.');
+    if (/atendimento|help ?desk|\bhd\b|chamado/.test(t)) return diz('Nº do Atendimento (Help Desk): <b>' + e(campo('Nº do Atendimento (Help Desk)')) + '</b>.');
+    if (/solicitante|quem (pediu|solicitou|abriu)|meu nome/.test(t)) return diz('Solicitante: <b>' + e(campo('Solicitante')) + '</b>.');
+    if (/local|onde|sala|setor|unidade/.test(t)) return diz('Local: <b>' + e([p.unidade, p.local, p.localInterno].filter(Boolean).join(' · ')) + '</b>.');
+    if (/situa|status|andamento|como esta|como anda/.test(t)) return diz('A situação do pedido <b>' + e(p.id) + '</b> é: <b>' + e(p.situacao.nome) + '</b>' + (p.cancelada ? ' (' + e(p.motivoCancelamento) + ')' : '') + '.');
+    if (/etapa|fase|passo|linha do tempo/.test(t)) return diz('Etapas do pedido <b>' + e(p.id) + '</b>:<br>✅ Registrada (' + U.fmt(p.dataSolicitacao) + ')<br>' + p.etapas.map(function (x) { return (x.ok ? '✅ ' : '⏳ ') + e(x.nome) + (x.ok && x.data ? ' (' + U.fmt(x.data) + ')' : ''); }).join('<br>'));
+    if (/aprov/.test(t)) return diz(p.situacao.id === 'aprovacao' ? 'O pedido está <b>aguardando aprovação</b> interna da equipe de gestão.' : 'A aprovação, quando necessária, é feita internamente pela equipe. A situação atual é: <b>' + e(p.situacao.nome) + '</b>.');
+    if (/foto|imagem|anexo|pdf/.test(t)) { var nf = p.anexos.filter(function (a) { return /^image\//.test(a.tipo || ''); }).length, np = p.anexos.filter(function (a) { return a.tipo === 'application/pdf'; }).length; return diz('O pedido tem <b>' + nf + '</b> foto(s), convertidas em <b>' + np + '</b> PDF(s). ' + (p.aceitaAnexos ? 'Para enviar mais, use <b>Enviar mais fotos</b> no quadro do pedido (limite de 15 MB).' : 'Este pedido não recebe mais anexos.')); }
+    if (/cancel/.test(t)) return diz(p.cancelada ? 'Este pedido foi cancelado: ' + e(p.motivoCancelamento) + '.' : 'O pedido não está cancelado. Se quiser cancelar, envie uma observação à equipe explicando o motivo.');
+    diz('Não entendi bem. Escolha uma das opções abaixo ou pergunte, por exemplo, "qual a previsão de término?" ou "qual o número da OS?".');
   }
   return H;
 })(Logica);
@@ -4753,14 +5211,30 @@ var App = (function (L) {
   'use strict';
   var App = { D: null, P: null, fin: null };
   var ROTAS = { painel: T.v_painel, demandas: T.v_demandas, cronograma: T.v_cronograma, setores: T.v_setores, gestor: G.v_gestor };
-  var TEMA = 'iema-mp-tema';
+  var TEMA = 'iema-mp-tema', SOM = 'iema-mp-som';
+  App.som = (function () { try { return localStorage.getItem(SOM) === '1'; } catch (x) { return false; } })();
+  function somIcone() {
+    var b = U.$('#som-btn'); if (!b) return;
+    b.setAttribute('aria-pressed', String(App.som));
+    b.setAttribute('aria-label', App.som ? 'Aviso sonoro ativado (clique para desativar)' : 'Aviso sonoro desativado (clique para ativar)');
+    b.title = App.som ? 'Aviso sonoro de novas solicitações e mensagens: ativado' : 'Aviso sonoro de novas solicitações e mensagens: desativado';
+    b.innerHTML = App.som ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21h4"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.7 3.4A6 6 0 0 1 18 8c0 3 .6 5 1.3 6.4M17 17H3s3-2 3-9c0-.6.1-1.2.3-1.8"/><path d="M10 21h4M3 3l18 18"/></svg>';
+  }
 
   App.aplicar = function (dados) {
     var antes = App.D && !App.publico ? App.D.demandas.reduce(function (m, d) { m[d.id] = 1; return m; }, {}) : null;
+    var msgsAntes = antes && window.Conversa ? Conversa.mapa() : null;
     App.D = dados;
     if (antes) {
       var novas = dados.demandas.filter(function (d) { return d.origem === 'Help Desk' && !antes[d.id]; });
-      if (novas.length) U.toast('Nova solicitação pelo Help Desk: ' + novas.map(function (d) { return d.id + ' (' + d.titulo + ')'; }).join(', '), 'ok');
+      var aviso = false;
+      if (novas.length) { U.toast('Nova solicitação pela Central de Atendimento: ' + novas.map(function (d) { return d.id + ' (' + d.titulo + ')'; }).join(', '), 'ok'); aviso = true; }
+      if (msgsAntes) {
+        var msgsDepois = Conversa.mapa(), comMsg = Object.keys(msgsDepois).filter(function (id) { return antes[id] && msgsDepois[id] > (msgsAntes[id] || 0); });
+        if (comMsg.length) { U.toast('Nova mensagem do solicitante: pedido ' + comMsg.join(', ') + '. Clique no balão roxo para responder.', 'ok'); aviso = true; }
+      }
+      if (aviso && App.som) U.bip();
     }
     App.P = dados.sessao.perfil;
     App.fin = L.financeiro(dados);
@@ -4822,6 +5296,7 @@ var App = (function (L) {
     var al = App.fin.alertas.length && (App.P.areaGestor || App.P.financeiro);
     U.$('#gestor-badge').hidden = !al; U.$('#gestor-badge').textContent = al ? '!' : '';
     T.refreshDetalhe();
+    if (window.Conversa) Conversa.atualizar();
   };
 
   /* ---------------- Tela de login ---------------- */
@@ -4842,6 +5317,8 @@ var App = (function (L) {
   function montar() {
     document.body.innerHTML = U.$('#tpl-app') ? U.$('#tpl-app').innerHTML : TEMPLATE;
     tema(lerTema());
+    somIcone();
+    U.$('#som-btn').onclick = function () { App.som = !App.som; try { localStorage.setItem(SOM, App.som ? '1' : '0'); } catch (e) { /* ignora */ } somIcone(); if (App.som) U.bip(); U.toast(App.som ? 'Aviso sonoro ativado.' : 'Aviso sonoro desativado.', 'ok'); };
     U.$('#theme-btn').onclick = function () { var atual = document.documentElement.getAttribute('data-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); var n = atual === 'dark' ? 'light' : 'dark'; try { localStorage.setItem(TEMA, n); } catch (e) { /* ignora */ } tema(n); };
     U.$('#btn-nova').onclick = function () { T.form(null); };
     U.$('#menu-btn').onclick = function () { U.$('.side').classList.toggle('open'); };
@@ -4877,6 +5354,7 @@ var App = (function (L) {
     });
   }
   App.sair = function (motivo) {
+    if (window.Conversa) Conversa.fechar();
     Api.limparToken(); App.D = null; T.fechar(); if (G.limparAutorizacoes) G.limparAutorizacoes();
     telaLogin(motivo === true ? 'Sua sessão expirou. Entre novamente.' : (typeof motivo === 'string' ? motivo : ''));
   };

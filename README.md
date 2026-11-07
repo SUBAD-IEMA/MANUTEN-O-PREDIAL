@@ -129,13 +129,57 @@ window.IEMA_CONFIG = {
 - O **assistente virtual** responde sobre situação, prazo, etapas, respostas da equipe, OS, atendimento, fotos, cancelamento e contato.
 - **Não salvar nesta máquina** e **Limpar meus dados** protegem computadores compartilhados.
 
+### Organização da página do gestor
+- **Painel:**
+  - uma faixa única de indicadores clicáveis;
+  - as abas **Visão geral**, **Central de Atendimento**, **Prazos**, **Pontos de atenção** e **Atividade recente**;
+  - todas as listas em linhas, inclusive as solicitações da Central, com número, assunto, solicitante, local, situação, urgência e data de recebimento.
+- **Demandas:**
+  - abas por situação: Todas, Em aberto, Em execução, Ateste e pagamento, Em atraso e Encerradas. As solicitações da Central entram direto em **Em aberto**, com o selo **Nova**;
+  - busca em destaque e botão **Filtros**, que abre os nove filtros e mostra os ativos como etiquetas removíveis;
+  - tabela com cinco colunas: número, demanda, situação, prazo e valor.
+- **Detalhe da demanda:**
+  - abas **Resumo**, **Andamento** (com as notas), **Conversa**, **Fotos e PDF** e **Histórico**;
+  - o Resumo traz um quadro com situação, prazo, término, urgência, lote, valor, local, solicitante e notas fiscais.
+- A **Área do Gestor** segue o mesmo padrão de abas.
+
+### Conversa com o solicitante e aviso sonoro
+- Quando o solicitante envia uma mensagem, um **balão roxo piscando**, com o número de mensagens novas, aparece na linha do pedido, em Demandas e no Painel. Ao mesmo tempo surge um aviso na tela.
+- Ao clicar no balão, abre a **janela de conversa** daquele pedido, no canto inferior direito, com:
+  - as mensagens trocadas;
+  - as respostas prontas;
+  - a opção de copiar por e-mail.
+
+  A janela permite escrever e enviar sem abrir o detalhe da demanda (Ctrl+Enter também envia). O balão some quando a conversa é aberta.
+- **Aviso sonoro:** o botão de **sino**, ao lado do modo escuro, liga ou desliga totalmente o aviso para novas solicitações e mensagens. A escolha fica salva no navegador; o sino riscado indica que o som está desligado.
+- **Na Central:** o solicitante escolhe **Enviar mensagem à equipe** no assistente, escreve e a mensagem fica registrada no pedido. A resposta aparece na mesma conversa. O assistente nunca informa se a equipe está online ou offline: o solicitante registra a mensagem e aguarda o retorno.
+
+### PDFs e impressões
+- A largura do documento é calculada exatamente para a área útil da folha A4: retrato, ou paisagem quando a tabela tem 8 colunas ou mais.
+- Linhas de tabela, indicadores, gráficos, etapas e parágrafos não são partidos entre páginas.
+- Um título nunca fica sozinho no pé da página, e todas as páginas são numeradas ("Página X de Y").
+- No PDF da solicitação, os títulos longos quebram em várias linhas e as descrições longas continuam na página seguinte, marcadas como "(cont.)".
+
+### Central: acompanhamento e assistente
+- O cabeçalho traz dois avisos lado a lado:
+  - **Somente manutenção predial** (Lei nº 14.133/2021 e Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023);
+  - **Proteção de dados pessoais**, segundo a LGPD (Lei nº 13.709/2018, arts. 7º, III, 18 e 23). O texto também aparece no PDF da solicitação e na declaração do formulário.
+- **Quadro do pedido:**
+  - mostra a linha do tempo em três etapas: **Registrada**, **Recebida pela equipe** e **Serviço executado**. Aprovação, ateste e pagamento são etapas internas da equipe;
+  - traz o **Resumo do pedido**: local, registrada em, previsão de término, execução iniciada, tipo de problema, urgência, pessoas afetadas, nº da OS, nº do atendimento, solicitante e situação;
+  - mantém as fotos e o PDF, o envio de mais fotos e as observações, sem o histórico.
+- **Assistente:**
+  - fica fixo no canto inferior direito e abre automaticamente ao clicar em **Consultar**;
+  - tem os atalhos de sempre (situação, prazo, etapas, resposta da equipe, OS e atendimento, execução, fotos, contato);
+  - também entende perguntas digitadas sobre qualquer informação do quadro (por exemplo, "qual a urgência?" ou "quantas pessoas afetadas?").
+
 ### Integração em tempo real com a página do gestor
 - As solicitações da Central de Atendimento chegam direto à página do gestor (`index.html`). Não há página separada de atendimento.
 - O que o gestor vê:
   - no **Painel**, o quadro **Central de Atendimento · solicitações recebidas**, com selo **Nova**, urgência e tempo desde a abertura;
   - na barra lateral, um contador em **Demandas**;
   - no título da aba do navegador, o número de novidades;
-  - em **Demandas**, a aba **Central de Atendimento**, que filtra só essas solicitações e destaca as ainda não abertas.
+  - em **Demandas**, a aba **Em aberto**, onde as solicitações da Central aparecem destacadas e com o selo **Nova** até serem abertas.
 - No detalhe de cada solicitação, o gestor:
   - faz a triagem (botão Editar dados);
   - marca as etapas (ao marcar a demanda inicial, escolhe o lote);

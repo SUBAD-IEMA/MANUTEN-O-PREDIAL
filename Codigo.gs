@@ -523,6 +523,8 @@ var Logica = (function () {
   /* Nomes das etapas como o solicitante as vê no Help Desk */
   L.ETAPAS_SOLICITANTE = { inicial: 'Recebida pela equipe', aprovacao: 'Aprovada', execucao: 'Serviço executado', ateste: 'Serviço conferido (ateste)', pagamento: 'Encerrada' };
   L.AVISO_LEGAL = 'Este canal destina-se exclusivamente a solicitações de manutenção predial (conservação, reparo e adequação com preservação das características originais do imóvel), caracterizadas como serviço comum de engenharia (Lei Federal nº 14.133/2021, art. 6º, inciso XXI, alínea "a"). É vedado solicitar por aqui qualquer serviço que configure obra, como construção, ampliação ou reforma que inove o espaço físico ou altere substancialmente as características originais do imóvel (Lei Federal nº 14.133/2021, art. 6º, inciso XII), conforme aplicada no Estado do Espírito Santo pelos Decretos Estaduais nº 5.352-R/2023 e nº 5.545-R/2023.';
+  L.AVISO_LGPD = 'Os dados pessoais informados (nome, e-mail, telefone e imagens) são tratados exclusivamente para registrar, executar e acompanhar a sua solicitação, nos termos da Lei Geral de Proteção de Dados Pessoais (Lei Federal nº 13.709/2018), com base no art. 7º, inciso III, e no art. 23, que tratam do uso de dados pela administração pública para cumprir suas atribuições. As informações ficam restritas à equipe de gestão e a quem executa o serviço, e você pode pedir acesso ou correção dos seus dados pelo contato da SUBAD (art. 18). Em computadores compartilhados, use a opção "Não salvar nesta máquina".';
+  L.ETAPAS_VISIVEIS_SOLICITANTE = ['inicial', 'execucao'];
   L.ROTULOS = {};
   Object.keys(L.TABELAS).forEach(function (t) { L.TABELAS[t].colunas.forEach(function (c) { if (t === 'Demandas') L.ROTULOS[c[0]] = c[1]; }); });
 
@@ -1277,7 +1279,8 @@ var Servico = (function (L) {
         (h.acao.indexOf('Demanda alterada') < 0 || h.campo === 'Execução: início');
     }).map(function (h) {
       var t = h.acao;
-      if (h.acao.indexOf('Etapa marcada') === 0) { var et = L.ETAPAS.filter(function (e) { return h.acao.indexOf(e.nome) >= 0; })[0]; t = et ? L.ETAPAS_SOLICITANTE[et.id] : h.acao; }
+      if (h.acao.indexOf('Etapa marcada') === 0) { var et = L.ETAPAS.filter(function (e) { return h.acao.indexOf(e.nome) >= 0; })[0]; if (et && L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(et.id) < 0) return null; t = et ? L.ETAPAS_SOLICITANTE[et.id] : h.acao; }
+      else if (h.acao.indexOf('Etapa desmarcada') === 0 && L.ETAPAS.some(function (e) { return h.acao.indexOf(e.nome) >= 0 && L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(e.id) < 0; })) return null;
       else if (h.acao.indexOf('Etapa desmarcada') === 0) t = 'Etapa reaberta pela equipe';
       else if (h.acao.indexOf('Demanda alterada') === 0) t = 'Execução iniciada';
       else if (h.acao.indexOf('Mensagem do solicitante') === 0) t = 'Sua observação: ' + h.novo;
@@ -1285,14 +1288,17 @@ var Servico = (function (L) {
       else if (h.acao.indexOf('PDF da solicitação') === 0) t = 'Fotos convertidas para o PDF da solicitação';
       else if (h.acao.indexOf('Demanda registrada') === 0) t = 'Solicitação registrada';
       return { em: h.em, texto: t };
-    });
+    }).filter(Boolean);
+    var sitP = L.situacao(d);
+    if (['ateste', 'pagamento', 'paga'].indexOf(sitP.id) >= 0) sitP = { id: 'executado', nome: 'Serviço executado', cor: '#15803D' };
     return {
       id: d.id, titulo: d.titulo, modalidade: d.modalidade, unidade: d.unidade, local: d.local, localInterno: d.localInterno, sistema: d.sistema,
       criticidade: d.criticidade, risco: d.risco, descricao: d.descricao, solicitante: d.solicitante, dataSolicitacao: d.dataSolicitacao,
       prazoQtd: d.inicialOk ? d.prazoQtd : 0, prazoUnidade: d.prazoUnidade, inicioPrevisto: d.inicialOk ? d.inicioPrevisto : '', fimPrevisto: d.inicialOk ? d.fimPrevisto : '', execucaoInicio: d.execucaoInicio, pessoas: d.pessoas,
       osNumero: d.osNumero, atendimentoNumero: d.atendimentoNumero, cancelada: d.cancelada, motivoCancelamento: d.motivoCancelamento,
-      situacao: L.situacao(d), prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
-      etapas: L.ETAPAS.filter(function (e) { return !e.soProgramado || d.modalidade === 'Programado'; }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
+      situacao: sitP, aceitaAnexos: !d.cancelada && !d.pagamentoOk, execucaoFim: d.execucaoOk ? d.execucaoFim : '',
+      prazo: d.inicialOk || d.cancelada ? L.prazo(d) : { k: 'neutro', nome: 'Prazo em análise', dias: 0 },
+      etapas: L.ETAPAS.filter(function (e) { return L.ETAPAS_VISIVEIS_SOLICITANTE.indexOf(e.id) >= 0 && (!e.soProgramado || d.modalidade === 'Programado'); }).map(function (e) { return { id: e.id, nome: L.ETAPAS_SOLICITANTE[e.id], ok: !!d[e.id + 'Ok'], data: dataEtapa(d, e.id) }; }),
       anexos: anexos.map(function (a) { return { id: a.id, nome: a.nome, tipo: a.tipo, tamanho: a.tamanho, enviadoEm: a.enviadoEm, temMiniatura: !!a.miniatura }; }),
       eventos: eventos
     };
